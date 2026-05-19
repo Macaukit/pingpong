@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>桌球教室管理系統</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;color:#1a1a1a;max-width:480px;margin:0 auto;min-height:100vh;background:#fff}
+.screen{display:none;padding:1rem}
+.screen.active{display:block}
+h2{font-size:18px;font-weight:600;margin-bottom:1rem}
+h3{font-size:15px;font-weight:600;margin-bottom:10px}
+.card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:1rem 1.25rem;margin-bottom:10px}
+.back-btn{background:none;border:1px solid #ddd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;color:#666;margin-bottom:1rem;display:inline-flex;align-items:center;gap:6px}
+.back-btn:hover{background:#f5f5f5}
+.day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:1.5rem}
+.day-btn{border:1px solid #e5e5e5;border-radius:8px;padding:10px 2px;cursor:pointer;text-align:center;background:#fff;transition:all 0.15s}
+.day-btn:hover{border-color:#aaa;background:#f9f9f9}
+.day-btn.today{border:2px solid #16a34a}
+.day-btn.selected{background:#16a34a;border-color:#16a34a}
+.day-label{font-size:12px;font-weight:600;color:#555}
+.day-btn.selected .day-label,.day-btn.selected .day-count{color:#fff}
+.day-btn.today:not(.selected) .day-label{color:#16a34a}
+.day-count{font-size:11px;color:#aaa;margin-top:2px}
+.student-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#fff;border:1px solid #e5e5e5;border-radius:10px;margin-bottom:8px}
+.stu-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer}
+.stu-avatar{width:38px;height:38px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#1d4ed8;flex-shrink:0}
+.stu-name{font-size:15px;font-weight:600;color:#1a1a1a}
+.stu-meta{font-size:12px;color:#888}
+.badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
+.badge-ok{background:#dcfce7;color:#16a34a}
+.badge-warn{background:#fef9c3;color:#b45309}
+.badge-danger{background:#fee2e2;color:#dc2626}
+.badge-info{background:#dbeafe;color:#1d4ed8}
+.sign-btn{padding:8px 16px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.sign-btn:hover{background:#15803d}
+.sign-btn.done{background:#dcfce7;color:#16a34a;border:1px solid #e5e5e5;cursor:default}
+.sign-btn:disabled{background:#f5f5f5;color:#aaa;cursor:not-allowed}
+.confirm-btn{width:100%;padding:13px;background:#16a34a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px}
+.confirm-btn:hover{background:#15803d}
+.nav-bar{display:flex;border-bottom:1px solid #e5e5e5;margin:-1rem -1rem 1.25rem;padding:0 1rem}
+.nav-tab{padding:12px 14px;font-size:14px;border:none;background:none;cursor:pointer;color:#888;border-bottom:2px solid transparent;margin-bottom:-1px}
+.nav-tab.active{color:#1a1a1a;font-weight:600;border-bottom-color:#16a34a}
+.progress-bar{width:100%;height:6px;background:#f0f0f0;border-radius:20px;margin:6px 0}
+.progress-fill{height:6px;border-radius:20px;background:#16a34a}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem}
+.stat-card{background:#f9f9f9;border-radius:10px;padding:12px;text-align:center}
+.stat-num{font-size:22px;font-weight:700;color:#1a1a1a}
+.stat-label{font-size:11px;color:#888;margin-top:2px}
+input[type=text]{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;color:#1a1a1a;outline:none}
+input[type=text]:focus{border-color:#16a34a}
+select{padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;background:#fff;color:#1a1a1a;width:100%;outline:none}
+select:focus{border-color:#16a34a}
+.add-btn{padding:8px 14px;background:none;border:1px solid #ddd;border-radius:8px;cursor:pointer;font-size:13px;color:#555}
+.add-btn:hover{background:#f5f5f5}
+.empty-state{text-align:center;padding:2.5rem 1rem;color:#aaa;font-size:14px}
+.toast{background:#dcfce7;border:1px solid #bbf7d0;border-radius:10px;padding:12px 16px;margin-bottom:10px;display:flex;align-items:center;gap:10px;font-size:14px;color:#15803d}
+.pay-toggle{padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;border:1px solid #ddd;background:none;color:#555}
+.pay-toggle.paid{background:#dcfce7;color:#16a34a;border-color:transparent}
+.next-class-box{background:#eff6ff;border-radius:10px;padding:12px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.next-class-label{font-size:12px;color:#3b82f6}
+.next-class-date{font-size:16px;font-weight:600;color:#1d4ed8}
+.history-table{width:100%;border-collapse:collapse}
+.history-table th{font-size:12px;color:#888;font-weight:600;padding:6px 0;border-bottom:1px solid #f0f0f0;text-align:left}
+.history-table td{font-size:13px;padding:8px 0;border-bottom:1px solid #f0f0f0;color:#1a1a1a}
+.history-table tr:last-child td{border-bottom:none}
+.history-table td.muted{color:#888}
+.copy-btn{padding:6px 12px;background:none;border:1px solid #ddd;border-radius:8px;font-size:12px;cursor:pointer;color:#888;display:inline-flex;align-items:center;gap:4px}
+.copy-btn:hover{background:#f5f5f5}
+.info-summary{background:#f9f9f9;border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.9;color:#333;margin-bottom:10px;white-space:pre-line}
+.loading{text-align:center;padding:2rem;color:#aaa;font-size:14px}
+.error-msg{background:#fee2e2;border-radius:8px;padding:12px;font-size:13px;color:#dc2626;margin-bottom:10px}
+.header-bar{display:flex;align-items:center;justify-content:space-between;padding:1rem 1rem 0;margin-bottom:0}
+.app-title{font-size:16px;font-weight:700;color:#16a34a}
+</style>
+</head>
+<body>
+
+<div class="header-bar">
+  <span class="app-title">🏓 桌球教室</span>
+  <span id="db-status" style="font-size:11px;color:#aaa"></span>
+</div>
+
+<div id="screen-home" class="screen active">
+  <div style="padding-top:1rem">
+    <div class="nav-bar">
+      <button class="nav-tab active" onclick="switchTab('checkin')">簽到</button>
+      <button class="nav-tab" onclick="switchTab('students')">學生管理</button>
+      <button class="nav-tab" onclick="switchTab('overview')">總覽</button>
+    </div>
+    <div id="tab-checkin">
+      <div id="toast-area"></div>
+      <h3>選擇星期</h3>
+      <div class="day-grid" id="day-grid"></div>
+      <div id="day-section"></div>
+    </div>
+    <div id="tab-students" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+        <h3 style="margin:0">學生名單</h3>
+        <button class="add-btn" onclick="toggleAddForm()">＋ 新增</button>
+      </div>
+      <div id="add-form" style="display:none" class="card">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <input type="text" id="new-name" placeholder="學生姓名">
+          <select id="new-day">
+            <option value="">選擇上課星期</option>
+            <option value="0">週一</option><option value="1">週二</option><option value="2">週三</option>
+            <option value="3">週四</option><option value="4">週五</option><option value="5">週六</option><option value="6">週日</option>
+          </select>
+          <select id="new-coach"><option value="">選擇主要教練</option></select>
+          <button class="confirm-btn" style="margin-top:0" onclick="addStudent()">新增學生</button>
+        </div>
+      </div>
+      <div id="all-students"></div>
+    </div>
+    <div id="tab-overview" style="display:none">
+      <div class="stat-grid" id="stat-grid"></div>
+      <h3>各教練學生狀況</h3>
+      <div id="overview-coaches"></div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-detail" class="screen">
+  <div style="padding-top:0.5rem">
+    <button class="back-btn" onclick="showScreen('screen-home')">← 返回</button>
+    <h2 id="detail-name"></h2>
+    <div id="detail-body"></div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://jygtjpemdhrsdwzubfjn.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_DBsYrgaB7_lI-zuC399iRA_PMGqejaZ';
+
+const DAYS=['週一','週二','週三','週四','週五','週六','週日'];
+let coaches=[];
+let students=[];
+let selectedDay=null;
+
+async function api(path, method='GET', body=null){
+  const opts={method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}};
+  if(body)opts.body=JSON.stringify(body);
+  const res=await fetch(SUPABASE_URL+'/rest/v1/'+path,opts);
+  if(!res.ok){const err=await res.text();throw new Error(err);}
+  if(res.status===204)return null;
+  return res.json();
+}
+
+async function loadAll(){
+  document.getElementById('db-status').textContent='載入中...';
+  try{
+    coaches=await api('coaches?select=*&order=id');
+    const stuData=await api('students?select=*&order=name');
+    const recData=await api('records?select=*&order=date');
+    students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
+    document.getElementById('db-status').textContent='✓ 已連線';
+    renderDayGrid();
+    selectDay(todayDayIndex());
+  }catch(e){
+    document.getElementById('db-status').textContent='⚠ 連線失敗';
+    console.error(e);
+  }
+}
+
+function todayDayIndex(){const d=new Date().getDay();return d===0?6:d-1;}
+function getCoachName(id){return coaches.find(c=>c.id===id)?.name||''}
+function getRemaining(s){return s.period*10-s.records.length}
+function getInitials(n){return n.slice(0,2)}
+function todayStr(){const t=new Date();return`${t.getFullYear()}/${t.getMonth()+1}/${t.getDate()}`}
+
+function getNextClassDate(dayIndex){
+  const today=new Date();today.setHours(0,0,0,0);
+  const todayDow=today.getDay();
+  const targetDow=dayIndex===6?0:dayIndex+1;
+  let diff=targetDow-todayDow;
+  if(diff<=0)diff+=7;
+  const next=new Date(today);next.setDate(today.getDate()+diff);
+  return next;
+}
+function formatDisplay(d){
+  const dow=['日','一','二','三','四','五','六'];
+  return`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}（週${dow[d.getDay()]}）`;
+}
+
+function renderDayGrid(){
+  const today=todayDayIndex();
+  document.getElementById('day-grid').innerHTML=DAYS.map((d,i)=>{
+    const count=students.filter(s=>s.day_index===i).length;
+    return`<div class="day-btn${i===today?' today':''}${i===selectedDay?' selected':''}" onclick="selectDay(${i})">
+      <div class="day-label">${d}</div><div class="day-count">${count}人</div>
+    </div>`;
+  }).join('');
+}
+
+function selectDay(i){selectedDay=i;renderDayGrid();renderDaySection();}
+
+function renderDaySection(){
+  const sec=document.getElementById('day-section');
+  if(selectedDay===null){sec.innerHTML='';return;}
+  const list=students.filter(s=>s.day_index===selectedDay);
+  if(!list.length){sec.innerHTML=`<div class="empty-state">📅 ${DAYS[selectedDay]}沒有排課學生</div>`;return;}
+  sec.innerHTML=`<h3>${DAYS[selectedDay]}的學生（${list.length}人）</h3>`+list.map(s=>{
+    const rem=getRemaining(s);
+    const alreadyToday=s.records.includes(todayStr());
+    let rb=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-ok">剩${rem}堂</span>`;
+    let pb=s.paid?'':`<span class="badge badge-danger">未繳費</span>`;
+    let btn=alreadyToday?`<button class="sign-btn done" disabled>✓ 已簽</button>`:rem<=0?`<button class="sign-btn" disabled>用完</button>`:`<button class="sign-btn" onclick="quickSign(${s.id})">簽到</button>`;
+    return`<div class="student-row">
+      <div class="stu-left" onclick="openDetail(${s.id})">
+        <div class="stu-avatar">${getInitials(s.name)}</div>
+        <div><div class="stu-name">${s.name}</div><div class="stu-meta">${getCoachName(s.coach_id)}・第${s.period}期</div>
+        <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">${rb}${pb}</div></div>
+      </div>
+      <div style="margin-left:8px">${btn}</div>
+    </div>`;
+  }).join('');
+}
+
+async function quickSign(sid){
+  const s=students.find(x=>x.id===sid);
+  if(!s||getRemaining(s)<=0)return;
+  const today=todayStr();
+  if(s.records.includes(today))return;
+  try{
+    await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id});
+    s.records.push(today);
+    const rem=getRemaining(s);
+    showToast(`${s.name} 簽到成功！今天 ${today}，剩 ${rem} 堂${rem<=2&&rem>0?' ⚠️':''}${rem===0?' 本期已用完':''}`);
+    renderDaySection();
+  }catch(e){showError('簽到失敗：'+e.message);}
+}
+
+function showToast(msg){
+  const area=document.getElementById('toast-area');
+  const el=document.createElement('div');el.className='toast';
+  el.innerHTML=`✅ ${msg}`;area.prepend(el);
+  setTimeout(()=>el.remove(),4000);
+}
+function showError(msg){
+  const area=document.getElementById('toast-area');
+  const el=document.createElement('div');el.className='error-msg';
+  el.textContent=msg;area.prepend(el);
+  setTimeout(()=>el.remove(),5000);
+}
+
+function openDetail(sid){
+  const s=students.find(x=>x.id===sid);
+  const rem=getRemaining(s);
+  const used=s.records.length;
+  const total=s.period*10;
+  const pct=Math.min(100,Math.round(used/total*100));
+  const nextDate=getNextClassDate(s.day_index);
+  const nextStr=formatDisplay(nextDate);
+  const lastRecord=s.records.length>0?s.records[s.records.length-1]:'尚未上課';
+  const parentInfo=`學生姓名：${s.name}\n目前期數：第 ${s.period} 期（共10堂）\n已上堂數：${used} 堂\n剩餘堂數：${rem} 堂\n最後上課：${lastRecord}\n下次上課：${nextStr.replace('（','').replace('）','')}\n繳費狀態：${s.paid?'已繳費':'未繳費'}`;
+  const historyRows=s.records.length>0
+    ?s.records.slice().reverse().map((date,i)=>`<tr><td>${used-i}</td><td>${date}</td><td class="muted">${getCoachName(s.coach_id)}</td></tr>`).join('')
+    :`<tr><td colspan="3" style="text-align:center;color:#aaa;padding:12px 0">尚無上課記錄</td></tr>`;
+  document.getElementById('detail-name').textContent=s.name;
+  document.getElementById('detail-body').innerHTML=`
+    <div class="next-class-box">
+      📅 <div><div class="next-class-label">下次上課日期</div><div class="next-class-date">${nextStr}</div></div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:13px;color:#888">第${s.period}期進度（${used}/${total}堂）</span>
+        <span style="font-size:13px;font-weight:600;color:${rem<=2?'#b45309':'#1a1a1a'}">${rem<=0?'已用完':'剩 '+rem+' 堂'}</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:14px">繳費狀態</span>
+        <button class="pay-toggle${s.paid?' paid':''}" onclick="togglePay(${s.id})">${s.paid?'已繳費 ✓':'標記已繳費'}</button>
+      </div>
+    </div>
+    ${rem<=0?`<div class="card" style="text-align:center"><div style="font-size:14px;color:#b45309;margin-bottom:10px">⚠️ 本期10堂已用完</div><button class="confirm-btn" onclick="newPeriod(${s.id})">開始第 ${s.period+1} 期</button></div>`:''}
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <h3 style="margin:0">給家長的資訊</h3>
+        <button class="copy-btn" onclick="copyParentInfo(${s.id})">📋 複製</button>
+      </div>
+      <div class="info-summary" id="parent-info-${s.id}">${parentInfo}</div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:10px">上課日期記錄</h3>
+      <table class="history-table"><thead><tr><th>堂次</th><th>日期</th><th>教練</th></tr></thead><tbody>${historyRows}</tbody></table>
+    </div>`;
+  showScreen('screen-detail');
+}
+
+function copyParentInfo(sid){
+  const el=document.getElementById('parent-info-'+sid);
+  if(!el)return;
+  navigator.clipboard?.writeText(el.textContent).then(()=>showToast('已複製，可直接貼給家長！'));
+}
+
+async function togglePay(sid){
+  const s=students.find(x=>x.id===sid);
+  try{
+    await api(`students?id=eq.${sid}`,'PATCH',{paid:!s.paid});
+    s.paid=!s.paid;openDetail(sid);
+  }catch(e){showError('更新失敗');}
+}
+
+async function newPeriod(sid){
+  const s=students.find(x=>x.id===sid);
+  try{
+    await api(`students?id=eq.${sid}`,'PATCH',{period:s.period+1,paid:false});
+    await api(`records?student_id=eq.${sid}`,'DELETE');
+    s.period++;s.records=[];s.paid=false;openDetail(sid);
+  }catch(e){showError('更新失敗');}
+}
+
+function switchTab(tab){
+  ['checkin','students','overview'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
+  });
+  document.querySelectorAll('.nav-tab').forEach(b=>{
+    b.classList.toggle('active',b.textContent.trim()==={checkin:'簽到',students:'學生管理',overview:'總覽'}[tab]);
+  });
+  if(tab==='students')renderAllStudents();
+  if(tab==='overview')renderOverview();
+}
+
+function renderAllStudents(){
+  document.getElementById('all-students').innerHTML=students.length===0
+    ?`<div class="empty-state">還沒有學生，點右上角新增</div>`
+    :students.map(s=>{
+      const rem=getRemaining(s);
+      let rb=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-info">剩${rem}堂</span>`;
+      let pb=s.paid?`<span class="badge badge-ok">已繳費</span>`:`<span class="badge badge-danger">未繳費</span>`;
+      return`<div class="student-row" onclick="openDetail(${s.id})" style="cursor:pointer">
+        <div class="stu-left">
+          <div class="stu-avatar">${getInitials(s.name)}</div>
+          <div><div class="stu-name">${s.name}</div><div class="stu-meta">${DAYS[s.day_index]}・${getCoachName(s.coach_id)}</div>
+          <div style="margin-top:4px;display:flex;gap:4px">${rb}${pb}</div></div>
+        </div>
+      </div>`;
+    }).join('');
+}
+
+function toggleAddForm(){
+  const f=document.getElementById('add-form');
+  f.style.display=f.style.display==='none'?'block':'none';
+  if(f.style.display==='block'){
+    document.getElementById('new-coach').innerHTML='<option value="">選擇主要教練</option>'+coaches.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  }
+}
+
+async function addStudent(){
+  const name=document.getElementById('new-name').value.trim();
+  const day=document.getElementById('new-day').value;
+  const coach=document.getElementById('new-coach').value;
+  if(!name||day===''||!coach){alert('請填寫完整資料');return;}
+  try{
+    const res=await api('students','POST',{name,day_index:parseInt(day),coach_id:parseInt(coach),period:1,paid:false});
+    const newStu=Array.isArray(res)?res[0]:res;
+    students.push({...newStu,records:[]});
+    document.getElementById('new-name').value='';
+    document.getElementById('new-day').value='';
+    document.getElementById('new-coach').value='';
+    document.getElementById('add-form').style.display='none';
+    renderAllStudents();renderDayGrid();
+    showToast(`已新增學生：${name}`);
+  }catch(e){showError('新增失敗：'+e.message);}
+}
+
+function renderOverview(){
+  const total=students.length;
+  const unpaid=students.filter(s=>!s.paid).length;
+  const warn=students.filter(s=>{const r=getRemaining(s);return r<=2&&r>0;}).length;
+  document.getElementById('stat-grid').innerHTML=`
+    <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">學生總數</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#dc2626">${unpaid}</div><div class="stat-label">未繳費</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#b45309">${warn}</div><div class="stat-label">快上完</div></div>`;
+  document.getElementById('overview-coaches').innerHTML=coaches.map(c=>{
+    const mine=students.filter(s=>s.coach_id===c.id);
+    if(!mine.length)return`<div class="card"><b>${c.name}</b><span style="font-size:13px;color:#aaa;margin-left:8px">無學生</span></div>`;
+    return`<div class="card"><div style="font-weight:600;font-size:14px;margin-bottom:8px">${c.name} <span style="font-size:12px;color:#888;font-weight:400">${mine.length}位</span></div>`+
+    mine.map(s=>{
+      const rem=getRemaining(s);
+      let rb=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-ok">剩${rem}堂</span>`;
+      let pb=s.paid?'':`<span class="badge badge-danger">未繳</span>`;
+      return`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f0f0f0;font-size:13px">
+        <span>${s.name} <span style="color:#ccc;font-size:11px">${DAYS[s.day_index]}</span></span>
+        <span style="display:flex;gap:4px">${rb}${pb}</span></div>`;
+    }).join('')+'</div>';
+  }).join('');
+}
+
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  if(name==='screen-home'){renderDayGrid();renderDaySection();}
+}
+
+loadAll();
+</script>
+</body>
+</html>

@@ -14,8 +14,6 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0fdf4;color:#1a1a1a;min-height:100vh}
 .screen{display:none;min-height:100vh}
 .screen.active{display:flex;flex-direction:column}
-
-/* 首頁 */
 .home-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;gap:1.5rem}
 .home-title{font-size:28px;font-weight:700;color:#15803d;text-align:center;margin-bottom:0.5rem}
 .home-subtitle{font-size:16px;color:#6b7280;text-align:center;margin-top:-1rem}
@@ -26,8 +24,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .big-btn-icon{font-size:48px}
 .big-btn-label{font-size:22px;font-weight:700}
 .big-btn-sub{font-size:14px;opacity:0.85}
-
-/* 通用 */
 .top-bar{display:flex;align-items:center;padding:1rem 1.25rem;background:#fff;border-bottom:1px solid #e5e5e5;gap:12px}
 .back-btn{background:none;border:1px solid #ddd;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:14px;color:#555}
 .back-btn:hover{background:#f5f5f5}
@@ -35,8 +31,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .content{flex:1;padding:1.25rem;overflow-y:auto}
 .search-box{width:100%;padding:12px 16px;border:1.5px solid #e5e5e5;border-radius:12px;font-size:16px;outline:none;background:#fff;margin-bottom:1rem}
 .search-box:focus{border-color:#16a34a}
-.student-card{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fff;border:1px solid #e5e5e5;border-radius:12px;margin-bottom:10px;cursor:pointer;transition:border-color 0.15s}
-.student-card:hover{border-color:#16a34a}
+.student-card{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fff;border:1px solid #e5e5e5;border-radius:12px;margin-bottom:10px}
 .stu-left{display:flex;align-items:center;gap:12px}
 .stu-avatar{width:44px;height:44px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#16a34a;flex-shrink:0}
 .stu-name{font-size:16px;font-weight:600;color:#1a1a1a}
@@ -50,17 +45,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sign-btn:hover{background:#15803d}
 .sign-btn.done{background:#dcfce7;color:#16a34a;border:1px solid #e5e5e5;cursor:default}
 .sign-btn:disabled{background:#f5f5f5;color:#aaa;cursor:not-allowed}
-
-/* 成功畫面 */
 .success-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;background:#f0fdf4}
 .success-icon{font-size:80px;margin-bottom:1rem}
 .success-name{font-size:28px;font-weight:700;color:#15803d;margin-bottom:8px}
 .success-info{font-size:16px;color:#6b7280;margin-bottom:2rem;line-height:1.6}
 .success-back{padding:14px 40px;background:#16a34a;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
 .success-back:hover{background:#15803d}
-
-/* 教練選擇 */
-.coach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:1.5rem}
+.coach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-bottom:1.5rem}
 .coach-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:14px;padding:1.25rem;cursor:pointer;text-align:center;transition:all 0.15s}
 .coach-card:hover{border-color:#1d4ed8;background:#eff6ff}
 .coach-card.selected{border-color:#1d4ed8;background:#eff6ff}
@@ -76,14 +67,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .confirm-btn{width:100%;padding:15px;background:#1d4ed8;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
 .confirm-btn:hover{background:#1e40af}
 .confirm-btn:disabled{background:#e5e5e5;color:#aaa;cursor:not-allowed}
-.section-title{font-size:14px;font-weight:600;color:#888;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em}
+.section-title{font-size:14px;font-weight:600;color:#888;margin-bottom:10px;letter-spacing:0.05em}
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:20px;font-size:14px;font-weight:500;z-index:100;opacity:0;transition:opacity 0.3s}
 .toast.show{opacity:1}
 .empty-state{text-align:center;padding:3rem 1rem;color:#aaa;font-size:15px}
+/* 密碼畫面 */
+.pwd-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;background:#eff6ff}
+.pwd-title{font-size:20px;font-weight:700;color:#1d4ed8;margin-bottom:8px}
+.pwd-sub{font-size:14px;color:#6b7280;margin-bottom:1.5rem}
+.pwd-input{width:100%;max-width:300px;padding:14px 16px;border:2px solid #dbeafe;border-radius:12px;font-size:20px;text-align:center;outline:none;letter-spacing:4px;background:#fff;color:#1a1a1a;margin-bottom:12px}
+.pwd-input:focus{border-color:#1d4ed8}
+.pwd-btn{width:100%;max-width:300px;padding:14px;background:#1d4ed8;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
+.pwd-btn:hover{background:#1e40af}
+.pwd-error{color:#dc2626;font-size:13px;margin-top:6px;min-height:20px}
+/* 堂數選擇器 */
+.qty-wrap{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:1.5rem}
+.qty-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid #ddd;background:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1d4ed8;font-weight:700}
+.qty-btn:hover{background:#eff6ff;border-color:#1d4ed8}
+.qty-num{font-size:28px;font-weight:700;color:#1a1a1a;min-width:48px;text-align:center}
+.qty-label{font-size:13px;color:#888;text-align:center;margin-top:-10px;margin-bottom:1rem}
 </style>
 </head>
 <body>
-
 <div id="toast" class="toast"></div>
 
 <!-- 首頁 -->
@@ -98,7 +103,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="big-btn-label">學生簽到</div>
       <div class="big-btn-sub">上課後請點這裡簽到</div>
     </button>
-    <button class="big-btn big-btn-coach" onclick="showScreen('screen-coach-select')">
+    <button class="big-btn big-btn-coach" onclick="showScreen('screen-coach-pwd')">
       <div class="big-btn-icon">👨‍🏫</div>
       <div class="big-btn-label">教練簽到</div>
       <div class="big-btn-sub">教練上課記錄請點這裡</div>
@@ -129,7 +134,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- 教練選擇頁 -->
+<!-- 教練密碼頁 -->
+<div id="screen-coach-pwd" class="screen">
+  <div class="pwd-wrap">
+    <div class="pwd-title">🔒 教練專區</div>
+    <div class="pwd-sub">請輸入教練密碼</div>
+    <input class="pwd-input" type="password" id="pwd-input" placeholder="••••••••" maxlength="20"
+      onkeydown="if(event.key==='Enter')checkPwd()">
+    <div class="pwd-error" id="pwd-error"></div>
+    <button class="pwd-btn" onclick="checkPwd()">進入</button>
+    <button class="back-btn" style="margin-top:16px" onclick="goHome();document.getElementById('pwd-input').value='';document.getElementById('pwd-error').textContent=''">← 返回首頁</button>
+  </div>
+</div>
+
+<!-- 教練簽到頁 -->
 <div id="screen-coach-select" class="screen">
   <div class="top-bar">
     <button class="back-btn" onclick="goHome()">← 返回</button>
@@ -138,19 +156,29 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="content">
     <div class="section-title">我是</div>
     <div class="coach-grid" id="coach-grid"></div>
+
     <div class="section-title">課程類型</div>
     <div class="course-grid">
       <div class="course-card" id="course-solo" onclick="selectCourse('solo')">
         <div class="course-icon">👤</div>
         <div class="course-label">個人課</div>
-        <div class="course-sub">1小時 ／ $500</div>
+        <div class="course-sub">1 小時</div>
       </div>
       <div class="course-card" id="course-group" onclick="selectCourse('group')">
         <div class="course-icon">👥</div>
         <div class="course-label">團體課</div>
-        <div class="course-sub">1.5小時 ／ $750</div>
+        <div class="course-sub">1.5 小時</div>
       </div>
     </div>
+
+    <div class="section-title">今天上了幾堂？</div>
+    <div class="qty-wrap">
+      <button class="qty-btn" onclick="changeQty(-1)">－</button>
+      <div class="qty-num" id="qty-num">1</div>
+      <button class="qty-btn" onclick="changeQty(1)">＋</button>
+    </div>
+    <div class="qty-label" id="qty-label">1 堂</div>
+
     <button class="confirm-btn" id="coach-confirm-btn" onclick="coachCheckin()" disabled>確認簽到</button>
   </div>
 </div>
@@ -169,12 +197,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <script>
 const SUPABASE_URL = 'https://jygtjpemdhrsdwzubfjn.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_DBsYrgaB7_lI-zuC399iRA_PMGqejaZ';
+const COACH_PWD = '147147147';
 
 const DAYS=['週一','週二','週三','週四','週五','週六','週日'];
 let coaches=[];
 let students=[];
 let selectedCoachId=null;
 let selectedCourse=null;
+let selectedQty=1;
 
 async function api(path,method='GET',body=null){
   const opts={method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'}};
@@ -201,11 +231,23 @@ async function loadAll(){
   }catch(e){console.error(e);}
 }
 
+function checkPwd(){
+  const val=document.getElementById('pwd-input').value;
+  if(val===COACH_PWD){
+    document.getElementById('pwd-input').value='';
+    document.getElementById('pwd-error').textContent='';
+    showScreen('screen-coach-select');
+  }else{
+    document.getElementById('pwd-error').textContent='密碼錯誤，請重試';
+    document.getElementById('pwd-input').value='';
+    document.getElementById('pwd-input').focus();
+  }
+}
+
 function renderStudentList(){
   const q=document.getElementById('student-search').value.trim();
   const today=todayDayIndex();
-  // 預設顯示今天星期的學生，有搜尋就顯示全部
-  let list=q ? students.filter(s=>s.name.includes(q)) : students.filter(s=>s.day_index===today);
+  let list=q?students.filter(s=>s.name.includes(q)):students.filter(s=>s.day_index===today);
   const el=document.getElementById('student-list');
   if(!list.length){
     el.innerHTML=q
@@ -272,30 +314,57 @@ function selectCourse(type){
   updateCoachConfirmBtn();
 }
 
+function changeQty(dir){
+  selectedQty=Math.max(1,Math.min(20,selectedQty+dir));
+  document.getElementById('qty-num').textContent=selectedQty;
+  document.getElementById('qty-label').textContent=`${selectedQty} 堂`;
+  updateCoachConfirmBtn();
+}
+
 function updateCoachConfirmBtn(){
-  document.getElementById('coach-confirm-btn').disabled=!(selectedCoachId&&selectedCourse);
+  const ok=selectedCoachId&&selectedCourse&&selectedQty>=1;
+  document.getElementById('coach-confirm-btn').disabled=!ok;
+  if(ok){
+    const hrs=selectedCourse==='solo'?1:1.5;
+    document.getElementById('coach-confirm-btn').textContent=`確認簽到（${selectedQty}堂・共${selectedQty*hrs}小時）`;
+  }else{
+    document.getElementById('coach-confirm-btn').textContent='確認簽到';
+  }
 }
 
 async function coachCheckin(){
-  if(!selectedCoachId||!selectedCourse)return;
+  if(!selectedCoachId||!selectedCourse||selectedQty<1)return;
   const hours=selectedCourse==='solo'?1:1.5;
   const amount=selectedCourse==='solo'?500:750;
   const today=todayStr();
   const coachName=getCoachName(selectedCoachId);
   try{
-    await api('coach_records','POST',{coach_id:selectedCoachId,date:today,course_type:selectedCourse,hours,amount});
+    // 批量新增記錄
+    const records=[];
+    for(let i=0;i<selectedQty;i++){
+      records.push({coach_id:selectedCoachId,date:today,course_type:selectedCourse,hours,amount});
+    }
+    await api('coach_records','POST',records);
+    const totalHours=selectedQty*hours;
     document.getElementById('success-coach-name').textContent=`${coachName} 簽到成功！`;
-    document.getElementById('success-coach-info').innerHTML=`今天：${today}<br>課程：${selectedCourse==='solo'?'個人課（1小時）':'團體課（1.5小時）'}<br>本次薪資：<b>$${amount}</b>`;
+    document.getElementById('success-coach-info').innerHTML=
+      `今天：${today}<br>` +
+      `課程：${selectedCourse==='solo'?'個人課（1小時）':'團體課（1.5小時）'}<br>` +
+      `堂數：<b>${selectedQty} 堂</b><br>` +
+      `今日總時數：<b>${totalHours} 小時</b>`;
     showScreen('screen-coach-success');
   }catch(e){showToast('簽到失敗，請重試');}
 }
 
 function resetCoachForm(){
-  selectedCoachId=null;selectedCourse=null;
+  selectedCoachId=null;selectedCourse=null;selectedQty=1;
   document.querySelectorAll('.coach-card').forEach(el=>el.classList.remove('selected'));
   document.getElementById('course-solo').classList.remove('selected');
   document.getElementById('course-group').classList.remove('selected');
+  document.getElementById('qty-num').textContent='1';
+  document.getElementById('qty-label').textContent='1 堂';
   document.getElementById('coach-confirm-btn').disabled=true;
+  document.getElementById('coach-confirm-btn').textContent='確認簽到';
 }
 
 function showScreen(name){
@@ -307,7 +376,11 @@ function showScreen(name){
   }
 }
 
-function goHome(){showScreen('screen-home');}
+function goHome(){
+  showScreen('screen-home');
+  document.getElementById('pwd-input').value='';
+  document.getElementById('pwd-error').textContent='';
+}
 
 function showToast(msg){
   const t=document.getElementById('toast');

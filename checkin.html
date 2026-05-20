@@ -48,7 +48,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .success-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;background:#f0fdf4}
 .success-icon{font-size:80px;margin-bottom:1rem}
 .success-name{font-size:28px;font-weight:700;color:#15803d;margin-bottom:8px}
-.success-info{font-size:16px;color:#6b7280;margin-bottom:2rem;line-height:1.6}
+.success-info{font-size:16px;color:#6b7280;margin-bottom:2rem;line-height:1.8}
 .success-back{padding:14px 40px;background:#16a34a;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
 .success-back:hover{background:#15803d}
 .coach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-bottom:1.5rem}
@@ -57,21 +57,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .coach-card.selected{border-color:#1d4ed8;background:#eff6ff}
 .coach-avatar{width:48px;height:48px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#1d4ed8;margin:0 auto 8px}
 .coach-name-label{font-size:15px;font-weight:600;color:#1a1a1a}
-.course-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
-.course-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:14px;padding:1.25rem;cursor:pointer;text-align:center;transition:all 0.15s}
-.course-card:hover{border-color:#1d4ed8}
-.course-card.selected{border-color:#1d4ed8;background:#eff6ff}
-.course-icon{font-size:32px;margin-bottom:8px}
-.course-label{font-size:15px;font-weight:600;color:#1a1a1a}
-.course-sub{font-size:12px;color:#888;margin-top:4px}
-.confirm-btn{width:100%;padding:15px;background:#1d4ed8;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
+.confirm-btn{width:100%;padding:15px;background:#1d4ed8;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}
 .confirm-btn:hover{background:#1e40af}
 .confirm-btn:disabled{background:#e5e5e5;color:#aaa;cursor:not-allowed}
 .section-title{font-size:14px;font-weight:600;color:#888;margin-bottom:10px;letter-spacing:0.05em}
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:20px;font-size:14px;font-weight:500;z-index:100;opacity:0;transition:opacity 0.3s}
 .toast.show{opacity:1}
 .empty-state{text-align:center;padding:3rem 1rem;color:#aaa;font-size:15px}
-/* 密碼畫面 */
+/* 密碼 */
 .pwd-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;background:#eff6ff}
 .pwd-title{font-size:20px;font-weight:700;color:#1d4ed8;margin-bottom:8px}
 .pwd-sub{font-size:14px;color:#6b7280;margin-bottom:1.5rem}
@@ -80,12 +73,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .pwd-btn{width:100%;max-width:300px;padding:14px;background:#1d4ed8;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
 .pwd-btn:hover{background:#1e40af}
 .pwd-error{color:#dc2626;font-size:13px;margin-top:6px;min-height:20px}
-/* 堂數選擇器 */
-.qty-wrap{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:1.5rem}
-.qty-btn{width:44px;height:44px;border-radius:50%;border:1.5px solid #ddd;background:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1d4ed8;font-weight:700}
+/* 課程堂數卡片 */
+.course-row{background:#fff;border:1.5px solid #e5e5e5;border-radius:16px;padding:1.25rem;margin-bottom:12px}
+.course-row-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.course-row-icon{font-size:28px}
+.course-row-title{font-size:16px;font-weight:700;color:#1a1a1a}
+.course-row-sub{font-size:12px;color:#888;margin-top:2px}
+.qty-wrap{display:flex;align-items:center;gap:16px}
+.qty-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid #ddd;background:#f9f9f9;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1d4ed8;font-weight:700;flex-shrink:0}
 .qty-btn:hover{background:#eff6ff;border-color:#1d4ed8}
-.qty-num{font-size:28px;font-weight:700;color:#1a1a1a;min-width:48px;text-align:center}
-.qty-label{font-size:13px;color:#888;text-align:center;margin-top:-10px;margin-bottom:1rem}
+.qty-num{font-size:26px;font-weight:700;color:#1a1a1a;min-width:40px;text-align:center}
+.qty-desc{font-size:13px;color:#888;flex:1;text-align:right}
+/* 總覽區 */
+.summary-box{background:#eff6ff;border-radius:12px;padding:12px 16px;margin-bottom:1rem;font-size:14px;color:#1d4ed8;line-height:1.8}
 </style>
 </head>
 <body>
@@ -143,7 +143,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       onkeydown="if(event.key==='Enter')checkPwd()">
     <div class="pwd-error" id="pwd-error"></div>
     <button class="pwd-btn" onclick="checkPwd()">進入</button>
-    <button class="back-btn" style="margin-top:16px" onclick="goHome();document.getElementById('pwd-input').value='';document.getElementById('pwd-error').textContent=''">← 返回首頁</button>
+    <button class="back-btn" style="margin-top:16px" onclick="goHome()">← 返回首頁</button>
   </div>
 </div>
 
@@ -157,28 +157,43 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="section-title">我是</div>
     <div class="coach-grid" id="coach-grid"></div>
 
-    <div class="section-title">課程類型</div>
-    <div class="course-grid">
-      <div class="course-card" id="course-solo" onclick="selectCourse('solo')">
-        <div class="course-icon">👤</div>
-        <div class="course-label">個人課</div>
-        <div class="course-sub">1 小時</div>
-      </div>
-      <div class="course-card" id="course-group" onclick="selectCourse('group')">
-        <div class="course-icon">👥</div>
-        <div class="course-label">團體課</div>
-        <div class="course-sub">1.5 小時</div>
-      </div>
-    </div>
-
     <div class="section-title">今天上了幾堂？</div>
-    <div class="qty-wrap">
-      <button class="qty-btn" onclick="changeQty(-1)">－</button>
-      <div class="qty-num" id="qty-num">1</div>
-      <button class="qty-btn" onclick="changeQty(1)">＋</button>
-    </div>
-    <div class="qty-label" id="qty-label">1 堂</div>
 
+    <!-- 個人課 -->
+    <div class="course-row">
+      <div class="course-row-header">
+        <div class="course-row-icon">👤</div>
+        <div>
+          <div class="course-row-title">個人課</div>
+          <div class="course-row-sub">1 小時 / 堂</div>
+        </div>
+      </div>
+      <div class="qty-wrap">
+        <button class="qty-btn" onclick="changeQty('solo',-1)">－</button>
+        <div class="qty-num" id="qty-solo">0</div>
+        <button class="qty-btn" onclick="changeQty('solo',1)">＋</button>
+        <div class="qty-desc" id="desc-solo">—</div>
+      </div>
+    </div>
+
+    <!-- 團體課 -->
+    <div class="course-row">
+      <div class="course-row-header">
+        <div class="course-row-icon">👥</div>
+        <div>
+          <div class="course-row-title">團體課</div>
+          <div class="course-row-sub">1.5 小時 / 堂</div>
+        </div>
+      </div>
+      <div class="qty-wrap">
+        <button class="qty-btn" onclick="changeQty('group',-1)">－</button>
+        <div class="qty-num" id="qty-group">0</div>
+        <button class="qty-btn" onclick="changeQty('group',1)">＋</button>
+        <div class="qty-desc" id="desc-group">—</div>
+      </div>
+    </div>
+
+    <div class="summary-box" id="summary-box" style="display:none"></div>
     <button class="confirm-btn" id="coach-confirm-btn" onclick="coachCheckin()" disabled>確認簽到</button>
   </div>
 </div>
@@ -195,16 +210,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 
 <script>
-const SUPABASE_URL = 'https://jygtjpemdhrsdwzubfjn.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_DBsYrgaB7_lI-zuC399iRA_PMGqejaZ';
+const SUPABASE_URL = 'REPLACE_SUPABASE_URL';
+const SUPABASE_KEY = 'REPLACE_SUPABASE_ANON_KEY';
 const COACH_PWD = '147147147';
 
 const DAYS=['週一','週二','週三','週四','週五','週六','週日'];
-let coaches=[];
-let students=[];
+let coaches=[], students=[];
 let selectedCoachId=null;
-let selectedCourse=null;
-let selectedQty=1;
+let qtySolo=0, qtyGroup=0;
 
 async function api(path,method='GET',body=null){
   const opts={method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'}};
@@ -250,30 +263,20 @@ function renderStudentList(){
   let list=q?students.filter(s=>s.name.includes(q)):students.filter(s=>s.day_index===today);
   const el=document.getElementById('student-list');
   if(!list.length){
-    el.innerHTML=q
-      ?`<div class="empty-state">找不到「${q}」</div>`
-      :`<div class="empty-state">今天（${DAYS[today]}）沒有排課學生<br><span style="font-size:13px">可以輸入姓名搜尋其他學生</span></div>`;
+    el.innerHTML=q?`<div class="empty-state">找不到「${q}」</div>`:`<div class="empty-state">今天（${DAYS[today]}）沒有排課學生<br><span style="font-size:13px">可以輸入姓名搜尋其他學生</span></div>`;
     return;
   }
   el.innerHTML=list.map(s=>{
     const rem=getRemaining(s);
     const alreadyToday=s.records.includes(todayStr());
     let rb=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-ok">剩${rem}堂</span>`;
-    let btn=alreadyToday
-      ?`<button class="sign-btn done" disabled>✓ 已簽到</button>`
-      :rem<=0?`<button class="sign-btn" disabled>堂數用完</button>`
-      :`<button class="sign-btn" onclick="studentCheckin(${s.id})">簽到</button>`;
+    let btn=alreadyToday?`<button class="sign-btn done" disabled>✓ 已簽到</button>`:rem<=0?`<button class="sign-btn" disabled>堂數用完</button>`:`<button class="sign-btn" onclick="studentCheckin(${s.id})">簽到</button>`;
     return`<div class="student-card">
       <div class="stu-left">
         <div class="stu-avatar">${getInitials(s.name)}</div>
-        <div>
-          <div class="stu-name">${s.name}</div>
-          <div class="stu-meta">${DAYS[s.day_index]}・${getCoachName(s.coach_id)}・第${s.period}期</div>
-          <div style="margin-top:4px">${rb}${alreadyToday?` <span class="badge badge-done">今天已簽</span>`:''}</div>
-        </div>
-      </div>
-      ${btn}
-    </div>`;
+        <div><div class="stu-name">${s.name}</div><div class="stu-meta">${DAYS[s.day_index]}・${getCoachName(s.coach_id)}・第${s.period}期</div>
+        <div style="margin-top:4px">${rb}${alreadyToday?` <span class="badge badge-done">今天已簽</span>`:''}</div></div>
+      </div>${btn}</div>`;
   }).join('');
 }
 
@@ -304,76 +307,75 @@ function selectCoach(id){
   selectedCoachId=id;
   document.querySelectorAll('.coach-card').forEach(el=>el.classList.remove('selected'));
   document.getElementById('coach-'+id)?.classList.add('selected');
-  updateCoachConfirmBtn();
+  updateSummary();
 }
 
-function selectCourse(type){
-  selectedCourse=type;
-  document.getElementById('course-solo').classList.toggle('selected',type==='solo');
-  document.getElementById('course-group').classList.toggle('selected',type==='group');
-  updateCoachConfirmBtn();
-}
-
-function changeQty(dir){
-  selectedQty=Math.max(1,Math.min(20,selectedQty+dir));
-  document.getElementById('qty-num').textContent=selectedQty;
-  document.getElementById('qty-label').textContent=`${selectedQty} 堂`;
-  updateCoachConfirmBtn();
-}
-
-function updateCoachConfirmBtn(){
-  const ok=selectedCoachId&&selectedCourse&&selectedQty>=1;
-  document.getElementById('coach-confirm-btn').disabled=!ok;
-  if(ok){
-    const hrs=selectedCourse==='solo'?1:1.5;
-    document.getElementById('coach-confirm-btn').textContent=`確認簽到（${selectedQty}堂・共${selectedQty*hrs}小時）`;
+function changeQty(type,dir){
+  if(type==='solo'){
+    qtySolo=Math.max(0,Math.min(20,qtySolo+dir));
+    document.getElementById('qty-solo').textContent=qtySolo;
+    document.getElementById('desc-solo').textContent=qtySolo>0?`共 ${qtySolo} 小時`:'—';
   }else{
-    document.getElementById('coach-confirm-btn').textContent='確認簽到';
+    qtyGroup=Math.max(0,Math.min(20,qtyGroup+dir));
+    document.getElementById('qty-group').textContent=qtyGroup;
+    document.getElementById('desc-group').textContent=qtyGroup>0?`共 ${qtyGroup*1.5} 小時`:'—';
+  }
+  updateSummary();
+}
+
+function updateSummary(){
+  const totalHours=qtySolo*1+(qtyGroup*1.5);
+  const totalSessions=qtySolo+qtyGroup;
+  const ok=selectedCoachId&&totalSessions>0;
+  document.getElementById('coach-confirm-btn').disabled=!ok;
+  const box=document.getElementById('summary-box');
+  if(ok){
+    let lines=[];
+    if(qtySolo>0)lines.push(`👤 個人課 ${qtySolo} 堂（${qtySolo} 小時）`);
+    if(qtyGroup>0)lines.push(`👥 團體課 ${qtyGroup} 堂（${qtyGroup*1.5} 小時）`);
+    lines.push(`⏱ 今日總時數：${totalHours} 小時`);
+    box.innerHTML=lines.join('<br>');
+    box.style.display='block';
+  }else{
+    box.style.display='none';
   }
 }
 
 async function coachCheckin(){
-  if(!selectedCoachId||!selectedCourse||selectedQty<1)return;
-  const hours=selectedCourse==='solo'?1:1.5;
-  const amount=selectedCourse==='solo'?500:750;
+  if(!selectedCoachId||(qtySolo===0&&qtyGroup===0))return;
   const today=todayStr();
   const coachName=getCoachName(selectedCoachId);
   try{
-    // 批量新增記錄
     const records=[];
-    for(let i=0;i<selectedQty;i++){
-      records.push({coach_id:selectedCoachId,date:today,course_type:selectedCourse,hours,amount});
-    }
+    for(let i=0;i<qtySolo;i++) records.push({coach_id:selectedCoachId,date:today,course_type:'solo',hours:1,amount:500});
+    for(let i=0;i<qtyGroup;i++) records.push({coach_id:selectedCoachId,date:today,course_type:'group',hours:1.5,amount:750});
     await api('coach_records','POST',records);
-    const totalHours=selectedQty*hours;
+    const totalHours=qtySolo*1+qtyGroup*1.5;
+    let infoLines=[];
+    if(qtySolo>0)infoLines.push(`個人課 ${qtySolo} 堂（${qtySolo} 小時）`);
+    if(qtyGroup>0)infoLines.push(`團體課 ${qtyGroup} 堂（${qtyGroup*1.5} 小時）`);
+    infoLines.push(`今日總時數：${totalHours} 小時`);
     document.getElementById('success-coach-name').textContent=`${coachName} 簽到成功！`;
-    document.getElementById('success-coach-info').innerHTML=
-      `今天：${today}<br>` +
-      `課程：${selectedCourse==='solo'?'個人課（1小時）':'團體課（1.5小時）'}<br>` +
-      `堂數：<b>${selectedQty} 堂</b><br>` +
-      `今日總時數：<b>${totalHours} 小時</b>`;
+    document.getElementById('success-coach-info').innerHTML=`今天：${today}<br>${infoLines.join('<br>')}`;
     showScreen('screen-coach-success');
   }catch(e){showToast('簽到失敗，請重試');}
 }
 
 function resetCoachForm(){
-  selectedCoachId=null;selectedCourse=null;selectedQty=1;
+  selectedCoachId=null;qtySolo=0;qtyGroup=0;
   document.querySelectorAll('.coach-card').forEach(el=>el.classList.remove('selected'));
-  document.getElementById('course-solo').classList.remove('selected');
-  document.getElementById('course-group').classList.remove('selected');
-  document.getElementById('qty-num').textContent='1';
-  document.getElementById('qty-label').textContent='1 堂';
+  document.getElementById('qty-solo').textContent='0';
+  document.getElementById('qty-group').textContent='0';
+  document.getElementById('desc-solo').textContent='—';
+  document.getElementById('desc-group').textContent='—';
+  document.getElementById('summary-box').style.display='none';
   document.getElementById('coach-confirm-btn').disabled=true;
-  document.getElementById('coach-confirm-btn').textContent='確認簽到';
 }
 
 function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(name).classList.add('active');
-  if(name==='screen-student'){
-    document.getElementById('student-search').value='';
-    renderStudentList();
-  }
+  if(name==='screen-student'){document.getElementById('student-search').value='';renderStudentList();}
 }
 
 function goHome(){

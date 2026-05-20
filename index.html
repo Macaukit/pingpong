@@ -4,9 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>桌球教室管理系統</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#16a34a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="桌球教室">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;color:#1a1a1a;max-width:480px;margin:0 auto;min-height:100vh;background:#fff}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#fff;color:#1a1a1a;max-width:480px;margin:0 auto;min-height:100vh}
 .screen{display:none;padding:1rem}
 .screen.active{display:block}
 h2{font-size:18px;font-weight:600;margin-bottom:1rem}
@@ -16,7 +21,7 @@ h3{font-size:15px;font-weight:600;margin-bottom:10px}
 .back-btn:hover{background:#f5f5f5}
 .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:1.5rem}
 .day-btn{border:1px solid #e5e5e5;border-radius:8px;padding:10px 2px;cursor:pointer;text-align:center;background:#fff;transition:all 0.15s}
-.day-btn:hover{border-color:#aaa;background:#f9f9f9}
+.day-btn:hover{border-color:#aaa}
 .day-btn.today{border:2px solid #16a34a}
 .day-btn.selected{background:#16a34a;border-color:#16a34a}
 .day-label{font-size:12px;font-weight:600;color:#555}
@@ -25,7 +30,7 @@ h3{font-size:15px;font-weight:600;margin-bottom:10px}
 .day-count{font-size:11px;color:#aaa;margin-top:2px}
 .student-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#fff;border:1px solid #e5e5e5;border-radius:10px;margin-bottom:8px}
 .stu-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer}
-.stu-avatar{width:38px;height:38px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#1d4ed8;flex-shrink:0}
+.stu-avatar{width:38px;height:38px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#16a34a;flex-shrink:0}
 .stu-name{font-size:15px;font-weight:600;color:#1a1a1a}
 .stu-meta{font-size:12px;color:#888}
 .badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
@@ -39,8 +44,8 @@ h3{font-size:15px;font-weight:600;margin-bottom:10px}
 .sign-btn:disabled{background:#f5f5f5;color:#aaa;cursor:not-allowed}
 .confirm-btn{width:100%;padding:13px;background:#16a34a;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px}
 .confirm-btn:hover{background:#15803d}
-.nav-bar{display:flex;border-bottom:1px solid #e5e5e5;margin:-1rem -1rem 1.25rem;padding:0 1rem}
-.nav-tab{padding:12px 14px;font-size:14px;border:none;background:none;cursor:pointer;color:#888;border-bottom:2px solid transparent;margin-bottom:-1px}
+.nav-bar{display:flex;border-bottom:1px solid #e5e5e5;margin:-1rem -1rem 1.25rem;padding:0 0.5rem}
+.nav-tab{padding:12px 10px;font-size:13px;border:none;background:none;cursor:pointer;color:#888;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .nav-tab.active{color:#1a1a1a;font-weight:600;border-bottom-color:#16a34a}
 .progress-bar{width:100%;height:6px;background:#f0f0f0;border-radius:20px;margin:6px 0}
 .progress-fill{height:6px;border-radius:20px;background:#16a34a}
@@ -66,19 +71,32 @@ select:focus{border-color:#16a34a}
 .history-table td{font-size:13px;padding:8px 0;border-bottom:1px solid #f0f0f0;color:#1a1a1a}
 .history-table tr:last-child td{border-bottom:none}
 .history-table td.muted{color:#888}
-.copy-btn{padding:6px 12px;background:none;border:1px solid #ddd;border-radius:8px;font-size:12px;cursor:pointer;color:#888;display:inline-flex;align-items:center;gap:4px}
+.copy-btn{padding:6px 12px;background:none;border:1px solid #ddd;border-radius:8px;font-size:12px;cursor:pointer;color:#888}
 .copy-btn:hover{background:#f5f5f5}
 .info-summary{background:#f9f9f9;border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.9;color:#333;margin-bottom:10px;white-space:pre-line}
-.loading{text-align:center;padding:2rem;color:#aaa;font-size:14px}
-.error-msg{background:#fee2e2;border-radius:8px;padding:12px;font-size:13px;color:#dc2626;margin-bottom:10px}
 .header-bar{display:flex;align-items:center;justify-content:space-between;padding:1rem 1rem 0;margin-bottom:0}
 .app-title{font-size:16px;font-weight:700;color:#16a34a}
+/* 教練薪資 */
+.coach-salary-card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:1rem 1.25rem;margin-bottom:12px}
+.coach-salary-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.coach-salary-name{font-size:16px;font-weight:700;color:#1a1a1a}
+.coach-salary-total{font-size:18px;font-weight:700;color:#1d4ed8}
+.salary-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid #f5f5f5;color:#555}
+.salary-row:last-child{border-bottom:none}
+.salary-row b{color:#1a1a1a}
+.month-selector{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
+.month-btn{background:none;border:1px solid #ddd;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:14px;color:#555}
+.month-btn:hover{background:#f5f5f5}
+.month-label{font-size:15px;font-weight:600;color:#1a1a1a;flex:1;text-align:center}
+.settle-btn{padding:6px 14px;background:none;border:1px solid #1d4ed8;border-radius:8px;font-size:12px;color:#1d4ed8;cursor:pointer}
+.settle-btn:hover{background:#eff6ff}
+.settled-badge{font-size:11px;padding:3px 8px;border-radius:20px;background:#dcfce7;color:#16a34a;font-weight:600}
 </style>
 </head>
 <body>
 
 <div class="header-bar">
-  <span class="app-title">🏓 桌球教室</span>
+  <span class="app-title">🏓 桌球教室（管理）</span>
   <span id="db-status" style="font-size:11px;color:#aaa"></span>
 </div>
 
@@ -86,7 +104,8 @@ select:focus{border-color:#16a34a}
   <div style="padding-top:1rem">
     <div class="nav-bar">
       <button class="nav-tab active" onclick="switchTab('checkin')">簽到</button>
-      <button class="nav-tab" onclick="switchTab('students')">學生管理</button>
+      <button class="nav-tab" onclick="switchTab('students')">學生</button>
+      <button class="nav-tab" onclick="switchTab('coaches')">教練薪資</button>
       <button class="nav-tab" onclick="switchTab('overview')">總覽</button>
     </div>
     <div id="tab-checkin">
@@ -114,6 +133,15 @@ select:focus{border-color:#16a34a}
       </div>
       <div id="all-students"></div>
     </div>
+    <div id="tab-coaches" style="display:none">
+      <div class="month-selector">
+        <button class="month-btn" onclick="changeMonth(-1)">◀</button>
+        <div class="month-label" id="month-label"></div>
+        <button class="month-btn" onclick="changeMonth(1)">▶</button>
+      </div>
+      <div class="stat-grid" id="salary-stat-grid"></div>
+      <div id="coach-salary-list"></div>
+    </div>
     <div id="tab-overview" style="display:none">
       <div class="stat-grid" id="stat-grid"></div>
       <h3>各教練學生狀況</h3>
@@ -137,13 +165,16 @@ const SUPABASE_KEY = 'sb_publishable_DBsYrgaB7_lI-zuC399iRA_PMGqejaZ';
 const DAYS=['週一','週二','週三','週四','週五','週六','週日'];
 let coaches=[];
 let students=[];
+let coachRecords=[];
 let selectedDay=null;
+let viewYear=new Date().getFullYear();
+let viewMonth=new Date().getMonth()+1;
 
-async function api(path, method='GET', body=null){
-  const opts={method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}};
+async function api(path,method='GET',body=null){
+  const opts={method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'}};
   if(body)opts.body=JSON.stringify(body);
   const res=await fetch(SUPABASE_URL+'/rest/v1/'+path,opts);
-  if(!res.ok){const err=await res.text();throw new Error(err);}
+  if(!res.ok){const e=await res.text();throw new Error(e);}
   if(res.status===204)return null;
   return res.json();
 }
@@ -154,6 +185,7 @@ async function loadAll(){
     coaches=await api('coaches?select=*&order=id');
     const stuData=await api('students?select=*&order=name');
     const recData=await api('records?select=*&order=date');
+    coachRecords=await api('coach_records?select=*&order=date');
     students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
     document.getElementById('db-status').textContent='✓ 已連線';
     renderDayGrid();
@@ -227,9 +259,9 @@ async function quickSign(sid){
     await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id});
     s.records.push(today);
     const rem=getRemaining(s);
-    showToast(`${s.name} 簽到成功！今天 ${today}，剩 ${rem} 堂${rem<=2&&rem>0?' ⚠️':''}${rem===0?' 本期已用完':''}`);
+    showToast(`${s.name} 簽到成功！剩 ${rem} 堂${rem<=2&&rem>0?' ⚠️':''}${rem===0?' 本期已用完':''}`);
     renderDaySection();
-  }catch(e){showError('簽到失敗：'+e.message);}
+  }catch(e){showError('簽到失敗');}
 }
 
 function showToast(msg){
@@ -240,7 +272,7 @@ function showToast(msg){
 }
 function showError(msg){
   const area=document.getElementById('toast-area');
-  const el=document.createElement('div');el.className='error-msg';
+  const el=document.createElement('div');el.className='toast';el.style.background='#fee2e2';el.style.color='#dc2626';el.style.borderColor='#fecaca';
   el.textContent=msg;area.prepend(el);
   setTimeout(()=>el.remove(),5000);
 }
@@ -260,12 +292,12 @@ function openDetail(sid){
     :`<tr><td colspan="3" style="text-align:center;color:#aaa;padding:12px 0">尚無上課記錄</td></tr>`;
   document.getElementById('detail-name').textContent=s.name;
   document.getElementById('detail-body').innerHTML=`
-    <div class="next-class-box">
-      📅 <div><div class="next-class-label">下次上課日期</div><div class="next-class-date">${nextStr}</div></div>
+    <div class="next-class-box">📅
+      <div><div class="next-class-label">下次上課日期</div><div class="next-class-date">${nextStr}</div></div>
     </div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <span style="font-size:13px;color:#888">第${s.period}期進度（${used}/${total}堂）</span>
+        <span style="font-size:13px;color:#888">第${s.period}期（${used}/${total}堂）</span>
         <span style="font-size:13px;font-weight:600;color:${rem<=2?'#b45309':'#1a1a1a'}">${rem<=0?'已用完':'剩 '+rem+' 堂'}</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
@@ -297,10 +329,8 @@ function copyParentInfo(sid){
 
 async function togglePay(sid){
   const s=students.find(x=>x.id===sid);
-  try{
-    await api(`students?id=eq.${sid}`,'PATCH',{paid:!s.paid});
-    s.paid=!s.paid;openDetail(sid);
-  }catch(e){showError('更新失敗');}
+  try{await api(`students?id=eq.${sid}`,'PATCH',{paid:!s.paid});s.paid=!s.paid;openDetail(sid);}
+  catch(e){showError('更新失敗');}
 }
 
 async function newPeriod(sid){
@@ -312,15 +342,70 @@ async function newPeriod(sid){
   }catch(e){showError('更新失敗');}
 }
 
+// 教練薪資
+function changeMonth(dir){
+  viewMonth+=dir;
+  if(viewMonth>12){viewMonth=1;viewYear++;}
+  if(viewMonth<1){viewMonth=12;viewYear--;}
+  renderCoachSalary();
+}
+
+function renderCoachSalary(){
+  document.getElementById('month-label').textContent=`${viewYear} 年 ${viewMonth} 月`;
+  const prefix=`${viewYear}/${viewMonth}/`;
+  const monthRecords=coachRecords.filter(r=>r.date.startsWith(prefix)||r.date.startsWith(`${viewYear}/${viewMonth<10?'0'+viewMonth:viewMonth}/`)||checkDateInMonth(r.date,viewYear,viewMonth));
+  const totalAmount=monthRecords.reduce((a,b)=>a+b.amount,0);
+  const totalHours=monthRecords.reduce((a,b)=>a+parseFloat(b.hours),0);
+  const totalSessions=monthRecords.length;
+  document.getElementById('salary-stat-grid').innerHTML=`
+    <div class="stat-card"><div class="stat-num">${totalSessions}</div><div class="stat-label">總堂數</div></div>
+    <div class="stat-card"><div class="stat-num">${totalHours}</div><div class="stat-label">總時數</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#1d4ed8">$${totalAmount}</div><div class="stat-label">總薪資</div></div>`;
+  document.getElementById('coach-salary-list').innerHTML=coaches.map(c=>{
+    const recs=monthRecords.filter(r=>r.coach_id===c.id);
+    const solo=recs.filter(r=>r.course_type==='solo');
+    const group=recs.filter(r=>r.course_type==='group');
+    const total=recs.reduce((a,b)=>a+b.amount,0);
+    const hours=recs.reduce((a,b)=>a+parseFloat(b.hours),0);
+    if(!recs.length)return`<div class="coach-salary-card"><div class="coach-salary-header"><span class="coach-salary-name">${c.name}</span><span style="font-size:13px;color:#aaa">本月無記錄</span></div></div>`;
+    const detailRows=recs.slice().reverse().map(r=>`
+      <div class="salary-row">
+        <span>${r.date}・${r.course_type==='solo'?'個人課':'團體課'}（${r.hours}hr）</span>
+        <b>$${r.amount}</b>
+      </div>`).join('');
+    return`<div class="coach-salary-card">
+      <div class="coach-salary-header">
+        <span class="coach-salary-name">${c.name}</span>
+        <span class="coach-salary-total">$${total}</span>
+      </div>
+      <div class="salary-row"><span>個人課 ${solo.length} 堂</span><b>$${solo.reduce((a,b)=>a+b.amount,0)}</b></div>
+      <div class="salary-row"><span>團體課 ${group.length} 堂</span><b>$${group.reduce((a,b)=>a+b.amount,0)}</b></div>
+      <div class="salary-row"><span>總時數</span><b>${hours} 小時</b></div>
+      <div style="margin-top:10px;border-top:1px solid #f0f0f0;padding-top:8px">
+        <div style="font-size:12px;color:#aaa;margin-bottom:6px">詳細記錄</div>
+        ${detailRows}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function checkDateInMonth(dateStr,year,month){
+  const parts=dateStr.split('/');
+  if(parts.length<2)return false;
+  return parseInt(parts[0])===year&&parseInt(parts[1])===month;
+}
+
 function switchTab(tab){
-  ['checkin','students','overview'].forEach(t=>{
+  ['checkin','students','coaches','overview'].forEach(t=>{
     document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
   });
   document.querySelectorAll('.nav-tab').forEach(b=>{
-    b.classList.toggle('active',b.textContent.trim()==={checkin:'簽到',students:'學生管理',overview:'總覽'}[tab]);
+    const map={checkin:'簽到',students:'學生',coaches:'教練薪資',overview:'總覽'};
+    b.classList.toggle('active',b.textContent.trim()===map[tab]);
   });
   if(tab==='students')renderAllStudents();
   if(tab==='overview')renderOverview();
+  if(tab==='coaches')renderCoachSalary();
 }
 
 function renderAllStudents(){
@@ -395,6 +480,7 @@ function showScreen(name){
   if(name==='screen-home'){renderDayGrid();renderDaySection();}
 }
 
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
 loadAll();
 </script>
 </body>

@@ -74,6 +74,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 .success-back{padding:15px 32px;background:#09090b;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;width:100%;max-width:320px}
 .success-back-en{font-size:11px;color:rgba(255,255,255,0.55);display:block;margin-top:3px;font-weight:400}
 .home-link{margin-top:14px;font-size:14px;color:#94a3b8;cursor:pointer;background:none;border:none}
+.undo-btn{margin-top:10px;padding:12px 24px;background:none;border:1.5px solid #fee2e2;border-radius:12px;font-size:14px;font-weight:500;color:#dc2626;cursor:pointer;width:100%;max-width:320px;transition:background 0.15s}
+.undo-btn:active{background:#fef2f2}
+.undo-btn-en{font-size:11px;color:#f87171;display:block;margin-top:2px;font-weight:400}
 
 /* 密碼頁 */
 .pwd-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1.5rem;background:#fff}
@@ -175,6 +178,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
       繼續簽到
       <span class="success-back-en">Continue Check-in</span>
     </button>
+    <button class="undo-btn" id="undo-checkin-btn" onclick="undoCheckin()">
+      取消此次簽到
+      <span class="undo-btn-en">Undo Last Check-in</span>
+    </button>
     <button class="home-link" onclick="goHome()">回首頁 / Home</button>
   </div>
 </div>
@@ -269,6 +276,7 @@ const COACH_PWD = '147147147';
 const DAYS=['週一','週二','週三','週四','週五','週六','週日'];
 const DAYS_EN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 let coaches=[],students=[];
+let lastCheckinRecordId=null;
 let selectedCoachId=null,qtySolo=0,qtyGroup=0;
 
 async function api(path,method='GET',body=null){
@@ -348,9 +356,11 @@ async function studentCheckin(sid){
   const today=todayStr();
   if(s.records.includes(today))return;
   try{
-    await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id});
+    const rec=await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id});
+    lastCheckinRecordId=Array.isArray(rec)?rec[0]?.id:rec?.id;
     s.records.push(today);
     const rem=getRemaining(s);
+    document.getElementById('undo-checkin-btn').style.display='block';
     document.getElementById('success-student-name').textContent=s.name;
     document.getElementById('success-student-info').innerHTML=
       `日期 Date：${today}<br>剩餘 Remaining：<b>${rem} 堂 sessions</b>${rem<=2&&rem>0?'<br>⚠️ 快用完了，請聯繫老師續費<br>Please contact us to renew':''}${rem===0?'<br>⚠️ 本期已用完，請聯繫老師<br>Please contact us to renew':''}`;
@@ -435,12 +445,33 @@ function resetCoachForm(){
   document.getElementById('coach-confirm-btn').disabled=true;
 }
 
+async function undoCheckin(){
+  if(!lastCheckinRecordId)return;
+  try{
+    const btn=document.getElementById('undo-checkin-btn');
+    btn.disabled=true;
+    btn.textContent='取消中... / Undoing...';
+    await api('records?id=eq.'+lastCheckinRecordId,'DELETE');
+    // 從本地記錄移除
+    const s=students.find(x=>x.records.includes(todayStr()));
+    if(s){const idx=s.records.lastIndexOf(todayStr());if(idx>-1)s.records.splice(idx,1);}
+    lastCheckinRecordId=null;
+    btn.style.display='none';
+    showToast('已取消簽到 / Check-in undone ✓');
+    showScreen('screen-student');
+    renderStudentList();
+  }catch(e){
+    showToast('取消失敗 / Undo failed');
+    document.getElementById('undo-checkin-btn').disabled=false;
+  }
+}
 function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(name).classList.add('active');
   if(name==='screen-student'){document.getElementById('student-search').value='';renderStudentList();}
 }
 function goHome(){
+  lastCheckinRecordId=null;
   showScreen('screen-home');
   document.getElementById('pwd-input').value='';
   document.getElementById('pwd-error').textContent='';

@@ -3,89 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>桌球教室簽到</title>
+<title>育苗乒乓</title>
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#16a34a">
+<meta name="theme-color" content="#ffffff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="桌球簽到">
+<meta name="apple-mobile-web-app-title" content="育苗乒乓">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0fdf4;color:#1a1a1a;min-height:100vh}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:#fff;color:#09090b;min-height:100vh}
 .screen{display:none;min-height:100vh}
 .screen.active{display:flex;flex-direction:column}
-.home-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;gap:1.5rem}
-.home-title{font-size:28px;font-weight:700;color:#15803d;text-align:center;margin-bottom:0.5rem}
-.home-subtitle{font-size:16px;color:#6b7280;text-align:center;margin-top:-1rem}
-.big-btn{width:100%;max-width:400px;padding:2rem;border-radius:20px;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:12px;transition:transform 0.1s,box-shadow 0.1s;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
-.big-btn:active{transform:scale(0.97)}
-.big-btn-student{background:#16a34a;color:#fff}
-.big-btn-coach{background:#1d4ed8;color:#fff}
-.big-btn-icon{font-size:48px}
-.big-btn-label{font-size:22px;font-weight:700}
-.big-btn-sub{font-size:14px;opacity:0.85}
-.top-bar{display:flex;align-items:center;padding:1rem 1.25rem;background:#fff;border-bottom:1px solid #e5e5e5;gap:12px}
-.back-btn{background:none;border:1px solid #ddd;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:14px;color:#555}
-.back-btn:hover{background:#f5f5f5}
-.page-title{font-size:18px;font-weight:700;color:#1a1a1a}
-.content{flex:1;padding:1.25rem;overflow-y:auto}
-.search-box{width:100%;padding:12px 16px;border:1.5px solid #e5e5e5;border-radius:12px;font-size:16px;outline:none;background:#fff;margin-bottom:1rem}
-.search-box:focus{border-color:#16a34a}
-.student-card{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fff;border:1px solid #e5e5e5;border-radius:12px;margin-bottom:10px}
+
+/* 首頁 */
+.home-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1.5rem;gap:1rem;background:#fff}
+.logo-area{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:1.5rem}
+.logo-icon{font-size:52px;line-height:1}
+.logo-title{font-size:26px;font-weight:600;color:#09090b;letter-spacing:0.01em}
+.logo-sub{font-size:13px;color:#94a3b8;letter-spacing:0.06em;font-weight:400}
+.main-btn{width:100%;max-width:380px;padding:18px 20px;border-radius:16px;border:none;cursor:pointer;display:flex;align-items:center;gap:16px;transition:transform 0.12s,box-shadow 0.12s;text-align:left;position:relative;overflow:hidden}
+.main-btn:active{transform:scale(0.97)}
+.main-btn-student{background:#f97316;box-shadow:0 4px 24px rgba(249,115,22,0.25)}
+.main-btn-coach{background:#09090b;box-shadow:0 4px 24px rgba(0,0,0,0.12)}
+.btn-icon-wrap{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.btn-icon-wrap-s{background:rgba(255,255,255,0.25)}
+.btn-icon-wrap-c{background:rgba(255,255,255,0.1)}
+.btn-texts{flex:1}
+.btn-main{font-size:17px;font-weight:600;color:#fff;line-height:1.2}
+.btn-en{font-size:12px;color:rgba(255,255,255,0.65);margin-top:3px;font-weight:400;letter-spacing:0.02em}
+.btn-arrow{font-size:20px;color:rgba(255,255,255,0.5);font-weight:300}
+
+/* 通用 top bar */
+.top-bar{display:flex;align-items:center;padding:14px 16px;background:#fff;border-bottom:0.5px solid #f1f5f9;gap:12px;position:sticky;top:0;z-index:10}
+.back-btn{background:none;border:none;cursor:pointer;font-size:15px;color:#f97316;font-weight:500;padding:4px 0;display:flex;align-items:center;gap:4px}
+.page-title{font-size:17px;font-weight:600;color:#09090b}
+.page-title-en{font-size:11px;color:#94a3b8;font-weight:400;margin-top:1px}
+.content{flex:1;padding:1.25rem 1rem;overflow-y:auto;background:#fff}
+
+/* 搜尋 */
+.search-wrap{position:relative;margin-bottom:1rem}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:#94a3b8}
+.search-box{width:100%;padding:13px 16px 13px 42px;border:none;border-radius:14px;font-size:16px;outline:none;background:#f8fafc;color:#09090b}
+.search-box::placeholder{color:#94a3b8}
+.search-box:focus{background:#f1f5f9}
+
+/* 學生卡片 */
+.student-card{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fff;border:0.5px solid #f1f5f9;border-radius:14px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.04);transition:transform 0.1s}
+.student-card:active{transform:scale(0.98)}
 .stu-left{display:flex;align-items:center;gap:12px}
-.stu-avatar{width:44px;height:44px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#16a34a;flex-shrink:0}
-.stu-name{font-size:16px;font-weight:600;color:#1a1a1a}
-.stu-meta{font-size:13px;color:#888;margin-top:2px}
-.badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:20px;font-weight:600}
-.badge-ok{background:#dcfce7;color:#16a34a}
-.badge-warn{background:#fef9c3;color:#b45309}
-.badge-danger{background:#fee2e2;color:#dc2626}
-.badge-done{background:#e0e7ff;color:#4338ca}
-.sign-btn{padding:10px 18px;background:#16a34a;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer}
-.sign-btn:hover{background:#15803d}
-.sign-btn.done{background:#dcfce7;color:#16a34a;border:1px solid #e5e5e5;cursor:default}
-.sign-btn:disabled{background:#f5f5f5;color:#aaa;cursor:not-allowed}
-.success-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;background:#f0fdf4}
-.success-icon{font-size:80px;margin-bottom:1rem}
-.success-name{font-size:28px;font-weight:700;color:#15803d;margin-bottom:8px}
-.success-info{font-size:16px;color:#6b7280;margin-bottom:2rem;line-height:1.8}
-.success-back{padding:14px 40px;background:#16a34a;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
-.success-back:hover{background:#15803d}
-.coach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-bottom:1.5rem}
-.coach-card{background:#fff;border:1.5px solid #e5e5e5;border-radius:14px;padding:1.25rem;cursor:pointer;text-align:center;transition:all 0.15s}
-.coach-card:hover{border-color:#1d4ed8;background:#eff6ff}
-.coach-card.selected{border-color:#1d4ed8;background:#eff6ff}
-.coach-avatar{width:48px;height:48px;border-radius:50%;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#1d4ed8;margin:0 auto 8px}
-.coach-name-label{font-size:15px;font-weight:600;color:#1a1a1a}
-.confirm-btn{width:100%;padding:15px;background:#1d4ed8;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-top:8px}
-.confirm-btn:hover{background:#1e40af}
-.confirm-btn:disabled{background:#e5e5e5;color:#aaa;cursor:not-allowed}
-.section-title{font-size:14px;font-weight:600;color:#888;margin-bottom:10px;letter-spacing:0.05em}
-.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:20px;font-size:14px;font-weight:500;z-index:100;opacity:0;transition:opacity 0.3s}
-.toast.show{opacity:1}
-.empty-state{text-align:center;padding:3rem 1rem;color:#aaa;font-size:15px}
-/* 密碼 */
-.pwd-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;background:#eff6ff}
-.pwd-title{font-size:20px;font-weight:700;color:#1d4ed8;margin-bottom:8px}
-.pwd-sub{font-size:14px;color:#6b7280;margin-bottom:1.5rem}
-.pwd-input{width:100%;max-width:300px;padding:14px 16px;border:2px solid #dbeafe;border-radius:12px;font-size:20px;text-align:center;outline:none;letter-spacing:4px;background:#fff;color:#1a1a1a;margin-bottom:12px}
-.pwd-input:focus{border-color:#1d4ed8}
-.pwd-btn{width:100%;max-width:300px;padding:14px;background:#1d4ed8;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
-.pwd-btn:hover{background:#1e40af}
-.pwd-error{color:#dc2626;font-size:13px;margin-top:6px;min-height:20px}
-/* 課程堂數卡片 */
-.course-row{background:#fff;border:1.5px solid #e5e5e5;border-radius:16px;padding:1.25rem;margin-bottom:12px}
-.course-row-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.course-row-icon{font-size:28px}
-.course-row-title{font-size:16px;font-weight:700;color:#1a1a1a}
-.course-row-sub{font-size:12px;color:#888;margin-top:2px}
+.stu-avatar{width:42px;height:42px;border-radius:50%;background:#fff7ed;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#f97316;flex-shrink:0}
+.stu-name{font-size:16px;font-weight:600;color:#09090b}
+.stu-meta{font-size:12px;color:#94a3b8;margin-top:2px}
+.badge{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap}
+.badge-ok{background:#f0fdf4;color:#16a34a}
+.badge-warn{background:#fff7ed;color:#ea580c}
+.badge-danger{background:#fef2f2;color:#dc2626}
+.badge-done{background:#f1f5f9;color:#64748b}
+.sign-btn{padding:10px 18px;background:#f97316;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background 0.15s}
+.sign-btn:active{background:#ea580c}
+.sign-btn .btn-en-small{font-size:10px;font-weight:400;opacity:0.85;display:block;margin-top:1px}
+.sign-btn.done{background:#f0fdf4;color:#16a34a;cursor:default}
+.sign-btn:disabled{background:#f8fafc;color:#cbd5e1;cursor:not-allowed}
+
+/* 成功畫面 */
+.success-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1.5rem;text-align:center;background:#fff}
+.success-icon-wrap{width:88px;height:88px;border-radius:28px;background:#f97316;display:flex;align-items:center;justify-content:center;font-size:44px;margin:0 auto 1.5rem;box-shadow:0 8px 32px rgba(249,115,22,0.3)}
+.success-name{font-size:26px;font-weight:700;color:#09090b;margin-bottom:4px}
+.success-name-en{font-size:13px;color:#94a3b8;margin-bottom:1rem}
+.success-info{font-size:15px;color:#64748b;line-height:1.8;margin-bottom:2rem;background:#f8fafc;border-radius:14px;padding:16px 20px;width:100%;max-width:320px}
+.success-back{padding:15px 32px;background:#09090b;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;width:100%;max-width:320px}
+.success-back-en{font-size:11px;color:rgba(255,255,255,0.55);display:block;margin-top:3px;font-weight:400}
+.home-link{margin-top:14px;font-size:14px;color:#94a3b8;cursor:pointer;background:none;border:none}
+
+/* 密碼頁 */
+.pwd-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1.5rem;background:#fff}
+.pwd-icon{font-size:48px;margin-bottom:1rem}
+.pwd-title{font-size:20px;font-weight:700;color:#09090b;margin-bottom:4px}
+.pwd-title-en{font-size:13px;color:#94a3b8;margin-bottom:1.5rem}
+.pwd-input{width:100%;max-width:300px;padding:16px;border:none;border-radius:14px;font-size:22px;text-align:center;outline:none;letter-spacing:6px;background:#f8fafc;color:#09090b;margin-bottom:10px}
+.pwd-input:focus{background:#f1f5f9}
+.pwd-error{color:#dc2626;font-size:13px;margin-bottom:10px;min-height:18px}
+.pwd-btn{width:100%;max-width:300px;padding:15px;background:#09090b;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:12px}
+.pwd-btn-en{font-size:11px;color:rgba(255,255,255,0.5);display:block;margin-top:3px;font-weight:400}
+.pwd-back{font-size:14px;color:#94a3b8;cursor:pointer;background:none;border:none}
+
+/* 教練簽到 */
+.coach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:1.5rem}
+.coach-card{background:#f8fafc;border:0.5px solid #f1f5f9;border-radius:14px;padding:1rem;cursor:pointer;text-align:center;transition:all 0.15s}
+.coach-card:active{transform:scale(0.96)}
+.coach-card.selected{background:#fff7ed;border-color:#f97316}
+.coach-avatar{width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#09090b;margin:0 auto 8px;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.coach-card.selected .coach-avatar{background:#f97316;color:#fff}
+.coach-name-label{font-size:14px;font-weight:600;color:#09090b}
+.section-title{font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:10px;letter-spacing:0.04em}
+.course-row{background:#f8fafc;border:0.5px solid #f1f5f9;border-radius:16px;padding:1.25rem;margin-bottom:10px}
+.course-row-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.course-row-icon{font-size:26px}
+.course-row-title{font-size:15px;font-weight:700;color:#09090b}
+.course-row-sub{font-size:12px;color:#94a3b8;margin-top:1px}
 .qty-wrap{display:flex;align-items:center;gap:16px}
-.qty-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid #ddd;background:#f9f9f9;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1d4ed8;font-weight:700;flex-shrink:0}
-.qty-btn:hover{background:#eff6ff;border-color:#1d4ed8}
-.qty-num{font-size:26px;font-weight:700;color:#1a1a1a;min-width:40px;text-align:center}
-.qty-desc{font-size:13px;color:#888;flex:1;text-align:right}
-/* 總覽區 */
-.summary-box{background:#eff6ff;border-radius:12px;padding:12px 16px;margin-bottom:1rem;font-size:14px;color:#1d4ed8;line-height:1.8}
+.qty-btn{width:38px;height:38px;border-radius:50%;border:none;background:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#09090b;font-weight:500;box-shadow:0 1px 4px rgba(0,0,0,0.1);flex-shrink:0;transition:transform 0.1s}
+.qty-btn:active{transform:scale(0.9)}
+.qty-num{font-size:28px;font-weight:700;color:#09090b;min-width:36px;text-align:center}
+.qty-desc{font-size:13px;color:#94a3b8;flex:1;text-align:right}
+.summary-box{background:#fff7ed;border-radius:14px;padding:14px 16px;margin-bottom:1rem;font-size:14px;color:#ea580c;line-height:2;border:0.5px solid #fed7aa}
+.confirm-btn{width:100%;padding:16px;background:#09090b;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer}
+.confirm-btn:disabled{background:#f1f5f9;color:#cbd5e1;cursor:not-allowed}
+.confirm-btn-en{font-size:11px;color:rgba(255,255,255,0.5);display:block;margin-top:3px;font-weight:400}
+
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#09090b;color:#fff;padding:12px 24px;border-radius:20px;font-size:14px;font-weight:500;z-index:100;opacity:0;transition:opacity 0.3s;white-space:nowrap}
+.toast.show{opacity:1}
+.empty-state{text-align:center;padding:3rem 1rem;color:#94a3b8;font-size:15px;line-height:1.8}
 </style>
 </head>
 <body>
@@ -94,19 +122,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <!-- 首頁 -->
 <div id="screen-home" class="screen active">
   <div class="home-wrap">
-    <div>
-      <div class="home-title">🏓 桌球教室</div>
-      <div class="home-subtitle">請選擇簽到方式</div>
+    <div class="logo-area">
+      <div class="logo-icon">🏓</div>
+      <div class="logo-title">育苗乒乓</div>
+      <div class="logo-sub">TABLE TENNIS ACADEMY</div>
     </div>
-    <button class="big-btn big-btn-student" onclick="showScreen('screen-student')">
-      <div class="big-btn-icon">🧒</div>
-      <div class="big-btn-label">學生簽到</div>
-      <div class="big-btn-sub">上課後請點這裡簽到</div>
+    <button class="main-btn main-btn-student" onclick="showScreen('screen-student')">
+      <div class="btn-icon-wrap btn-icon-wrap-s">🧒</div>
+      <div class="btn-texts">
+        <div class="btn-main">學生簽到</div>
+        <div class="btn-en">Student Check-in</div>
+      </div>
+      <div class="btn-arrow">›</div>
     </button>
-    <button class="big-btn big-btn-coach" onclick="showScreen('screen-coach-pwd')">
-      <div class="big-btn-icon">👨‍🏫</div>
-      <div class="big-btn-label">教練簽到</div>
-      <div class="big-btn-sub">教練上課記錄請點這裡</div>
+    <button class="main-btn main-btn-coach" onclick="showScreen('screen-coach-pwd')">
+      <div class="btn-icon-wrap btn-icon-wrap-c">👨‍🏫</div>
+      <div class="btn-texts">
+        <div class="btn-main">教練簽到</div>
+        <div class="btn-en">Coach Check-in</div>
+      </div>
+      <div class="btn-arrow">›</div>
     </button>
   </div>
 </div>
@@ -114,58 +149,72 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <!-- 學生簽到頁 -->
 <div id="screen-student" class="screen">
   <div class="top-bar">
-    <button class="back-btn" onclick="goHome()">← 返回</button>
-    <div class="page-title">🧒 學生簽到</div>
+    <button class="back-btn" onclick="goHome()">‹ 返回</button>
+    <div>
+      <div class="page-title">學生簽到</div>
+      <div class="page-title-en">Student Check-in</div>
+    </div>
   </div>
   <div class="content">
-    <input class="search-box" type="text" id="student-search" placeholder="🔍 輸入姓名搜尋..." oninput="renderStudentList()">
-    <div id="student-list"><div class="empty-state">載入中...</div></div>
+    <div class="search-wrap">
+      <div class="search-icon">🔍</div>
+      <input class="search-box" type="text" id="student-search" placeholder="搜尋姓名 / Search name" oninput="renderStudentList()">
+    </div>
+    <div id="student-list"><div class="empty-state">載入中...<br>Loading...</div></div>
   </div>
 </div>
 
 <!-- 學生簽到成功 -->
 <div id="screen-student-success" class="screen">
   <div class="success-wrap">
-    <div class="success-icon">✅</div>
+    <div class="success-icon-wrap">✅</div>
     <div class="success-name" id="success-student-name"></div>
+    <div class="success-name-en" id="success-student-name-en">Check-in Successful</div>
     <div class="success-info" id="success-student-info"></div>
-    <button class="success-back" onclick="showScreen('screen-student');renderStudentList()">繼續簽到</button>
-    <button class="back-btn" style="margin-top:12px" onclick="goHome()">回首頁</button>
+    <button class="success-back" onclick="showScreen('screen-student');renderStudentList()">
+      繼續簽到
+      <span class="success-back-en">Continue Check-in</span>
+    </button>
+    <button class="home-link" onclick="goHome()">回首頁 / Home</button>
   </div>
 </div>
 
 <!-- 教練密碼頁 -->
 <div id="screen-coach-pwd" class="screen">
   <div class="pwd-wrap">
-    <div class="pwd-title">🔒 教練專區</div>
-    <div class="pwd-sub">請輸入教練密碼</div>
+    <div class="pwd-icon">🔒</div>
+    <div class="pwd-title">教練專區</div>
+    <div class="pwd-title-en">Coach Area — Enter Password</div>
     <input class="pwd-input" type="password" id="pwd-input" placeholder="••••••••" maxlength="20"
       onkeydown="if(event.key==='Enter')checkPwd()">
     <div class="pwd-error" id="pwd-error"></div>
-    <button class="pwd-btn" onclick="checkPwd()">進入</button>
-    <button class="back-btn" style="margin-top:16px" onclick="goHome()">← 返回首頁</button>
+    <button class="pwd-btn" onclick="checkPwd()">
+      進入 Enter
+      <span class="pwd-btn-en">Coach Check-in Area</span>
+    </button>
+    <button class="pwd-back" onclick="goHome()">← 返回首頁 / Back to Home</button>
   </div>
 </div>
 
 <!-- 教練簽到頁 -->
 <div id="screen-coach-select" class="screen">
   <div class="top-bar">
-    <button class="back-btn" onclick="goHome()">← 返回</button>
-    <div class="page-title">👨‍🏫 教練簽到</div>
+    <button class="back-btn" onclick="goHome()">‹ 返回</button>
+    <div>
+      <div class="page-title">教練簽到</div>
+      <div class="page-title-en">Coach Check-in</div>
+    </div>
   </div>
   <div class="content">
-    <div class="section-title">我是</div>
+    <div class="section-title">選擇教練 / Select Coach</div>
     <div class="coach-grid" id="coach-grid"></div>
-
-    <div class="section-title">今天上了幾堂？</div>
-
-    <!-- 個人課 -->
+    <div class="section-title">今天上了幾堂 / Sessions Today</div>
     <div class="course-row">
       <div class="course-row-header">
         <div class="course-row-icon">👤</div>
         <div>
-          <div class="course-row-title">個人課</div>
-          <div class="course-row-sub">1 小時 / 堂</div>
+          <div class="course-row-title">個人課 / Private Lesson</div>
+          <div class="course-row-sub">1 小時 / 1 Hour per session</div>
         </div>
       </div>
       <div class="qty-wrap">
@@ -175,14 +224,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="qty-desc" id="desc-solo">—</div>
       </div>
     </div>
-
-    <!-- 團體課 -->
     <div class="course-row">
       <div class="course-row-header">
         <div class="course-row-icon">👥</div>
         <div>
-          <div class="course-row-title">團體課</div>
-          <div class="course-row-sub">1.5 小時 / 堂</div>
+          <div class="course-row-title">團體課 / Group Lesson</div>
+          <div class="course-row-sub">1.5 小時 / 1.5 Hours per session</div>
         </div>
       </div>
       <div class="qty-wrap">
@@ -192,20 +239,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div class="qty-desc" id="desc-group">—</div>
       </div>
     </div>
-
     <div class="summary-box" id="summary-box" style="display:none"></div>
-    <button class="confirm-btn" id="coach-confirm-btn" onclick="coachCheckin()" disabled>確認簽到</button>
+    <button class="confirm-btn" id="coach-confirm-btn" onclick="coachCheckin()" disabled>
+      確認簽到
+      <span class="confirm-btn-en">Confirm Check-in</span>
+    </button>
   </div>
 </div>
 
 <!-- 教練簽到成功 -->
 <div id="screen-coach-success" class="screen">
-  <div class="success-wrap" style="background:#eff6ff">
-    <div class="success-icon">✅</div>
-    <div class="success-name" id="success-coach-name" style="color:#1d4ed8"></div>
+  <div class="success-wrap">
+    <div class="success-icon-wrap" style="background:#09090b;box-shadow:0 8px 32px rgba(0,0,0,0.2)">✅</div>
+    <div class="success-name" id="success-coach-name"></div>
+    <div class="success-name-en">Check-in Successful</div>
     <div class="success-info" id="success-coach-info"></div>
-    <button class="success-back" style="background:#1d4ed8" onclick="showScreen('screen-coach-select');resetCoachForm()">繼續簽到</button>
-    <button class="back-btn" style="margin-top:12px" onclick="goHome()">回首頁</button>
+    <button class="success-back" onclick="showScreen('screen-coach-select');resetCoachForm()">
+      繼續簽到
+      <span class="success-back-en">Continue Check-in</span>
+    </button>
+    <button class="home-link" onclick="goHome()">回首頁 / Home</button>
   </div>
 </div>
 
@@ -213,11 +266,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 const SUPABASE_URL = 'https://jygtjpemdhrsdwzubfjn.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_DBsYrgaB7_lI-zuC399iRA_PMGqejaZ';
 const COACH_PWD = '147147147';
-
 const DAYS=['週一','週二','週三','週四','週五','週六','週日'];
-let coaches=[], students=[];
-let selectedCoachId=null;
-let qtySolo=0, qtyGroup=0;
+const DAYS_EN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+let coaches=[],students=[];
+let selectedCoachId=null,qtySolo=0,qtyGroup=0;
 
 async function api(path,method='GET',body=null){
   const opts={method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'}};
@@ -251,7 +303,7 @@ function checkPwd(){
     document.getElementById('pwd-error').textContent='';
     showScreen('screen-coach-select');
   }else{
-    document.getElementById('pwd-error').textContent='密碼錯誤，請重試';
+    document.getElementById('pwd-error').textContent='密碼錯誤 / Incorrect password';
     document.getElementById('pwd-input').value='';
     document.getElementById('pwd-input').focus();
   }
@@ -260,23 +312,33 @@ function checkPwd(){
 function renderStudentList(){
   const q=document.getElementById('student-search').value.trim();
   const today=todayDayIndex();
-  let list=q?students.filter(s=>s.name.includes(q)):students.filter(s=>s.day_index===today);
+  let list=q?students.filter(s=>s.name.includes(q)||s.name.toLowerCase().includes(q.toLowerCase())):students.filter(s=>s.day_index===today);
   const el=document.getElementById('student-list');
   if(!list.length){
-    el.innerHTML=q?`<div class="empty-state">找不到「${q}」</div>`:`<div class="empty-state">今天（${DAYS[today]}）沒有排課學生<br><span style="font-size:13px">可以輸入姓名搜尋其他學生</span></div>`;
+    el.innerHTML=q
+      ?`<div class="empty-state">找不到「${q}」<br>No results for "${q}"</div>`
+      :`<div class="empty-state">今天（${DAYS[today]}）沒有排課學生<br>No students scheduled for ${DAYS_EN[today]}<br><br><span style="font-size:13px">輸入姓名搜尋 / Search by name</span></div>`;
     return;
   }
   el.innerHTML=list.map(s=>{
     const rem=getRemaining(s);
     const alreadyToday=s.records.includes(todayStr());
-    let rb=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-ok">剩${rem}堂</span>`;
-    let btn=alreadyToday?`<button class="sign-btn done" disabled>✓ 已簽到</button>`:rem<=0?`<button class="sign-btn" disabled>堂數用完</button>`:`<button class="sign-btn" onclick="studentCheckin(${s.id})">簽到</button>`;
+    let rb=rem<=0?`<span class="badge badge-danger">已用完 / Used up</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-ok">剩${rem}堂</span>`;
+    let btn=alreadyToday
+      ?`<button class="sign-btn done" disabled>✓ 已簽<span class="btn-en-small">Checked in</span></button>`
+      :rem<=0?`<button class="sign-btn" disabled>用完<span class="btn-en-small">No sessions</span></button>`
+      :`<button class="sign-btn" onclick="studentCheckin(${s.id})">簽到<span class="btn-en-small">Check in</span></button>`;
     return`<div class="student-card">
       <div class="stu-left">
         <div class="stu-avatar">${getInitials(s.name)}</div>
-        <div><div class="stu-name">${s.name}</div><div class="stu-meta">${DAYS[s.day_index]}・${getCoachName(s.coach_id)}・第${s.period}期</div>
-        <div style="margin-top:4px">${rb}${alreadyToday?` <span class="badge badge-done">今天已簽</span>`:''}</div></div>
-      </div>${btn}</div>`;
+        <div>
+          <div class="stu-name">${s.name}</div>
+          <div class="stu-meta">${DAYS[s.day_index]} ${DAYS_EN[s.day_index]} · ${getCoachName(s.coach_id)} · 第${s.period}期</div>
+          <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">${rb}${alreadyToday?` <span class="badge badge-done">今日已簽 / Done</span>`:''}</div>
+        </div>
+      </div>
+      ${btn}
+    </div>`;
   }).join('');
 }
 
@@ -289,10 +351,11 @@ async function studentCheckin(sid){
     await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id});
     s.records.push(today);
     const rem=getRemaining(s);
-    document.getElementById('success-student-name').textContent=`${s.name} 簽到成功！`;
-    document.getElementById('success-student-info').innerHTML=`今天：${today}<br>第${s.period}期 還剩 <b>${rem}</b> 堂${rem<=2&&rem>0?'<br>⚠️ 堂數快用完囉，請聯繫老師續費':''}${rem===0?'<br>⚠️ 本期已用完，請聯繫老師':''}`;
+    document.getElementById('success-student-name').textContent=s.name;
+    document.getElementById('success-student-info').innerHTML=
+      `日期 Date：${today}<br>剩餘 Remaining：<b>${rem} 堂 sessions</b>${rem<=2&&rem>0?'<br>⚠️ 快用完了，請聯繫老師續費<br>Please contact us to renew':''}${rem===0?'<br>⚠️ 本期已用完，請聯繫老師<br>Please contact us to renew':''}`;
     showScreen('screen-student-success');
-  }catch(e){showToast('簽到失敗，請告知老師');}
+  }catch(e){showToast('簽到失敗 / Check-in failed');}
 }
 
 function renderCoachGrid(){
@@ -314,26 +377,26 @@ function changeQty(type,dir){
   if(type==='solo'){
     qtySolo=Math.max(0,Math.min(20,qtySolo+dir));
     document.getElementById('qty-solo').textContent=qtySolo;
-    document.getElementById('desc-solo').textContent=qtySolo>0?`共 ${qtySolo} 小時`:'—';
+    document.getElementById('desc-solo').textContent=qtySolo>0?`${qtySolo} hr`:'—';
   }else{
     qtyGroup=Math.max(0,Math.min(20,qtyGroup+dir));
     document.getElementById('qty-group').textContent=qtyGroup;
-    document.getElementById('desc-group').textContent=qtyGroup>0?`共 ${qtyGroup*1.5} 小時`:'—';
+    document.getElementById('desc-group').textContent=qtyGroup>0?`${qtyGroup*1.5} hr`:'—';
   }
   updateSummary();
 }
 
 function updateSummary(){
-  const totalHours=qtySolo*1+(qtyGroup*1.5);
+  const totalHours=qtySolo*1+qtyGroup*1.5;
   const totalSessions=qtySolo+qtyGroup;
   const ok=selectedCoachId&&totalSessions>0;
   document.getElementById('coach-confirm-btn').disabled=!ok;
   const box=document.getElementById('summary-box');
   if(ok){
     let lines=[];
-    if(qtySolo>0)lines.push(`👤 個人課 ${qtySolo} 堂（${qtySolo} 小時）`);
-    if(qtyGroup>0)lines.push(`👥 團體課 ${qtyGroup} 堂（${qtyGroup*1.5} 小時）`);
-    lines.push(`⏱ 今日總時數：${totalHours} 小時`);
+    if(qtySolo>0)lines.push(`👤 個人課 ${qtySolo} 堂 · Private ${qtySolo} session(s) · ${qtySolo} hr`);
+    if(qtyGroup>0)lines.push(`👥 團體課 ${qtyGroup} 堂 · Group ${qtyGroup} session(s) · ${qtyGroup*1.5} hr`);
+    lines.push(`⏱ 今日總時數 Total：${totalHours} 小時 / hours`);
     box.innerHTML=lines.join('<br>');
     box.style.display='block';
   }else{
@@ -347,18 +410,18 @@ async function coachCheckin(){
   const coachName=getCoachName(selectedCoachId);
   try{
     const records=[];
-    for(let i=0;i<qtySolo;i++) records.push({coach_id:selectedCoachId,date:today,course_type:'solo',hours:1,amount:500});
-    for(let i=0;i<qtyGroup;i++) records.push({coach_id:selectedCoachId,date:today,course_type:'group',hours:1.5,amount:750});
+    for(let i=0;i<qtySolo;i++)records.push({coach_id:selectedCoachId,date:today,course_type:'solo',hours:1,amount:500});
+    for(let i=0;i<qtyGroup;i++)records.push({coach_id:selectedCoachId,date:today,course_type:'group',hours:1.5,amount:750});
     await api('coach_records','POST',records);
     const totalHours=qtySolo*1+qtyGroup*1.5;
-    let infoLines=[];
-    if(qtySolo>0)infoLines.push(`個人課 ${qtySolo} 堂（${qtySolo} 小時）`);
-    if(qtyGroup>0)infoLines.push(`團體課 ${qtyGroup} 堂（${qtyGroup*1.5} 小時）`);
-    infoLines.push(`今日總時數：${totalHours} 小時`);
-    document.getElementById('success-coach-name').textContent=`${coachName} 簽到成功！`;
-    document.getElementById('success-coach-info').innerHTML=`今天：${today}<br>${infoLines.join('<br>')}`;
+    let lines=[];
+    if(qtySolo>0)lines.push(`個人課 Private ${qtySolo} 堂 · ${qtySolo} hr`);
+    if(qtyGroup>0)lines.push(`團體課 Group ${qtyGroup} 堂 · ${qtyGroup*1.5} hr`);
+    lines.push(`總時數 Total：${totalHours} 小時 / hours`);
+    document.getElementById('success-coach-name').textContent=coachName;
+    document.getElementById('success-coach-info').innerHTML=`日期 Date：${today}<br>${lines.join('<br>')}`;
     showScreen('screen-coach-success');
-  }catch(e){showToast('簽到失敗，請重試');}
+  }catch(e){showToast('簽到失敗 / Check-in failed');}
 }
 
 function resetCoachForm(){
@@ -377,19 +440,16 @@ function showScreen(name){
   document.getElementById(name).classList.add('active');
   if(name==='screen-student'){document.getElementById('student-search').value='';renderStudentList();}
 }
-
 function goHome(){
   showScreen('screen-home');
   document.getElementById('pwd-input').value='';
   document.getElementById('pwd-error').textContent='';
 }
-
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3000);
 }
-
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
 loadAll();
 </script>

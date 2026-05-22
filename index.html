@@ -14,20 +14,18 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:#fff;color:#09090b;max-width:480px;margin:0 auto;min-height:100vh}
 .screen{display:none;padding:0}
 .screen.active{display:block}
-.header-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0;background:#fff}
+.header-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0}
 .app-title{font-size:16px;font-weight:700;color:#09090b}
 .app-sub{font-size:11px;color:#94a3b8}
 #db-status{font-size:11px;color:#94a3b8}
-.nav-bar{display:flex;border-bottom:0.5px solid #f1f5f9;padding:0 4px;margin-top:4px}
-.nav-tab{padding:12px 12px;font-size:13px;border:none;background:none;cursor:pointer;color:#94a3b8;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;font-weight:500}
+.nav-bar{display:flex;border-bottom:0.5px solid #f1f5f9;padding:0 4px;margin-top:4px;overflow-x:auto}
+.nav-tab{padding:12px 10px;font-size:13px;border:none;background:none;cursor:pointer;color:#94a3b8;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;font-weight:500;flex-shrink:0}
 .nav-tab.active{color:#09090b;font-weight:700;border-bottom-color:#f97316}
 .tab-content{padding:1rem}
 .card{background:#fff;border:0.5px solid #f1f5f9;border-radius:14px;padding:1rem 1.25rem;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.03)}
 .back-btn{background:none;border:none;cursor:pointer;font-size:15px;color:#f97316;font-weight:500;padding:4px 0;margin-bottom:12px;display:inline-block}
 h2{font-size:18px;font-weight:700;margin-bottom:1rem;color:#09090b}
 h3{font-size:15px;font-weight:600;margin-bottom:10px;color:#09090b}
-
-/* 星期格 */
 .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:1.25rem}
 .day-btn{border:0.5px solid #f1f5f9;border-radius:10px;padding:10px 2px;cursor:pointer;text-align:center;background:#fff;transition:all 0.15s}
 .day-btn.today{border:2px solid #f97316}
@@ -36,8 +34,6 @@ h3{font-size:15px;font-weight:600;margin-bottom:10px;color:#09090b}
 .day-btn.selected .day-label,.day-btn.selected .day-count{color:#fff}
 .day-btn.today:not(.selected) .day-label{color:#f97316}
 .day-count{font-size:11px;color:#94a3b8;margin-top:2px}
-
-/* 學生卡片 */
 .student-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#fff;border:0.5px solid #f1f5f9;border-radius:12px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
 .stu-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer}
 .stu-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
@@ -57,8 +53,6 @@ h3{font-size:15px;font-weight:600;margin-bottom:10px;color:#09090b}
 .sign-btn-group{background:#3b82f6;color:#fff}
 .sign-btn.done{background:#f0fdf4;color:#16a34a;border:0.5px solid #e5e5e5;cursor:default}
 .sign-btn:disabled{background:#f8fafc;color:#cbd5e1;cursor:not-allowed}
-
-/* 詳細頁面 */
 .progress-bar{width:100%;height:6px;background:#f0f0f0;border-radius:20px;margin:6px 0}
 .progress-fill-solo{height:6px;border-radius:20px;background:#f97316}
 .progress-fill-group{height:6px;border-radius:20px;background:#3b82f6}
@@ -81,8 +75,6 @@ h3{font-size:15px;font-weight:600;margin-bottom:10px;color:#09090b}
 .history-table td.muted{color:#94a3b8}
 .copy-btn{padding:6px 12px;background:none;border:0.5px solid #e5e5e5;border-radius:8px;font-size:12px;cursor:pointer;color:#94a3b8}
 .info-summary{background:#f8fafc;border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.9;color:#374151;margin-bottom:10px;white-space:pre-line}
-
-/* 新增學生表單 */
 input[type=text]{width:100%;padding:10px 12px;border:0.5px solid #e5e5e5;border-radius:10px;font-size:14px;background:#fff;color:#09090b;outline:none;margin-bottom:8px}
 input[type=text]:focus{border-color:#f97316}
 select{padding:10px 12px;border:0.5px solid #e5e5e5;border-radius:10px;font-size:14px;background:#fff;color:#09090b;width:100%;outline:none;margin-bottom:8px}
@@ -91,9 +83,6 @@ select:focus{border-color:#f97316}
 .day-check{padding:8px 4px;border:0.5px solid #e5e5e5;border-radius:8px;text-align:center;cursor:pointer;font-size:12px;font-weight:500;color:#64748b;background:#fff;transition:all 0.15s}
 .day-check.selected{background:#fff7ed;border-color:#f97316;color:#f97316}
 .add-btn{padding:8px 14px;background:none;border:0.5px solid #e5e5e5;border-radius:8px;cursor:pointer;font-size:13px;color:#555}
-.add-btn:hover{background:#f8fafc}
-
-/* 薪資 */
 .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem}
 .stat-card{background:#f8fafc;border-radius:12px;padding:12px;text-align:center}
 .stat-num{font-size:22px;font-weight:700;color:#09090b}
@@ -107,7 +96,16 @@ select:focus{border-color:#f97316}
 .coach-salary-total{font-size:18px;font-weight:700;color:#f97316}
 .salary-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:0.5px solid #f8fafc;color:#555}
 .salary-row:last-child{border-bottom:none}
-
+/* 收入 */
+.income-card{background:#fff;border:0.5px solid #f1f5f9;border-radius:14px;padding:1rem 1.25rem;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.03)}
+.income-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.income-name{font-size:15px;font-weight:600;color:#09090b}
+.income-amount{font-size:16px;font-weight:700;color:#16a34a}
+.income-meta{font-size:12px;color:#94a3b8}
+.income-total-box{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;text-align:center}
+.income-total-label{font-size:13px;color:#16a34a;margin-bottom:4px}
+.income-total-num{font-size:36px;font-weight:700;color:#15803d}
+.income-total-sub{font-size:12px;color:#4ade80;margin-top:4px}
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#09090b;color:#fff;padding:12px 24px;border-radius:20px;font-size:14px;z-index:100;opacity:0;transition:opacity 0.3s;white-space:nowrap}
 .toast.show{opacity:1}
 .empty-state{text-align:center;padding:2.5rem 1rem;color:#94a3b8;font-size:14px}
@@ -115,12 +113,8 @@ select:focus{border-color:#f97316}
 </head>
 <body>
 <div id="toast" class="toast"></div>
-
 <div class="header-bar">
-  <div>
-    <div class="app-title">🏓 育苗乒乓</div>
-    <div class="app-sub">管理後台</div>
-  </div>
+  <div><div class="app-title">🏓 育苗乒乓</div><div class="app-sub">管理後台</div></div>
   <span id="db-status"></span>
 </div>
 
@@ -129,7 +123,8 @@ select:focus{border-color:#f97316}
     <div class="nav-bar">
       <button class="nav-tab active" onclick="switchTab('checkin')">簽到</button>
       <button class="nav-tab" onclick="switchTab('students')">學生</button>
-      <button class="nav-tab" onclick="switchTab('coaches')">教練薪資</button>
+      <button class="nav-tab" onclick="switchTab('income')">月收入</button>
+      <button class="nav-tab" onclick="switchTab('coaches')">薪資</button>
       <button class="nav-tab" onclick="switchTab('overview')">總覽</button>
     </div>
 
@@ -148,7 +143,7 @@ select:focus{border-color:#f97316}
       <div id="add-form" style="display:none" class="card">
         <input type="text" id="new-name" placeholder="學生姓名">
         <div style="margin-bottom:6px;font-size:12px;color:#94a3b8">上課星期（可多選）</div>
-        <div class="day-checkboxes" id="day-checkboxes">
+        <div class="day-checkboxes">
           <div class="day-check" data-day="0" onclick="toggleDay(0)">週一</div>
           <div class="day-check" data-day="1" onclick="toggleDay(1)">週二</div>
           <div class="day-check" data-day="2" onclick="toggleDay(2)">週三</div>
@@ -159,12 +154,31 @@ select:focus{border-color:#f97316}
         </div>
         <select id="new-coach"><option value="">選擇主要教練</option></select>
         <select id="new-course">
-          <option value="solo">個人課 Private</option>
-          <option value="group">團體課 Group</option>
+          <option value="solo_800">個人課 $800</option>
+          <option value="solo_1200">雙人個人課 $1200</option>
+          <option value="group_350">團體課 $350</option>
+          <option value="group_400">成人團體課 $400</option>
+          <option value="group_800">週六早團體課 $800</option>
         </select>
         <button class="confirm-btn" style="margin-top:0" onclick="addStudent()">新增學生</button>
       </div>
       <div id="all-students"></div>
+    </div>
+
+    <div id="tab-income" style="display:none" class="tab-content">
+      <div class="month-selector">
+        <button class="month-btn" onclick="changeIncomeMonth(-1)">◀</button>
+        <div class="month-label" id="income-month-label"></div>
+        <button class="month-btn" onclick="changeIncomeMonth(1)">▶</button>
+      </div>
+      <div class="income-total-box">
+        <div class="income-total-label">本月學費收入</div>
+        <div class="income-total-num" id="income-total">$0</div>
+        <div class="income-total-sub" id="income-count">0 筆</div>
+      </div>
+      <div class="stat-grid" id="income-stat-grid"></div>
+      <h3>收費明細</h3>
+      <div id="income-list"></div>
     </div>
 
     <div id="tab-coaches" style="display:none" class="tab-content">
@@ -197,9 +211,25 @@ select:focus{border-color:#f97316}
 const SUPABASE_URL = 'https://jygtjpemdhrsdwzubfjn.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_DBsYrgaB7_lI-zuC399iRA_PMGqejaZ';
 const DAYS=['週一','週二','週三','週四','週五','週六','週日'];
-let coaches=[],students=[],coachRecords=[];
+
+// 課程類型對照
+const COURSE_TYPES = {
+  'solo_800':  {label:'個人課',      fee:800,  isGroup:false},
+  'solo_1200': {label:'雙人個人課',  fee:1200, isGroup:false},
+  'group_350': {label:'團體課',      fee:350,  isGroup:true},
+  'group_400': {label:'成人團體課',  fee:400,  isGroup:true},
+  'group_800': {label:'週六早團體',  fee:800,  isGroup:true},
+  // 舊資料相容
+  'solo':      {label:'個人課',      fee:800,  isGroup:false},
+  'group':     {label:'團體課',      fee:350,  isGroup:true},
+};
+
+function getCourseInfo(ct){return COURSE_TYPES[ct]||COURSE_TYPES['solo'];}
+
+let coaches=[],students=[],coachRecords=[],incomeRecords=[];
 let selectedDay=null,selectedNewDays=[];
 let viewYear=new Date().getFullYear(),viewMonth=new Date().getMonth()+1;
+let incomeYear=new Date().getFullYear(),incomeMonth=new Date().getMonth()+1;
 
 async function api(path,method='GET',body=null){
   const opts={method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'}};
@@ -217,6 +247,7 @@ async function loadAll(){
     const stuData=await api('students?select=*&order=name');
     const recData=await api('records?select=*&order=date');
     coachRecords=await api('coach_records?select=*&order=date');
+    incomeRecords=await api('income_records?select=*&order=date.desc').catch(()=>[]);
     students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
     document.getElementById('db-status').textContent='✓ 已連線';
     renderDayGrid();selectDay(todayDayIndex());
@@ -228,10 +259,7 @@ function getCoachName(id){return coaches.find(c=>c.id===id)?.name||''}
 function getRemaining(s){return s.period*10-s.records.length}
 function getInitials(n){return n.slice(0,2)}
 function todayStr(){const t=new Date();return`${t.getFullYear()}/${t.getMonth()+1}/${t.getDate()}`}
-
-function getStudentDays(s){
-  return (s.days_of_week&&s.days_of_week.length>0)?s.days_of_week:[s.day_index];
-}
+function getStudentDays(s){return(s.days_of_week&&s.days_of_week.length>0)?s.days_of_week:[s.day_index];}
 
 function getNextClassDate(dayIndices){
   const today=new Date();today.setHours(0,0,0,0);
@@ -253,8 +281,7 @@ function renderDayGrid(){
   document.getElementById('day-grid').innerHTML=DAYS.map((d,i)=>{
     const count=students.filter(s=>getStudentDays(s).includes(i)).length;
     return`<div class="day-btn${i===today?' today':''}${i===selectedDay?' selected':''}" onclick="selectDay(${i})">
-      <div class="day-label">${d}</div><div class="day-count">${count}人</div>
-    </div>`;
+      <div class="day-label">${d}</div><div class="day-count">${count}人</div></div>`;
   }).join('');
 }
 
@@ -268,14 +295,14 @@ function renderDaySection(){
   sec.innerHTML=`<h3>${DAYS[selectedDay]}的學生（${list.length}人）</h3>`+list.map(s=>{
     const rem=getRemaining(s);
     const alreadyToday=s.records.includes(todayStr());
-    const isGroup=s.course_type==='group';
+    const ci=getCourseInfo(s.course_type);
     let rb=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-ok">剩${rem}堂</span>`;
     let pb=s.paid?'':`<span class="badge badge-danger">未繳費</span>`;
-    let tb=isGroup?`<span class="badge badge-group">團</span>`:`<span class="badge badge-solo">個</span>`;
-    let btn=alreadyToday?`<button class="sign-btn done" disabled>✓ 已簽</button>`:rem<=0?`<button class="sign-btn" disabled>用完</button>`:`<button class="sign-btn ${isGroup?'sign-btn-group':'sign-btn-solo'}" onclick="quickSign(${s.id})">簽到</button>`;
+    let tb=ci.isGroup?`<span class="badge badge-group">團</span>`:`<span class="badge badge-solo">個</span>`;
+    let btn=alreadyToday?`<button class="sign-btn done" disabled>✓ 已簽</button>`:rem<=0?`<button class="sign-btn" disabled>用完</button>`:`<button class="sign-btn ${ci.isGroup?'sign-btn-group':'sign-btn-solo'}" onclick="quickSign(${s.id})">簽到</button>`;
     return`<div class="student-row">
       <div class="stu-left" onclick="openDetail(${s.id})">
-        <div class="stu-avatar ${isGroup?'stu-avatar-group':'stu-avatar-solo'}">${getInitials(s.name)}</div>
+        <div class="stu-avatar ${ci.isGroup?'stu-avatar-group':'stu-avatar-solo'}">${getInitials(s.name)}</div>
         <div><div class="stu-name">${s.name}</div>
         <div class="stu-meta">${getCoachName(s.coach_id)}・第${s.period}期</div>
         <div style="margin-top:3px;display:flex;gap:4px;flex-wrap:wrap">${tb}${rb}${pb}</div></div>
@@ -304,35 +331,34 @@ function openDetail(sid){
   const used=s.records.length;
   const total=s.period*10;
   const pct=Math.min(100,Math.round(used/total*100));
-  const isGroup=s.course_type==='group';
+  const ci=getCourseInfo(s.course_type);
   const days=getStudentDays(s);
   const nextStr=getNextClassDate(days);
   const lastRecord=used>0?s.records[used-1]:'尚未上課';
   const daysStr=days.map(d=>DAYS[d]).join('、');
-  const typeStr=isGroup?'團體課':'個人課';
-  const parentInfo=`學生姓名：${s.name}\n課程類型：${typeStr}\n上課日：${daysStr}\n目前期數：第 ${s.period} 期（共10堂）\n已上堂數：${used} 堂\n剩餘堂數：${rem} 堂\n最後上課：${lastRecord}\n下次上課：${nextStr.replace('（','').replace('）','')}\n繳費狀態：${s.paid?'已繳費':'未繳費'}`;
+  const parentInfo=`學生姓名：${s.name}\n課程類型：${ci.label}\n上課日：${daysStr}\n目前期數：第 ${s.period} 期（共10堂）\n已上堂數：${used} 堂\n剩餘堂數：${rem} 堂\n最後上課：${lastRecord}\n下次上課：${nextStr.replace('（','').replace('）','')}\n繳費狀態：${s.paid?'已繳費':'未繳費'}`;
   const historyRows=used>0
     ?s.records.slice().reverse().map((date,i)=>`<tr><td>${used-i}</td><td>${date}</td><td class="muted">${getCoachName(s.coach_id)}</td></tr>`).join('')
     :`<tr><td colspan="3" style="text-align:center;color:#94a3b8;padding:12px 0">尚無上課記錄</td></tr>`;
 
   document.getElementById('detail-name').textContent=s.name;
   document.getElementById('detail-body').innerHTML=`
-    <div class="next-class-box ${isGroup?'next-class-box-group':'next-class-box-solo'}">
-      ${isGroup?'👥':'👤'}
+    <div class="next-class-box ${ci.isGroup?'next-class-box-group':'next-class-box-solo'}">
+      ${ci.isGroup?'👥':'👤'}
       <div>
-        <div class="next-class-label ${isGroup?'next-class-label-group':'next-class-label-solo'}">${typeStr}・下次上課</div>
-        <div class="next-class-date ${isGroup?'next-class-date-group':'next-class-date-solo'}">${nextStr}</div>
+        <div class="next-class-label ${ci.isGroup?'next-class-label-group':'next-class-label-solo'}">${ci.label}・下次上課</div>
+        <div class="next-class-date ${ci.isGroup?'next-class-date-group':'next-class-date-solo'}">${nextStr}</div>
       </div>
     </div>
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <span style="font-size:13px;color:#94a3b8">第${s.period}期（${used}/${total}堂）</span>
+        <span style="font-size:13px;color:#94a3b8">第${s.period}期（${used}/${total}堂）・${ci.label}</span>
         <span style="font-size:13px;font-weight:600;color:${rem<=2?'#ea580c':'#09090b'}">${rem<=0?'已用完':'剩 '+rem+' 堂'}</span>
       </div>
-      <div class="progress-bar"><div class="${isGroup?'progress-fill-group':'progress-fill-solo'}" style="width:${pct}%"></div></div>
+      <div class="progress-bar"><div class="${ci.isGroup?'progress-fill-group':'progress-fill-solo'}" style="width:${pct}%"></div></div>
       <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between">
-        <span style="font-size:14px">繳費狀態</span>
-        <button class="pay-toggle${s.paid?' paid':''}" onclick="togglePay(${s.id})">${s.paid?'已繳費 ✓':'標記已繳費'}</button>
+        <span style="font-size:14px">繳費狀態 <b style="color:#16a34a">$${ci.fee}</b></span>
+        <button class="pay-toggle${s.paid?' paid':''}" id="pay-btn-${s.id}" onclick="togglePay(${s.id})">${s.paid?'已繳費 ✓':'標記已繳費'}</button>
       </div>
     </div>
     ${rem<=0?`<div class="card" style="text-align:center"><div style="font-size:14px;color:#ea580c;margin-bottom:10px">⚠️ 本期10堂已用完</div><button class="confirm-btn" onclick="newPeriod(${s.id})">開始第 ${s.period+1} 期</button></div>`:''}
@@ -355,11 +381,26 @@ function copyInfo(sid){
   if(!el)return;
   navigator.clipboard?.writeText(el.textContent).then(()=>showToast('已複製，可直接貼給家長！'));
 }
+
 async function togglePay(sid){
   const s=students.find(x=>x.id===sid);
-  try{await api(`students?id=eq.${sid}`,'PATCH',{paid:!s.paid});s.paid=!s.paid;openDetail(sid);}
-  catch(e){showError('更新失敗');}
+  const newPaid=!s.paid;
+  try{
+    await api(`students?id=eq.${sid}`,'PATCH',{paid:newPaid});
+    s.paid=newPaid;
+    // 如果標記為已繳費，記錄一筆收入
+    if(newPaid){
+      const ci=getCourseInfo(s.course_type);
+      const today=todayStr();
+      const rec=await api('income_records','POST',{student_id:sid,student_name:s.name,course_type:s.course_type,amount:ci.fee,date:today,period:s.period});
+      if(Array.isArray(rec)&&rec[0])incomeRecords.unshift(rec[0]);
+      else if(rec&&rec.id)incomeRecords.unshift(rec);
+      showToast(`已收款 $${ci.fee}（${s.name}）`);
+    }
+    openDetail(sid);
+  }catch(e){showError('更新失敗');}
 }
+
 async function newPeriod(sid){
   const s=students.find(x=>x.id===sid);
   try{
@@ -369,16 +410,59 @@ async function newPeriod(sid){
   }catch(e){showError('更新失敗');}
 }
 
+// 月收入
+function changeIncomeMonth(dir){
+  incomeMonth+=dir;
+  if(incomeMonth>12){incomeMonth=1;incomeYear++;}
+  if(incomeMonth<1){incomeMonth=12;incomeYear--;}
+  renderIncome();
+}
+
+function checkDateInMonth(dateStr,year,month){
+  const p=dateStr.split('/');
+  return parseInt(p[0])===year&&parseInt(p[1])===month;
+}
+
+function renderIncome(){
+  document.getElementById('income-month-label').textContent=`${incomeYear} 年 ${incomeMonth} 月`;
+  const recs=incomeRecords.filter(r=>checkDateInMonth(r.date,incomeYear,incomeMonth));
+  const total=recs.reduce((a,b)=>a+b.amount,0);
+  document.getElementById('income-total').textContent=`$${total.toLocaleString()}`;
+  document.getElementById('income-count').textContent=`${recs.length} 筆收款`;
+
+  // 各課程類型統計
+  const typeStats={};
+  for(const r of recs){
+    const ci=getCourseInfo(r.course_type);
+    if(!typeStats[ci.label])typeStats[ci.label]={count:0,total:0};
+    typeStats[ci.label].count++;
+    typeStats[ci.label].total+=r.amount;
+  }
+  const statCards=Object.entries(typeStats).map(([label,v])=>`
+    <div class="stat-card"><div class="stat-num" style="font-size:16px">$${v.total}</div><div class="stat-label">${label} ${v.count}筆</div></div>`).join('');
+  document.getElementById('income-stat-grid').innerHTML=statCards||'';
+
+  if(!recs.length){
+    document.getElementById('income-list').innerHTML=`<div class="empty-state">本月還沒有收款記錄</div>`;
+    return;
+  }
+  document.getElementById('income-list').innerHTML=recs.map(r=>{
+    const ci=getCourseInfo(r.course_type);
+    return`<div class="income-card">
+      <div class="income-header">
+        <span class="income-name">${r.student_name}</span>
+        <span class="income-amount">+$${r.amount}</span>
+      </div>
+      <div class="income-meta">${r.date}・${ci.label}・第${r.period}期</div>
+    </div>`;
+  }).join('');
+}
+
 // 新增學生
 function toggleDay(d){
   const el=document.querySelector(`.day-check[data-day="${d}"]`);
-  if(selectedNewDays.includes(d)){
-    selectedNewDays=selectedNewDays.filter(x=>x!==d);
-    el.classList.remove('selected');
-  }else{
-    selectedNewDays.push(d);
-    el.classList.add('selected');
-  }
+  if(selectedNewDays.includes(d)){selectedNewDays=selectedNewDays.filter(x=>x!==d);el.classList.remove('selected');}
+  else{selectedNewDays.push(d);el.classList.add('selected');}
 }
 function toggleAddForm(){
   const f=document.getElementById('add-form');
@@ -414,16 +498,16 @@ function renderAllStudents(){
     ?`<div class="empty-state">還沒有學生</div>`
     :students.map(s=>{
       const rem=getRemaining(s);
-      const isGroup=s.course_type==='group';
+      const ci=getCourseInfo(s.course_type);
       const days=getStudentDays(s).map(d=>DAYS[d]).join('+');
       let rb=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-info">剩${rem}堂</span>`;
       let pb=s.paid?`<span class="badge badge-ok">已繳費</span>`:`<span class="badge badge-danger">未繳費</span>`;
-      let tb=isGroup?`<span class="badge badge-group">團體</span>`:`<span class="badge badge-solo">個人</span>`;
+      let tb=ci.isGroup?`<span class="badge badge-group">團</span>`:`<span class="badge badge-solo">個</span>`;
       return`<div class="student-row" onclick="openDetail(${s.id})" style="cursor:pointer">
         <div class="stu-left">
-          <div class="stu-avatar ${isGroup?'stu-avatar-group':'stu-avatar-solo'}">${getInitials(s.name)}</div>
+          <div class="stu-avatar ${ci.isGroup?'stu-avatar-group':'stu-avatar-solo'}">${getInitials(s.name)}</div>
           <div><div class="stu-name">${s.name}</div>
-          <div class="stu-meta">${days}・${getCoachName(s.coach_id)}</div>
+          <div class="stu-meta">${days}・${getCoachName(s.coach_id)}・${ci.label}</div>
           <div style="margin-top:3px;display:flex;gap:4px;flex-wrap:wrap">${tb}${rb}${pb}</div></div>
         </div>
       </div>`;
@@ -436,10 +520,6 @@ function changeMonth(dir){
   if(viewMonth>12){viewMonth=1;viewYear++;}
   if(viewMonth<1){viewMonth=12;viewYear--;}
   renderCoachSalary();
-}
-function checkDateInMonth(dateStr,year,month){
-  const p=dateStr.split('/');
-  return parseInt(p[0])===year&&parseInt(p[1])===month;
 }
 function renderCoachSalary(){
   document.getElementById('month-label').textContent=`${viewYear} 年 ${viewMonth} 月`;
@@ -469,16 +549,17 @@ function renderCoachSalary(){
 }
 
 function switchTab(tab){
-  ['checkin','students','coaches','overview'].forEach(t=>{
+  ['checkin','students','income','coaches','overview'].forEach(t=>{
     document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
   });
   document.querySelectorAll('.nav-tab').forEach(b=>{
-    const map={checkin:'簽到',students:'學生',coaches:'教練薪資',overview:'總覽'};
+    const map={checkin:'簽到',students:'學生',income:'月收入',coaches:'薪資',overview:'總覽'};
     b.classList.toggle('active',b.textContent.trim()===map[tab]);
   });
   if(tab==='students')renderAllStudents();
   if(tab==='overview')renderOverview();
   if(tab==='coaches')renderCoachSalary();
+  if(tab==='income')renderIncome();
 }
 
 function renderOverview(){
@@ -494,11 +575,11 @@ function renderOverview(){
     if(!mine.length)return`<div class="card"><b>${c.name}</b><span style="font-size:13px;color:#94a3b8;margin-left:8px">無學生</span></div>`;
     const rows=mine.map(s=>{
       const rem=getRemaining(s);
-      const isGroup=s.course_type==='group';
+      const ci=getCourseInfo(s.course_type);
       const days=getStudentDays(s).map(d=>DAYS[d]).join('+');
       let rb=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-ok">剩${rem}堂</span>`;
       let pb=s.paid?'':`<span class="badge badge-danger">未繳</span>`;
-      let tb=isGroup?`<span class="badge badge-group">團</span>`:`<span class="badge badge-solo">個</span>`;
+      let tb=ci.isGroup?`<span class="badge badge-group">團</span>`:`<span class="badge badge-solo">個</span>`;
       return`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f8fafc;font-size:13px">
         <span>${s.name} <span style="color:#cbd5e1;font-size:11px">${days}</span></span>
         <span style="display:flex;gap:3px">${tb}${rb}${pb}</span></div>`;
@@ -522,7 +603,6 @@ function showError(msg){
   el.style.cssText='background:#fee2e2;border-radius:10px;padding:12px 16px;margin-bottom:10px;font-size:14px;color:#dc2626';
   el.textContent=msg;area.prepend(el);setTimeout(()=>el.remove(),5000);
 }
-
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
 loadAll();
 </script>

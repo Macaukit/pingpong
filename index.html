@@ -154,11 +154,11 @@ select:focus{border-color:#f97316}
         </div>
         <select id="new-coach"><option value="">選擇主要教練</option></select>
         <select id="new-course">
-          <option value="solo_800">個人課 $800</option>
-          <option value="solo_1200">雙人個人課 $1200</option>
-          <option value="group_350">團體課 $350</option>
-          <option value="group_400">成人團體課 $400</option>
-          <option value="group_800">週六早團體課 $800</option>
+          <option value="solo_800">個人課 $8,000</option>
+          <option value="solo_1200">雙人個人課 $12,000</option>
+          <option value="group_350">團體課 $3,500</option>
+          <option value="group_400">成人團體課 $4,000</option>
+          <option value="group_800">週六早團體課 $8,000</option>
         </select>
         <button class="confirm-btn" style="margin-top:0" onclick="addStudent()">新增學生</button>
       </div>
@@ -214,14 +214,14 @@ const DAYS=['週一','週二','週三','週四','週五','週六','週日'];
 
 // 課程類型對照
 const COURSE_TYPES = {
-  'solo_800':  {label:'個人課',      fee:800,  isGroup:false},
-  'solo_1200': {label:'雙人個人課',  fee:1200, isGroup:false},
-  'group_350': {label:'團體課',      fee:350,  isGroup:true},
-  'group_400': {label:'成人團體課',  fee:400,  isGroup:true},
-  'group_800': {label:'週六早團體',  fee:800,  isGroup:true},
+  'solo_800':  {label:'個人課',      fee:8000,  isGroup:false},
+  'solo_1200': {label:'雙人個人課',  fee:12000, isGroup:false},
+  'group_350': {label:'團體課',      fee:3500,  isGroup:true},
+  'group_400': {label:'成人團體課',  fee:4000,  isGroup:true},
+  'group_800': {label:'週六早團體',  fee:8000,  isGroup:true},
   // 舊資料相容
-  'solo':      {label:'個人課',      fee:800,  isGroup:false},
-  'group':     {label:'團體課',      fee:350,  isGroup:true},
+  'solo':      {label:'個人課',      fee:8000,  isGroup:false},
+  'group':     {label:'團體課',      fee:3500,  isGroup:true},
 };
 
 function getCourseInfo(ct){return COURSE_TYPES[ct]||COURSE_TYPES['solo'];}

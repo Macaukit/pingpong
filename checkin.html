@@ -14,14 +14,12 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:#fff;color:#09090b;min-height:100vh}
 .screen{display:none;min-height:100vh}
 .screen.active{display:flex;flex-direction:column}
-
-/* 首頁 */
 .home-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1.5rem;gap:1rem;background:#fff}
 .logo-area{display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:1.5rem}
 .logo-icon{font-size:52px;line-height:1}
 .logo-title{font-size:26px;font-weight:600;color:#09090b;letter-spacing:0.01em}
 .logo-sub{font-size:13px;color:#94a3b8;letter-spacing:0.06em;font-weight:400}
-.main-btn{width:100%;max-width:380px;padding:18px 20px;border-radius:16px;border:none;cursor:pointer;display:flex;align-items:center;gap:16px;transition:transform 0.12s,box-shadow 0.12s;text-align:left;position:relative;overflow:hidden}
+.main-btn{width:100%;max-width:380px;padding:18px 20px;border-radius:16px;border:none;cursor:pointer;display:flex;align-items:center;gap:16px;transition:transform 0.12s;text-align:left}
 .main-btn:active{transform:scale(0.97)}
 .main-btn-student{background:#f97316;box-shadow:0 4px 24px rgba(249,115,22,0.25)}
 .main-btn-coach{background:#09090b;box-shadow:0 4px 24px rgba(0,0,0,0.12)}
@@ -30,53 +28,56 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 .btn-icon-wrap-c{background:rgba(255,255,255,0.1)}
 .btn-texts{flex:1}
 .btn-main{font-size:17px;font-weight:600;color:#fff;line-height:1.2}
-.btn-en{font-size:12px;color:rgba(255,255,255,0.65);margin-top:3px;font-weight:400;letter-spacing:0.02em}
-.btn-arrow{font-size:20px;color:rgba(255,255,255,0.5);font-weight:300}
-
-/* 通用 top bar */
+.btn-en{font-size:12px;color:rgba(255,255,255,0.65);margin-top:3px;font-weight:400}
+.btn-arrow{font-size:20px;color:rgba(255,255,255,0.5)}
 .top-bar{display:flex;align-items:center;padding:14px 16px;background:#fff;border-bottom:0.5px solid #f1f5f9;gap:12px;position:sticky;top:0;z-index:10}
-.back-btn{background:none;border:none;cursor:pointer;font-size:15px;color:#f97316;font-weight:500;padding:4px 0;display:flex;align-items:center;gap:4px}
+.back-btn{background:none;border:none;cursor:pointer;font-size:15px;color:#f97316;font-weight:500;padding:4px 0}
 .page-title{font-size:17px;font-weight:600;color:#09090b}
-.page-title-en{font-size:11px;color:#94a3b8;font-weight:400;margin-top:1px}
+.page-title-en{font-size:11px;color:#94a3b8;margin-top:1px}
 .content{flex:1;padding:1.25rem 1rem;overflow-y:auto;background:#fff}
-
-/* 搜尋 */
 .search-wrap{position:relative;margin-bottom:1rem}
-.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:#94a3b8}
-.search-box{width:100%;padding:13px 16px 13px 42px;border:none;border-radius:14px;font-size:16px;outline:none;background:#f8fafc;color:#09090b}
+.search-box{width:100%;padding:13px 16px 13px 14px;border:none;border-radius:14px;font-size:16px;outline:none;background:#f8fafc;color:#09090b}
 .search-box::placeholder{color:#94a3b8}
-.search-box:focus{background:#f1f5f9}
 
 /* 學生卡片 */
 .student-card{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fff;border:0.5px solid #f1f5f9;border-radius:14px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.04);transition:transform 0.1s}
 .student-card:active{transform:scale(0.98)}
-.stu-left{display:flex;align-items:center;gap:12px}
-.stu-avatar{width:42px;height:42px;border-radius:50%;background:#fff7ed;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#f97316;flex-shrink:0}
+.stu-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.stu-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.stu-avatar-solo{background:#fff7ed;color:#f97316}
+.stu-avatar-group{background:#eff6ff;color:#3b82f6}
 .stu-name{font-size:16px;font-weight:600;color:#09090b}
 .stu-meta{font-size:12px;color:#94a3b8;margin-top:2px}
+.stu-tags{margin-top:4px;display:flex;gap:4px;flex-wrap:wrap}
 .badge{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap}
 .badge-ok{background:#f0fdf4;color:#16a34a}
 .badge-warn{background:#fff7ed;color:#ea580c}
 .badge-danger{background:#fef2f2;color:#dc2626}
 .badge-done{background:#f1f5f9;color:#64748b}
-.sign-btn{padding:10px 18px;background:#f97316;color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background 0.15s}
-.sign-btn:active{background:#ea580c}
+.badge-solo{background:#fff7ed;color:#f97316}
+.badge-group{background:#eff6ff;color:#3b82f6}
+.sign-btn{padding:10px 14px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all 0.15s;margin-left:8px}
+.sign-btn-solo{background:#f97316;color:#fff}
+.sign-btn-solo:active{background:#ea580c}
+.sign-btn-group{background:#3b82f6;color:#fff}
+.sign-btn-group:active{background:#2563eb}
 .sign-btn .btn-en-small{font-size:10px;font-weight:400;opacity:0.85;display:block;margin-top:1px}
 .sign-btn.done{background:#f0fdf4;color:#16a34a;cursor:default}
 .sign-btn:disabled{background:#f8fafc;color:#cbd5e1;cursor:not-allowed}
 
 /* 成功畫面 */
 .success-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1.5rem;text-align:center;background:#fff}
-.success-icon-wrap{width:88px;height:88px;border-radius:28px;background:#f97316;display:flex;align-items:center;justify-content:center;font-size:44px;margin:0 auto 1.5rem;box-shadow:0 8px 32px rgba(249,115,22,0.3)}
+.success-icon-wrap{width:88px;height:88px;border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:44px;margin:0 auto 1.5rem}
+.success-icon-solo{background:#f97316;box-shadow:0 8px 32px rgba(249,115,22,0.3)}
+.success-icon-group{background:#3b82f6;box-shadow:0 8px 32px rgba(59,130,246,0.3)}
 .success-name{font-size:26px;font-weight:700;color:#09090b;margin-bottom:4px}
 .success-name-en{font-size:13px;color:#94a3b8;margin-bottom:1rem}
-.success-info{font-size:15px;color:#64748b;line-height:1.8;margin-bottom:2rem;background:#f8fafc;border-radius:14px;padding:16px 20px;width:100%;max-width:320px}
+.success-info{font-size:15px;color:#64748b;line-height:1.8;margin-bottom:1.5rem;background:#f8fafc;border-radius:14px;padding:16px 20px;width:100%;max-width:320px}
 .success-back{padding:15px 32px;background:#09090b;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;width:100%;max-width:320px}
-.success-back-en{font-size:11px;color:rgba(255,255,255,0.55);display:block;margin-top:3px;font-weight:400}
+.success-back-en{font-size:11px;color:rgba(255,255,255,0.55);display:block;margin-top:3px}
+.undo-btn{margin-top:10px;padding:12px 24px;background:none;border:1.5px solid #fee2e2;border-radius:12px;font-size:14px;font-weight:500;color:#dc2626;cursor:pointer;width:100%;max-width:320px}
+.undo-btn-en{font-size:11px;color:#f87171;display:block;margin-top:2px}
 .home-link{margin-top:14px;font-size:14px;color:#94a3b8;cursor:pointer;background:none;border:none}
-.undo-btn{margin-top:10px;padding:12px 24px;background:none;border:1.5px solid #fee2e2;border-radius:12px;font-size:14px;font-weight:500;color:#dc2626;cursor:pointer;width:100%;max-width:320px;transition:background 0.15s}
-.undo-btn:active{background:#fef2f2}
-.undo-btn-en{font-size:11px;color:#f87171;display:block;margin-top:2px;font-weight:400}
 
 /* 密碼頁 */
 .pwd-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1.5rem;background:#fff}
@@ -84,39 +85,37 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 .pwd-title{font-size:20px;font-weight:700;color:#09090b;margin-bottom:4px}
 .pwd-title-en{font-size:13px;color:#94a3b8;margin-bottom:1.5rem}
 .pwd-input{width:100%;max-width:300px;padding:16px;border:none;border-radius:14px;font-size:22px;text-align:center;outline:none;letter-spacing:6px;background:#f8fafc;color:#09090b;margin-bottom:10px}
-.pwd-input:focus{background:#f1f5f9}
 .pwd-error{color:#dc2626;font-size:13px;margin-bottom:10px;min-height:18px}
 .pwd-btn{width:100%;max-width:300px;padding:15px;background:#09090b;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:12px}
-.pwd-btn-en{font-size:11px;color:rgba(255,255,255,0.5);display:block;margin-top:3px;font-weight:400}
 .pwd-back{font-size:14px;color:#94a3b8;cursor:pointer;background:none;border:none}
 
 /* 教練簽到 */
-.coach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:1.5rem}
+.section-title{font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:10px;letter-spacing:0.04em}
+.coach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-bottom:1.5rem}
 .coach-card{background:#f8fafc;border:0.5px solid #f1f5f9;border-radius:14px;padding:1rem;cursor:pointer;text-align:center;transition:all 0.15s}
 .coach-card:active{transform:scale(0.96)}
 .coach-card.selected{background:#fff7ed;border-color:#f97316}
 .coach-avatar{width:46px;height:46px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#09090b;margin:0 auto 8px;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
 .coach-card.selected .coach-avatar{background:#f97316;color:#fff}
 .coach-name-label{font-size:14px;font-weight:600;color:#09090b}
-.section-title{font-size:13px;font-weight:600;color:#94a3b8;margin-bottom:10px;letter-spacing:0.04em}
 .course-row{background:#f8fafc;border:0.5px solid #f1f5f9;border-radius:16px;padding:1.25rem;margin-bottom:10px}
 .course-row-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .course-row-icon{font-size:26px}
 .course-row-title{font-size:15px;font-weight:700;color:#09090b}
 .course-row-sub{font-size:12px;color:#94a3b8;margin-top:1px}
 .qty-wrap{display:flex;align-items:center;gap:16px}
-.qty-btn{width:38px;height:38px;border-radius:50%;border:none;background:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#09090b;font-weight:500;box-shadow:0 1px 4px rgba(0,0,0,0.1);flex-shrink:0;transition:transform 0.1s}
+.qty-btn{width:38px;height:38px;border-radius:50%;border:none;background:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#09090b;box-shadow:0 1px 4px rgba(0,0,0,0.1);flex-shrink:0;transition:transform 0.1s}
 .qty-btn:active{transform:scale(0.9)}
 .qty-num{font-size:28px;font-weight:700;color:#09090b;min-width:36px;text-align:center}
 .qty-desc{font-size:13px;color:#94a3b8;flex:1;text-align:right}
 .summary-box{background:#fff7ed;border-radius:14px;padding:14px 16px;margin-bottom:1rem;font-size:14px;color:#ea580c;line-height:2;border:0.5px solid #fed7aa}
 .confirm-btn{width:100%;padding:16px;background:#09090b;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer}
 .confirm-btn:disabled{background:#f1f5f9;color:#cbd5e1;cursor:not-allowed}
-.confirm-btn-en{font-size:11px;color:rgba(255,255,255,0.5);display:block;margin-top:3px;font-weight:400}
-
-.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#09090b;color:#fff;padding:12px 24px;border-radius:20px;font-size:14px;font-weight:500;z-index:100;opacity:0;transition:opacity 0.3s;white-space:nowrap}
+.confirm-btn-en{font-size:11px;color:rgba(255,255,255,0.5);display:block;margin-top:3px}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#09090b;color:#fff;padding:12px 24px;border-radius:20px;font-size:14px;z-index:100;opacity:0;transition:opacity 0.3s;white-space:nowrap}
 .toast.show{opacity:1}
 .empty-state{text-align:center;padding:3rem 1rem;color:#94a3b8;font-size:15px;line-height:1.8}
+.day-section-title{font-size:13px;font-weight:600;color:#94a3b8;margin:16px 0 8px;padding-bottom:6px;border-bottom:0.5px solid #f1f5f9}
 </style>
 </head>
 <body>
@@ -160,8 +159,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
   </div>
   <div class="content">
     <div class="search-wrap">
-      <div class="search-icon">🔍</div>
-      <input class="search-box" type="text" id="student-search" placeholder="搜尋姓名 / Search name" oninput="renderStudentList()">
+      <input class="search-box" type="text" id="student-search" placeholder="🔍 搜尋姓名 / Search name" oninput="renderStudentList()">
     </div>
     <div id="student-list"><div class="empty-state">載入中...<br>Loading...</div></div>
   </div>
@@ -170,15 +168,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 <!-- 學生簽到成功 -->
 <div id="screen-student-success" class="screen">
   <div class="success-wrap">
-    <div class="success-icon-wrap">✅</div>
+    <div class="success-icon-wrap" id="success-icon-wrap">✅</div>
     <div class="success-name" id="success-student-name"></div>
-    <div class="success-name-en" id="success-student-name-en">Check-in Successful</div>
+    <div class="success-name-en">Check-in Successful</div>
     <div class="success-info" id="success-student-info"></div>
     <button class="success-back" onclick="showScreen('screen-student');renderStudentList()">
       繼續簽到
       <span class="success-back-en">Continue Check-in</span>
     </button>
-    <button class="undo-btn" id="undo-checkin-btn" onclick="undoCheckin()">
+    <button class="undo-btn" id="undo-btn" onclick="undoCheckin()">
       取消此次簽到
       <span class="undo-btn-en">Undo Last Check-in</span>
     </button>
@@ -192,13 +190,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
     <div class="pwd-icon">🔒</div>
     <div class="pwd-title">教練專區</div>
     <div class="pwd-title-en">Coach Area — Enter Password</div>
-    <input class="pwd-input" type="password" id="pwd-input" placeholder="••••••••" maxlength="20"
-      onkeydown="if(event.key==='Enter')checkPwd()">
+    <input class="pwd-input" type="password" id="pwd-input" placeholder="••••••••" maxlength="20" onkeydown="if(event.key==='Enter')checkPwd()">
     <div class="pwd-error" id="pwd-error"></div>
-    <button class="pwd-btn" onclick="checkPwd()">
-      進入 Enter
-      <span class="pwd-btn-en">Coach Check-in Area</span>
-    </button>
+    <button class="pwd-btn" onclick="checkPwd()">進入 Enter</button>
     <button class="pwd-back" onclick="goHome()">← 返回首頁 / Back to Home</button>
   </div>
 </div>
@@ -275,9 +269,10 @@ const SUPABASE_KEY = 'sb_publishable_DBsYrgaB7_lI-zuC399iRA_PMGqejaZ';
 const COACH_PWD = '147147147';
 const DAYS=['週一','週二','週三','週四','週五','週六','週日'];
 const DAYS_EN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
 let coaches=[],students=[];
-let lastCheckinRecordId=null;
 let selectedCoachId=null,qtySolo=0,qtyGroup=0;
+let lastCheckinRecordId=null;
 
 async function api(path,method='GET',body=null){
   const opts={method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'}};
@@ -293,6 +288,13 @@ function getInitials(n){return n.slice(0,2)}
 function getRemaining(s){return s.period*10-s.records.length}
 function getCoachName(id){return coaches.find(c=>c.id===id)?.name||''}
 function todayDayIndex(){const d=new Date().getDay();return d===0?6:d-1;}
+
+// 判斷學生今天是否有課（支援多上課日）
+function studentHasClassToday(s){
+  const today=todayDayIndex();
+  const days=s.days_of_week&&s.days_of_week.length>0 ? s.days_of_week : [s.day_index];
+  return days.includes(today);
+}
 
 async function loadAll(){
   try{
@@ -318,36 +320,56 @@ function checkPwd(){
 }
 
 function renderStudentList(){
-  const q=document.getElementById('student-search').value.trim();
+  const q=document.getElementById('student-search').value.trim().toLowerCase();
   const today=todayDayIndex();
-  let list=q?students.filter(s=>s.name.includes(q)||s.name.toLowerCase().includes(q.toLowerCase())):students.filter(s=>s.day_index===today);
+  let list=q
+    ? students.filter(s=>s.name.toLowerCase().includes(q))
+    : students.filter(s=>studentHasClassToday(s));
+
   const el=document.getElementById('student-list');
   if(!list.length){
     el.innerHTML=q
-      ?`<div class="empty-state">找不到「${q}」<br>No results for "${q}"</div>`
+      ?`<div class="empty-state">找不到「${q}」<br>No results found</div>`
       :`<div class="empty-state">今天（${DAYS[today]}）沒有排課學生<br>No students scheduled for ${DAYS_EN[today]}<br><br><span style="font-size:13px">輸入姓名搜尋 / Search by name</span></div>`;
     return;
   }
-  el.innerHTML=list.map(s=>{
-    const rem=getRemaining(s);
-    const alreadyToday=s.records.includes(todayStr());
-    let rb=rem<=0?`<span class="badge badge-danger">已用完 / Used up</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-ok">剩${rem}堂</span>`;
-    let btn=alreadyToday
-      ?`<button class="sign-btn done" disabled>✓ 已簽<span class="btn-en-small">Checked in</span></button>`
-      :rem<=0?`<button class="sign-btn" disabled>用完<span class="btn-en-small">No sessions</span></button>`
-      :`<button class="sign-btn" onclick="studentCheckin(${s.id})">簽到<span class="btn-en-small">Check in</span></button>`;
-    return`<div class="student-card">
-      <div class="stu-left">
-        <div class="stu-avatar">${getInitials(s.name)}</div>
-        <div>
-          <div class="stu-name">${s.name}</div>
-          <div class="stu-meta">${DAYS[s.day_index]} ${DAYS_EN[s.day_index]} · ${getCoachName(s.coach_id)} · 第${s.period}期</div>
-          <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">${rb}${alreadyToday?` <span class="badge badge-done">今日已簽 / Done</span>`:''}</div>
-        </div>
+
+  // 分組：今天有課 / 搜尋結果
+  const isSearch=!!q;
+  let html='';
+  if(!isSearch){
+    html+=`<div class="day-section-title">${DAYS[today]} · ${DAYS_EN[today]} — ${list.length} 位學生</div>`;
+  }
+  html+=list.map(s=>renderStudentCard(s)).join('');
+  el.innerHTML=html;
+}
+
+function renderStudentCard(s){
+  const rem=getRemaining(s);
+  const alreadyToday=s.records.includes(todayStr());
+  const isGroup=s.course_type==='group';
+  const typeBadge=isGroup
+    ?`<span class="badge badge-group">團體課 Group</span>`
+    :`<span class="badge badge-solo">個人課 Private</span>`;
+  let remBadge=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-ok">剩${rem}堂</span>`;
+  const days=(s.days_of_week&&s.days_of_week.length>0?s.days_of_week:[s.day_index]).map(d=>DAYS[d]).join('+');
+
+  let btn=alreadyToday
+    ?`<button class="sign-btn done" disabled>✓ 已簽<span class="btn-en-small">Checked in</span></button>`
+    :rem<=0?`<button class="sign-btn" disabled>用完<span class="btn-en-small">No sessions</span></button>`
+    :`<button class="sign-btn ${isGroup?'sign-btn-group':'sign-btn-solo'}" onclick="studentCheckin(${s.id})">簽到<span class="btn-en-small">Check in</span></button>`;
+
+  return`<div class="student-card">
+    <div class="stu-left">
+      <div class="stu-avatar ${isGroup?'stu-avatar-group':'stu-avatar-solo'}">${getInitials(s.name)}</div>
+      <div>
+        <div class="stu-name">${s.name}</div>
+        <div class="stu-meta">${days} · ${getCoachName(s.coach_id)} · 第${s.period}期</div>
+        <div class="stu-tags">${typeBadge}${remBadge}${alreadyToday?`<span class="badge badge-done">今日已簽 Done</span>`:''}</div>
       </div>
-      ${btn}
-    </div>`;
-  }).join('');
+    </div>
+    ${btn}
+  </div>`;
 }
 
 async function studentCheckin(sid){
@@ -360,12 +382,36 @@ async function studentCheckin(sid){
     lastCheckinRecordId=Array.isArray(rec)?rec[0]?.id:rec?.id;
     s.records.push(today);
     const rem=getRemaining(s);
-    document.getElementById('undo-checkin-btn').style.display='block';
+    const isGroup=s.course_type==='group';
+    const wrap=document.getElementById('success-icon-wrap');
+    wrap.className='success-icon-wrap '+(isGroup?'success-icon-group':'success-icon-solo');
     document.getElementById('success-student-name').textContent=s.name;
     document.getElementById('success-student-info').innerHTML=
-      `日期 Date：${today}<br>剩餘 Remaining：<b>${rem} 堂 sessions</b>${rem<=2&&rem>0?'<br>⚠️ 快用完了，請聯繫老師續費<br>Please contact us to renew':''}${rem===0?'<br>⚠️ 本期已用完，請聯繫老師<br>Please contact us to renew':''}`;
+      `課程 Course：${isGroup?'團體課 Group':'個人課 Private'}<br>`+
+      `日期 Date：${today}<br>`+
+      `剩餘 Remaining：<b>${rem} 堂 sessions</b>`+
+      (rem<=2&&rem>0?'<br>⚠️ 快用完了 / Almost done':'')+
+      (rem===0?'<br>⚠️ 本期已用完 / Period complete':'');
+    document.getElementById('undo-btn').style.display='block';
     showScreen('screen-student-success');
   }catch(e){showToast('簽到失敗 / Check-in failed');}
+}
+
+async function undoCheckin(){
+  if(!lastCheckinRecordId)return;
+  try{
+    const btn=document.getElementById('undo-btn');
+    btn.disabled=true;btn.textContent='取消中... / Undoing...';
+    await api('records?id=eq.'+lastCheckinRecordId,'DELETE');
+    const s=students.find(x=>x.records.includes(todayStr()));
+    if(s){const i=s.records.lastIndexOf(todayStr());if(i>-1)s.records.splice(i,1);}
+    lastCheckinRecordId=null;
+    showToast('已取消簽到 / Check-in undone ✓');
+    showScreen('screen-student');renderStudentList();
+  }catch(e){
+    showToast('取消失敗 / Undo failed');
+    document.getElementById('undo-btn').disabled=false;
+  }
 }
 
 function renderCoachGrid(){
@@ -397,38 +443,33 @@ function changeQty(type,dir){
 }
 
 function updateSummary(){
-  const totalHours=qtySolo*1+qtyGroup*1.5;
-  const totalSessions=qtySolo+qtyGroup;
-  const ok=selectedCoachId&&totalSessions>0;
+  const total=qtySolo+qtyGroup;
+  const ok=selectedCoachId&&total>0;
   document.getElementById('coach-confirm-btn').disabled=!ok;
   const box=document.getElementById('summary-box');
   if(ok){
     let lines=[];
-    if(qtySolo>0)lines.push(`👤 個人課 ${qtySolo} 堂 · Private ${qtySolo} session(s) · ${qtySolo} hr`);
-    if(qtyGroup>0)lines.push(`👥 團體課 ${qtyGroup} 堂 · Group ${qtyGroup} session(s) · ${qtyGroup*1.5} hr`);
-    lines.push(`⏱ 今日總時數 Total：${totalHours} 小時 / hours`);
-    box.innerHTML=lines.join('<br>');
-    box.style.display='block';
-  }else{
-    box.style.display='none';
-  }
+    if(qtySolo>0)lines.push(`👤 個人課 ${qtySolo} 堂 · ${qtySolo} hr`);
+    if(qtyGroup>0)lines.push(`👥 團體課 ${qtyGroup} 堂 · ${qtyGroup*1.5} hr`);
+    lines.push(`⏱ 總時數 Total：${qtySolo+qtyGroup*1.5} hr`);
+    box.innerHTML=lines.join('<br>');box.style.display='block';
+  }else{box.style.display='none';}
 }
 
 async function coachCheckin(){
   if(!selectedCoachId||(qtySolo===0&&qtyGroup===0))return;
   const today=todayStr();
-  const coachName=getCoachName(selectedCoachId);
   try{
     const records=[];
     for(let i=0;i<qtySolo;i++)records.push({coach_id:selectedCoachId,date:today,course_type:'solo',hours:1,amount:500});
     for(let i=0;i<qtyGroup;i++)records.push({coach_id:selectedCoachId,date:today,course_type:'group',hours:1.5,amount:750});
     await api('coach_records','POST',records);
-    const totalHours=qtySolo*1+qtyGroup*1.5;
+    const totalHours=qtySolo+qtyGroup*1.5;
     let lines=[];
     if(qtySolo>0)lines.push(`個人課 Private ${qtySolo} 堂 · ${qtySolo} hr`);
     if(qtyGroup>0)lines.push(`團體課 Group ${qtyGroup} 堂 · ${qtyGroup*1.5} hr`);
-    lines.push(`總時數 Total：${totalHours} 小時 / hours`);
-    document.getElementById('success-coach-name').textContent=coachName;
+    lines.push(`總時數 Total：${totalHours} hr`);
+    document.getElementById('success-coach-name').textContent=getCoachName(selectedCoachId);
     document.getElementById('success-coach-info').innerHTML=`日期 Date：${today}<br>${lines.join('<br>')}`;
     showScreen('screen-coach-success');
   }catch(e){showToast('簽到失敗 / Check-in failed');}
@@ -437,34 +478,12 @@ async function coachCheckin(){
 function resetCoachForm(){
   selectedCoachId=null;qtySolo=0;qtyGroup=0;
   document.querySelectorAll('.coach-card').forEach(el=>el.classList.remove('selected'));
-  document.getElementById('qty-solo').textContent='0';
-  document.getElementById('qty-group').textContent='0';
-  document.getElementById('desc-solo').textContent='—';
-  document.getElementById('desc-group').textContent='—';
+  ['qty-solo','qty-group'].forEach(id=>document.getElementById(id).textContent='0');
+  ['desc-solo','desc-group'].forEach(id=>document.getElementById(id).textContent='—');
   document.getElementById('summary-box').style.display='none';
   document.getElementById('coach-confirm-btn').disabled=true;
 }
 
-async function undoCheckin(){
-  if(!lastCheckinRecordId)return;
-  try{
-    const btn=document.getElementById('undo-checkin-btn');
-    btn.disabled=true;
-    btn.textContent='取消中... / Undoing...';
-    await api('records?id=eq.'+lastCheckinRecordId,'DELETE');
-    // 從本地記錄移除
-    const s=students.find(x=>x.records.includes(todayStr()));
-    if(s){const idx=s.records.lastIndexOf(todayStr());if(idx>-1)s.records.splice(idx,1);}
-    lastCheckinRecordId=null;
-    btn.style.display='none';
-    showToast('已取消簽到 / Check-in undone ✓');
-    showScreen('screen-student');
-    renderStudentList();
-  }catch(e){
-    showToast('取消失敗 / Undo failed');
-    document.getElementById('undo-checkin-btn').disabled=false;
-  }
-}
 function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(name).classList.add('active');

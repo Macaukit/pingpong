@@ -236,6 +236,32 @@ select:focus{border-color:#f97316}
 </div>
 
 <script>
+const ADMIN_PWD = '28825661';
+let lockTimer = null;
+
+function checkLock(){
+  const val = document.getElementById('lock-input').value.trim();
+  if(val === ADMIN_PWD){
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('lock-input').value = '';
+    document.getElementById('lock-error').textContent = '';
+    startLockTimer();
+    loadAll();
+  } else {
+    document.getElementById('lock-error').textContent = '密碼錯誤，請重試';
+    document.getElementById('lock-input').value = '';
+    document.getElementById('lock-input').focus();
+  }
+}
+
+function startLockTimer(){
+  clearTimeout(lockTimer);
+  lockTimer = setTimeout(()=>{
+    document.getElementById('lock-screen').style.display = 'flex';
+    document.getElementById('lock-input').value = '';
+  }, 30 * 60 * 1000);
+}
+
 const SUPABASE_URL = 'https://jygtjpemdhrsdwzubfjn.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_DBsYrgaB7_lI-zuC399iRA_PMGqejaZ';
 const DAYS=['週一','週二','週三','週四','週五','週六','週日'];
@@ -664,34 +690,7 @@ function showError(msg){
   el.style.cssText='background:#fee2e2;border-radius:10px;padding:12px 16px;margin-bottom:10px;font-size:14px;color:#dc2626';
   el.textContent=msg;area.prepend(el);setTimeout(()=>el.remove(),5000);
 }
-const ADMIN_PWD = '28825661';
-let lockTimer = null;
-
-function checkLock(){
-  const val = document.getElementById('lock-input').value.trim();
-  if(val === ADMIN_PWD){
-    document.getElementById('lock-screen').style.display = 'none';
-    document.getElementById('lock-input').value = '';
-    document.getElementById('lock-error').textContent = '';
-    loadAll();
-    startLockTimer();
-  } else {
-    document.getElementById('lock-error').textContent = '密碼錯誤，請重試';
-    document.getElementById('lock-input').value = '';
-    document.getElementById('lock-input').focus();
-  }
-}
-
-function startLockTimer(){
-  clearTimeout(lockTimer);
-  lockTimer = setTimeout(()=>{
-    document.getElementById('lock-screen').style.display = 'flex';
-    document.getElementById('lock-input').value = '';
-  }, 30 * 60 * 1000);
-}
-
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
-// loadAll() 由 checkLock 呼叫
 </script>
 
 <!-- 補簽 Modal -->

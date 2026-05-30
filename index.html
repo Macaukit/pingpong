@@ -668,13 +668,13 @@ const ADMIN_PWD = '28825661';
 let lockTimer = null;
 
 function checkLock(){
-  const val = document.getElementById('lock-input').value;
+  const val = document.getElementById('lock-input').value.trim();
   if(val === ADMIN_PWD){
     document.getElementById('lock-screen').style.display = 'none';
     document.getElementById('lock-input').value = '';
     document.getElementById('lock-error').textContent = '';
     loadAll();
-    resetLockTimer();
+    startLockTimer();
   } else {
     document.getElementById('lock-error').textContent = '密碼錯誤，請重試';
     document.getElementById('lock-input').value = '';
@@ -682,20 +682,16 @@ function checkLock(){
   }
 }
 
-function resetLockTimer(){
+function startLockTimer(){
   clearTimeout(lockTimer);
   lockTimer = setTimeout(()=>{
     document.getElementById('lock-screen').style.display = 'flex';
     document.getElementById('lock-input').value = '';
-  }, 30 * 60 * 1000); // 30分鐘自動鎖定
+  }, 30 * 60 * 1000);
 }
 
-// 任何操作都重置計時器
-document.addEventListener('touchstart', resetLockTimer);
-document.addEventListener('click', resetLockTimer);
-
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
-// loadAll() 改由 checkLock 呼叫
+// loadAll() 由 checkLock 呼叫
 </script>
 
 <!-- 補簽 Modal -->

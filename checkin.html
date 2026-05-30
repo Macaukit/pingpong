@@ -479,11 +479,13 @@ async function undoCheckin(){
 }
 
 function renderCoachGrid(){
-  document.getElementById('coach-grid').innerHTML=coaches.map(c=>`
-    <div class="coach-card${selectedCoachId===c.id?' selected':''}" id="coach-${c.id}" onclick="selectCoach(${c.id})">
-      <div class="coach-avatar">${getInitials(c.name)}</div>
+  document.getElementById('coach-grid').innerHTML=coaches.map(c=>{
+    const icon = c.name.includes('胡') ? '👩' : '👨';
+    return `<div class="coach-card${selectedCoachId===c.id?' selected':''}" id="coach-${c.id}" onclick="selectCoach(${c.id})">
+      <div class="coach-avatar" style="font-size:22px;background:none">${icon}</div>
       <div class="coach-name-label">${c.name}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function selectCoach(id){

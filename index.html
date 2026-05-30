@@ -559,15 +559,14 @@ function renderAllStudents(){
       let pb=s.paid?`<span class="badge badge-ok">已繳費</span>`:`<span class="badge badge-danger">未繳費</span>`;
       let tb=ci.isGroup?`<span class="badge badge-group">團</span>`:`<span class="badge badge-solo">個</span>`;
       return`<div class="student-row">
-        <div class="stu-left">
+        <div class="stu-left" onclick="openDetail(${s.id})">
           <div class="stu-avatar ${ci.isGroup?'stu-avatar-group':'stu-avatar-solo'}">${getInitials(s.name)}</div>
           <div><div class="stu-name">${s.name}</div>
           <div class="stu-meta">${days}・${getCoachName(s.coach_id)}・${ci.label}</div>
           <div style="margin-top:3px;display:flex;gap:4px;flex-wrap:wrap">${tb}${rb}${pb}</div></div>
         </div>
-      </div>
-      <button class="makeup-btn" onclick="openMakeup(${s.id})">補簽</button>
-      </div>\`;
+        <button class="makeup-btn" onclick="openMakeup(${s.id})">補簽</button>
+      </div>`;
     }).join('');
 }
 

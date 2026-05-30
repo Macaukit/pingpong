@@ -106,6 +106,15 @@ select:focus{border-color:#f97316}
 .income-total-label{font-size:13px;color:#16a34a;margin-bottom:4px}
 .income-total-num{font-size:36px;font-weight:700;color:#15803d}
 .income-total-sub{font-size:12px;color:#4ade80;margin-top:4px}
+.makeup-btn{padding:6px 12px;background:none;border:0.5px solid #e5e5e5;border-radius:8px;font-size:12px;color:#64748b;cursor:pointer;margin-left:6px;white-space:nowrap;flex-shrink:0}
+.makeup-modal{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.makeup-sheet{background:#fff;border-radius:20px 20px 0 0;padding:1.5rem;width:100%;max-width:480px}
+.makeup-title{font-size:17px;font-weight:700;color:#09090b;margin-bottom:4px}
+.makeup-sub{font-size:13px;color:#94a3b8;margin-bottom:1.25rem}
+.makeup-date-input{width:100%;padding:12px 14px;border:1.5px solid #e5e5e5;border-radius:12px;font-size:16px;outline:none;margin-bottom:12px;color:#09090b;background:#f8fafc}
+.makeup-date-input:focus{border-color:#f97316}
+.makeup-confirm{width:100%;padding:14px;background:#f97316;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px}
+.makeup-cancel{width:100%;padding:12px;background:none;border:none;font-size:15px;color:#94a3b8;cursor:pointer}
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#09090b;color:#fff;padding:12px 24px;border-radius:20px;font-size:14px;z-index:100;opacity:0;transition:opacity 0.3s;white-space:nowrap}
 .toast.show{opacity:1}
 .empty-state{text-align:center;padding:2.5rem 1rem;color:#94a3b8;font-size:14px}
@@ -300,13 +309,14 @@ function renderDaySection(){
     let pb=s.paid?'':`<span class="badge badge-danger">未繳費</span>`;
     let tb=ci.isGroup?`<span class="badge badge-group">團</span>`:`<span class="badge badge-solo">個</span>`;
     let btn=alreadyToday?`<button class="sign-btn done" disabled>✓ 已簽</button>`:rem<=0?`<button class="sign-btn" disabled>用完</button>`:`<button class="sign-btn ${ci.isGroup?'sign-btn-group':'sign-btn-solo'}" onclick="quickSign(${s.id})">簽到</button>`;
+    let mkbtn=`<button class="makeup-btn" onclick="openMakeup(${s.id})">補簽</button>`;
     return`<div class="student-row">
       <div class="stu-left" onclick="openDetail(${s.id})">
         <div class="stu-avatar ${ci.isGroup?'stu-avatar-group':'stu-avatar-solo'}">${getInitials(s.name)}</div>
         <div><div class="stu-name">${s.name}</div>
         <div class="stu-meta">${getCoachName(s.coach_id)}・第${s.period}期</div>
         <div style="margin-top:3px;display:flex;gap:4px;flex-wrap:wrap">${tb}${rb}${pb}</div></div>
-      </div><div style="margin-left:6px">${btn}</div>
+      </div><div style="margin-left:6px;display:flex;gap:4px">${btn}${mkbtn}</div>
     </div>`;
   }).join('');
 }
@@ -503,14 +513,16 @@ function renderAllStudents(){
       let rb=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-info">剩${rem}堂</span>`;
       let pb=s.paid?`<span class="badge badge-ok">已繳費</span>`:`<span class="badge badge-danger">未繳費</span>`;
       let tb=ci.isGroup?`<span class="badge badge-group">團</span>`:`<span class="badge badge-solo">個</span>`;
-      return`<div class="student-row" onclick="openDetail(${s.id})" style="cursor:pointer">
+      return`<div class="student-row">
         <div class="stu-left">
           <div class="stu-avatar ${ci.isGroup?'stu-avatar-group':'stu-avatar-solo'}">${getInitials(s.name)}</div>
           <div><div class="stu-name">${s.name}</div>
           <div class="stu-meta">${days}・${getCoachName(s.coach_id)}・${ci.label}</div>
           <div style="margin-top:3px;display:flex;gap:4px;flex-wrap:wrap">${tb}${rb}${pb}</div></div>
         </div>
-      </div>`;
+      </div>
+      <button class="makeup-btn" onclick="openMakeup(${s.id})">補簽</button>
+      </div>\`;
     }).join('');
 }
 
@@ -588,6 +600,36 @@ function renderOverview(){
   }).join('');
 }
 
+let makeupStudentId=null;
+function openMakeup(sid){
+  makeupStudentId=sid;
+  const s=students.find(x=>x.id===sid);
+  document.getElementById('makeup-student-label').textContent=`補簽：${s.name}`;
+  const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+  document.getElementById('makeup-date-input').value=yesterday.toISOString().split('T')[0];
+  document.getElementById('makeup-modal').style.display='flex';
+}
+function closeMakeupModal(e){
+  if(e.target.id==='makeup-modal')document.getElementById('makeup-modal').style.display='none';
+}
+async function confirmMakeup(){
+  const s=students.find(x=>x.id===makeupStudentId);
+  if(!s)return;
+  const dateInput=document.getElementById('makeup-date-input').value;
+  if(!dateInput){showToast('請選擇日期');return;}
+  const d=new Date(dateInput);
+  const dateStr=`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+  if(s.records.includes(dateStr)){showToast('該日期已有簽到記錄');return;}
+  try{
+    await api('records','POST',{student_id:s.id,date:dateStr,coach_id:s.coach_id});
+    s.records.push(dateStr);
+    s.records.sort();
+    document.getElementById('makeup-modal').style.display='none';
+    showToast(`${s.name} 補簽成功！${dateStr}`);
+    renderDaySection();
+    renderAllStudents();
+  }catch(e){showError('補簽失敗');}
+}
 function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(name).classList.add('active');
@@ -606,5 +648,16 @@ function showError(msg){
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
 loadAll();
 </script>
+
+<!-- 補簽 Modal -->
+<div id="makeup-modal" class="makeup-modal" style="display:none" onclick="closeMakeupModal(event)">
+  <div class="makeup-sheet">
+    <div class="makeup-title">📅 補簽到</div>
+    <div class="makeup-sub" id="makeup-student-label">選擇補簽日期</div>
+    <input class="makeup-date-input" type="date" id="makeup-date-input">
+    <button class="makeup-confirm" onclick="confirmMakeup()">確認補簽</button>
+    <button class="makeup-cancel" onclick="document.getElementById('makeup-modal').style.display='none'">取消</button>
+  </div>
+</div>
 </body>
 </html>

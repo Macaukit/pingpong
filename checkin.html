@@ -115,6 +115,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#09090b;color:#fff;padding:12px 24px;border-radius:20px;font-size:14px;z-index:100;opacity:0;transition:opacity 0.3s;white-space:nowrap}
 .toast.show{opacity:1}
 .empty-state{text-align:center;padding:3rem 1rem;color:#94a3b8;font-size:15px;line-height:1.8}
+.makeup-btn{padding:8px 14px;background:none;border:1.5px solid #e5e5e5;border-radius:10px;font-size:13px;color:#64748b;cursor:pointer;margin-top:8px;display:inline-block}
+.makeup-btn:active{background:#f8fafc}
+.makeup-modal{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.makeup-sheet{background:#fff;border-radius:20px 20px 0 0;padding:1.5rem;width:100%;max-width:480px}
+.makeup-title{font-size:17px;font-weight:700;color:#09090b;margin-bottom:4px}
+.makeup-sub{font-size:13px;color:#94a3b8;margin-bottom:1.25rem}
+.makeup-date-input{width:100%;padding:12px 14px;border:1.5px solid #e5e5e5;border-radius:12px;font-size:16px;outline:none;margin-bottom:12px;color:#09090b;background:#f8fafc}
+.makeup-date-input:focus{border-color:#f97316}
+.makeup-confirm{width:100%;padding:14px;background:#f97316;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px}
+.makeup-cancel{width:100%;padding:12px;background:none;border:none;font-size:15px;color:#94a3b8;cursor:pointer}
+.record-list{margin-top:1rem;width:100%;max-width:320px;text-align:left}
+.record-list-title{font-size:12px;color:#94a3b8;font-weight:600;margin-bottom:8px;letter-spacing:0.04em}
+.record-item{display:flex;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid #f1f5f9;font-size:13px;color:#374151}
+.record-item:last-child{border-bottom:none}
+.record-item-num{color:#94a3b8;font-size:12px}
 .day-section-title{font-size:13px;font-weight:600;color:#94a3b8;margin:16px 0 8px;padding-bottom:6px;border-bottom:0.5px solid #f1f5f9}
 </style>
 </head>
@@ -180,6 +195,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
       取消此次簽到
       <span class="undo-btn-en">Undo Last Check-in</span>
     </button>
+    <div class="record-list" id="success-record-list"></div>
     <button class="home-link" onclick="goHome()">回首頁 / Home</button>
   </div>
 </div>
@@ -369,6 +385,7 @@ function renderStudentCard(s){
       </div>
     </div>
     ${btn}
+  <button class="makeup-btn" onclick="event.stopPropagation();openMakeup(${s.id})">📅 補簽 / Backdated</button>
   </div>`;
 }
 
@@ -393,8 +410,55 @@ async function studentCheckin(sid){
       (rem<=2&&rem>0?'<br>⚠️ 快用完了 / Almost done':'')+
       (rem===0?'<br>⚠️ 本期已用完 / Period complete':'');
     document.getElementById('undo-btn').style.display='block';
+    renderSuccessRecords(s);
     showScreen('screen-student-success');
   }catch(e){showToast('簽到失敗 / Check-in failed');}
+}
+
+function renderSuccessRecords(s){
+  const el=document.getElementById('success-record-list');
+  if(!s.records||!s.records.length){el.innerHTML='';return;}
+  const sorted=[...s.records].reverse();
+  const rows=sorted.map((d,i)=>`
+    <div class="record-item">
+      <span>第 ${s.records.length-i} 堂</span>
+      <span>${d}</span>
+    </div>`).join('');
+  el.innerHTML=`<div class="record-list-title">上課記錄 / Attendance History</div>${rows}`;
+}
+
+let makeupStudentId=null;
+function openMakeup(sid){
+  makeupStudentId=sid;
+  const s=students.find(x=>x.id===sid);
+  document.getElementById('makeup-student-name').textContent=`${s.name} — 補簽 / Backdated Check-in`;
+  // 預設昨天
+  const yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);
+  document.getElementById('makeup-date').value=yesterday.toISOString().split('T')[0];
+  document.getElementById('makeup-modal').style.display='flex';
+}
+function closeMakeupModal(e){
+  if(e.target.id==='makeup-modal')document.getElementById('makeup-modal').style.display='none';
+}
+async function confirmMakeup(){
+  const s=students.find(x=>x.id===makeupStudentId);
+  if(!s)return;
+  const dateInput=document.getElementById('makeup-date').value;
+  if(!dateInput){showToast('請選擇日期 / Please select a date');return;}
+  const d=new Date(dateInput);
+  const dateStr=`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+  if(s.records.includes(dateStr)){
+    showToast('該日期已有簽到記錄 / Already checked in on this date');
+    return;
+  }
+  try{
+    await api('records','POST',{student_id:s.id,date:dateStr,coach_id:s.coach_id});
+    s.records.push(dateStr);
+    s.records.sort();
+    document.getElementById('makeup-modal').style.display='none';
+    showToast(`${s.name} 補簽成功！${dateStr}`);
+    renderStudentList();
+  }catch(e){showToast('補簽失敗 / Failed');}
 }
 
 async function undoCheckin(){
@@ -503,5 +567,16 @@ function showToast(msg){
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
 loadAll();
 </script>
+
+<!-- 補簽 Modal -->
+<div id="makeup-modal" class="makeup-modal" style="display:none" onclick="closeMakeupModal(event)">
+  <div class="makeup-sheet">
+    <div class="makeup-title">補簽到</div>
+    <div class="makeup-sub" id="makeup-student-name">Backdated Check-in</div>
+    <input class="makeup-date-input" type="date" id="makeup-date">
+    <button class="makeup-confirm" onclick="confirmMakeup()">確認補簽 / Confirm</button>
+    <button class="makeup-cancel" onclick="document.getElementById('makeup-modal').style.display='none'">取消 / Cancel</button>
+  </div>
+</div>
 </body>
 </html>

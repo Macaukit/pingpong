@@ -123,6 +123,17 @@ select:focus{border-color:#f97316}
 .lock-input:focus{background:#f1f5f9}
 .lock-error{color:#dc2626;font-size:13px;margin-bottom:10px;min-height:18px}
 .lock-btn{width:100%;max-width:300px;padding:15px;background:#09090b;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:600;cursor:pointer}
+.edit-modal{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.edit-sheet{background:#fff;border-radius:20px 20px 0 0;padding:1.5rem;width:100%;max-width:480px;max-height:85vh;overflow-y:auto}
+.edit-title{font-size:17px;font-weight:700;color:#09090b;margin-bottom:4px}
+.edit-sub{font-size:13px;color:#94a3b8;margin-bottom:1.25rem}
+.edit-label{font-size:12px;font-weight:600;color:#64748b;margin-bottom:6px;margin-top:12px}
+.edit-day-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:4px}
+.edit-day-btn{padding:8px 4px;border:0.5px solid #e5e5e5;border-radius:8px;text-align:center;cursor:pointer;font-size:12px;font-weight:500;color:#64748b;background:#fff;transition:all 0.15s}
+.edit-day-btn.selected{background:#fff7ed;border-color:#f97316;color:#f97316}
+.edit-save-btn{width:100%;padding:14px;background:#09090b;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-top:16px}
+.edit-cancel-btn{width:100%;padding:12px;background:none;border:none;font-size:14px;color:#94a3b8;cursor:pointer;margin-top:6px}
+.edit-delete-btn{width:100%;padding:12px;background:none;border:1.5px solid #fee2e2;border-radius:12px;font-size:14px;color:#dc2626;cursor:pointer;margin-top:6px}
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#09090b;color:#fff;padding:12px 24px;border-radius:20px;font-size:14px;z-index:100;opacity:0;transition:opacity 0.3s;white-space:nowrap}
 .toast.show{opacity:1}
 .empty-state{text-align:center;padding:2.5rem 1rem;color:#94a3b8;font-size:14px}
@@ -229,7 +240,10 @@ select:focus{border-color:#f97316}
 
 <div id="screen-detail" class="screen">
   <div class="tab-content">
-    <button class="back-btn" onclick="showScreen('screen-home')">‹ 返回</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <button class="back-btn" style="margin-bottom:0" onclick="showScreen('screen-home')">‹ 返回</button>
+      <button id="detail-edit-btn" style="background:none;border:0.5px solid #e5e5e5;border-radius:8px;padding:7px 14px;font-size:13px;color:#555;cursor:pointer">✏️ 編輯</button>
+    </div>
     <h2 id="detail-name"></h2>
     <div id="detail-body"></div>
   </div>
@@ -397,6 +411,7 @@ function openDetail(sid){
     :`<tr><td colspan="3" style="text-align:center;color:#94a3b8;padding:12px 0">尚無上課記錄</td></tr>`;
 
   document.getElementById('detail-name').textContent=s.name;
+  document.getElementById('detail-edit-btn').onclick=()=>openEditModal(sid);
   document.getElementById('detail-body').innerHTML=`
     <div class="next-class-box ${ci.isGroup?'next-class-box-group':'next-class-box-solo'}">
       ${ci.isGroup?'👥':'👤'}
@@ -644,6 +659,83 @@ function renderOverview(){
   }).join('');
 }
 
+let editStudentId=null;
+let editDays=[];
+
+function openEditModal(sid){
+  editStudentId=sid;
+  const s=students.find(x=>x.id===sid);
+  document.getElementById('edit-modal-name').textContent=s.name;
+  document.getElementById('edit-name').value=s.name;
+  // 填入教練選項
+  document.getElementById('edit-coach').innerHTML=coaches.map(c=>`<option value="${c.id}"${s.coach_id===c.id?' selected':''}>${c.name}</option>`).join('');
+  // 填入課程類型
+  document.getElementById('edit-course').value=s.course_type||'solo_800';
+  // 填入上課日
+  editDays=[...getStudentDays(s)];
+  document.querySelectorAll('.edit-day-btn').forEach(el=>{
+    const d=parseInt(el.dataset.day);
+    el.classList.toggle('selected',editDays.includes(d));
+  });
+  document.getElementById('edit-modal').style.display='flex';
+}
+
+function closeEditModal(){
+  document.getElementById('edit-modal').style.display='none';
+}
+
+function toggleEditDay(d){
+  const el=document.querySelector(`.edit-day-btn[data-day="${d}"]`);
+  if(editDays.includes(d)){
+    editDays=editDays.filter(x=>x!==d);
+    el.classList.remove('selected');
+  } else {
+    editDays.push(d);
+    el.classList.add('selected');
+  }
+}
+
+async function saveEditStudent(){
+  if(!editStudentId)return;
+  const name=document.getElementById('edit-name').value.trim();
+  const coach=document.getElementById('edit-coach').value;
+  const course=document.getElementById('edit-course').value;
+  if(!name||editDays.length===0||!coach){
+    showToast('請填寫完整資料');return;
+  }
+  const mainDay=Math.min(...editDays);
+  const daysArr='{'+editDays.sort().join(',')+'}';
+  try{
+    await api(`students?id=eq.${editStudentId}`,'PATCH',{
+      name,day_index:mainDay,days_of_week:daysArr,
+      coach_id:parseInt(coach),course_type:course
+    });
+    const s=students.find(x=>x.id===editStudentId);
+    s.name=name;s.day_index=mainDay;
+    s.days_of_week=editDays.sort();
+    s.coach_id=parseInt(coach);s.course_type=course;
+    closeEditModal();
+    showToast(`已更新：${name}`);
+    openDetail(editStudentId);
+    renderDayGrid();
+  }catch(e){showError('更新失敗：'+e.message);}
+}
+
+async function confirmDeleteStudent(){
+  const s=students.find(x=>x.id===editStudentId);
+  if(!confirm(`確定要刪除「${s.name}」嗎？
+所有上課記錄也會一併刪除，此操作無法復原。`))return;
+  try{
+    await api(`records?student_id=eq.${editStudentId}`,'DELETE');
+    await api(`students?id=eq.${editStudentId}`,'DELETE');
+    students=students.filter(x=>x.id!==editStudentId);
+    closeEditModal();
+    showScreen('screen-home');
+    renderDayGrid();renderDaySection();
+    showToast(`已刪除：${s.name}`);
+  }catch(e){showError('刪除失敗：'+e.message);}
+}
+
 let makeupStudentId=null;
 function openMakeup(sid){
   makeupStudentId=sid;
@@ -691,6 +783,39 @@ function showError(msg){
 }
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
 </script>
+
+<!-- 編輯學生 Modal -->
+<div id="edit-modal" class="edit-modal" style="display:none" onclick="if(event.target.id==='edit-modal')closeEditModal()">
+  <div class="edit-sheet">
+    <div class="edit-title">✏️ 編輯學生資料</div>
+    <div class="edit-sub" id="edit-modal-name"></div>
+    <div class="edit-label">學生姓名</div>
+    <input type="text" id="edit-name" placeholder="學生姓名" style="margin-bottom:0">
+    <div class="edit-label">上課星期（可多選）</div>
+    <div class="edit-day-grid">
+      <div class="edit-day-btn" data-day="0" onclick="toggleEditDay(0)">週一</div>
+      <div class="edit-day-btn" data-day="1" onclick="toggleEditDay(1)">週二</div>
+      <div class="edit-day-btn" data-day="2" onclick="toggleEditDay(2)">週三</div>
+      <div class="edit-day-btn" data-day="3" onclick="toggleEditDay(3)">週四</div>
+      <div class="edit-day-btn" data-day="4" onclick="toggleEditDay(4)">週五</div>
+      <div class="edit-day-btn" data-day="5" onclick="toggleEditDay(5)">週六</div>
+      <div class="edit-day-btn" data-day="6" onclick="toggleEditDay(6)">週日</div>
+    </div>
+    <div class="edit-label">主要教練</div>
+    <select id="edit-coach" style="margin-bottom:0"></select>
+    <div class="edit-label">課程類型</div>
+    <select id="edit-course" style="margin-bottom:0">
+      <option value="solo_800">個人課 $8,000</option>
+      <option value="solo_1200">雙人個人課 $12,000</option>
+      <option value="group_350">團體課 $3,500</option>
+      <option value="group_400">成人團體課 $4,000</option>
+      <option value="group_800">週六早團體課 $8,000</option>
+    </select>
+    <button class="edit-save-btn" onclick="saveEditStudent()">儲存變更</button>
+    <button class="edit-delete-btn" onclick="confirmDeleteStudent()">🗑️ 刪除此學生</button>
+    <button class="edit-cancel-btn" onclick="closeEditModal()">取消</button>
+  </div>
+</div>
 
 <!-- 補簽 Modal -->
 <div id="makeup-modal" class="makeup-modal" style="display:none" onclick="closeMakeupModal(event)">

@@ -115,7 +115,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#09090b;color:#fff;padding:12px 24px;border-radius:20px;font-size:14px;z-index:100;opacity:0;transition:opacity 0.3s;white-space:nowrap}
 .toast.show{opacity:1}
 .empty-state{text-align:center;padding:3rem 1rem;color:#94a3b8;font-size:15px;line-height:1.8}
-.makeup-btn{padding:8px 14px;background:none;border:1.5px solid #e5e5e5;border-radius:10px;font-size:13px;color:#64748b;cursor:pointer;margin-top:8px;display:inline-block}
+.makeup-btn{padding:8px 14px;background:none;border:1.5px solid #e5e5e5;border-radius:10px;font-size:13px;color:#64748b;cursor:pointer;display:inline-block;text-align:center;white-space:nowrap}
+.makeup-btn:active{background:#f8fafc}
+.record-view-btn{padding:8px 14px;background:none;border:1.5px solid #dbeafe;border-radius:10px;font-size:13px;color:#3b82f6;cursor:pointer;display:inline-block;text-align:center;white-space:nowrap}
+.record-view-btn:active{background:#eff6ff}
 .makeup-btn:active{background:#f8fafc}
 .makeup-modal{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:flex-end;justify-content:center}
 .makeup-sheet{background:#fff;border-radius:20px 20px 0 0;padding:1.5rem;width:100%;max-width:480px}
@@ -289,6 +292,7 @@ const DAYS_EN=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 let coaches=[],students=[];
 let selectedCoachId=null,qtySolo=0,qtyGroup=0;
 let lastCheckinRecordId=null;
+let lastCheckinStudentId=null;
 
 async function api(path,method='GET',body=null){
   const opts={method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'}};
@@ -370,7 +374,7 @@ function renderStudentCard(s){
   let remBadge=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-ok">剩${rem}堂</span>`;
   const days=(s.days_of_week&&s.days_of_week.length>0?s.days_of_week:[s.day_index]).map(d=>DAYS[d]).join('+');
 
-  let btn=alreadyToday
+  let signBtn=alreadyToday
     ?`<button class="sign-btn done" disabled>✓ 已簽<span class="btn-en-small">Checked in</span></button>`
     :rem<=0?`<button class="sign-btn" disabled>用完<span class="btn-en-small">No sessions</span></button>`
     :`<button class="sign-btn ${isGroup?'sign-btn-group':'sign-btn-solo'}" onclick="studentCheckin(${s.id})">簽到<span class="btn-en-small">Check in</span></button>`;
@@ -384,8 +388,11 @@ function renderStudentCard(s){
         <div class="stu-tags">${typeBadge}${remBadge}${alreadyToday?`<span class="badge badge-done">今日已簽 Done</span>`:''}</div>
       </div>
     </div>
-    ${btn}
-  <button class="makeup-btn" onclick="event.stopPropagation();openMakeup(${s.id})">📅 補簽 / Backdated</button>
+    <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;margin-left:8px">
+      ${signBtn}
+      <button class="makeup-btn" onclick="event.stopPropagation();openMakeup(${s.id})">📅 補簽<span class="btn-en-small">Backdated</span></button>
+      <button class="record-view-btn" onclick="event.stopPropagation();openRecordView(${s.id})">📋 記錄<span class="btn-en-small">History</span></button>
+    </div>
   </div>`;
 }
 
@@ -397,6 +404,7 @@ async function studentCheckin(sid){
   try{
     const rec=await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id});
     lastCheckinRecordId=Array.isArray(rec)?rec[0]?.id:rec?.id;
+    lastCheckinStudentId=sid;
     s.records.push(today);
     const rem=getRemaining(s);
     const isGroup=s.course_type==='group';
@@ -425,6 +433,25 @@ function renderSuccessRecords(s){
       <span>${d}</span>
     </div>`).join('');
   el.innerHTML=`<div class="record-list-title">上課記錄 / Attendance History</div>${rows}`;
+}
+
+function openRecordView(sid){
+  const s=students.find(x=>x.id===sid);
+  if(!s)return;
+  document.getElementById('record-modal-name').textContent=s.name+' 的上課記錄';
+  const body=document.getElementById('record-modal-body');
+  if(!s.records||!s.records.length){
+    body.innerHTML='<div style="text-align:center;padding:2rem;color:#94a3b8;font-size:14px">尚無上課記錄<br>No records yet</div>';
+  } else {
+    const sorted=[...s.records].reverse();
+    body.innerHTML=`<div style="font-size:12px;color:#94a3b8;margin-bottom:8px">共 ${s.records.length} 堂 / ${s.records.length} sessions</div>`+
+    sorted.map((d,i)=>`
+      <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:0.5px solid #f1f5f9;font-size:14px;color:#374151">
+        <span style="color:#94a3b8;font-size:13px">第 ${s.records.length-i} 堂</span>
+        <span>${d}</span>
+      </div>`).join('');
+  }
+  document.getElementById('record-modal').style.display='flex';
 }
 
 let makeupStudentId=null;
@@ -463,18 +490,27 @@ async function confirmMakeup(){
 
 async function undoCheckin(){
   if(!lastCheckinRecordId)return;
+  const btn=document.getElementById('undo-btn');
   try{
-    const btn=document.getElementById('undo-btn');
-    btn.disabled=true;btn.textContent='取消中... / Undoing...';
+    btn.disabled=true;
+    btn.innerHTML='取消中... / Undoing...';
     await api('records?id=eq.'+lastCheckinRecordId,'DELETE');
-    const s=students.find(x=>x.records.includes(todayStr()));
-    if(s){const i=s.records.lastIndexOf(todayStr());if(i>-1)s.records.splice(i,1);}
+    // 精確找到剛才簽到的學生，移除記錄
+    const s=students.find(x=>x.id===lastCheckinStudentId);
+    if(s){
+      const today=todayStr();
+      const i=s.records.lastIndexOf(today);
+      if(i>-1)s.records.splice(i,1);
+    }
     lastCheckinRecordId=null;
+    lastCheckinStudentId=null;
     showToast('已取消簽到 / Check-in undone ✓');
-    showScreen('screen-student');renderStudentList();
+    showScreen('screen-student');
+    renderStudentList();
   }catch(e){
     showToast('取消失敗 / Undo failed');
-    document.getElementById('undo-btn').disabled=false;
+    btn.disabled=false;
+    btn.innerHTML='取消此次簽到<span class="undo-btn-en">Undo Last Check-in</span>';
   }
 }
 
@@ -557,6 +593,7 @@ function showScreen(name){
 }
 function goHome(){
   lastCheckinRecordId=null;
+  lastCheckinStudentId=null;
   showScreen('screen-home');
   document.getElementById('pwd-input').value='';
   document.getElementById('pwd-error').textContent='';
@@ -569,6 +606,16 @@ function showToast(msg){
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
 loadAll();
 </script>
+
+<!-- 記錄查看 Modal -->
+<div id="record-modal" class="makeup-modal" style="display:none" onclick="if(event.target.id==='record-modal')event.target.style.display='none'">
+  <div class="makeup-sheet">
+    <div class="makeup-title" id="record-modal-name">上課記錄</div>
+    <div class="makeup-sub">Attendance History</div>
+    <div id="record-modal-body" style="max-height:60vh;overflow-y:auto;margin-bottom:12px"></div>
+    <button class="makeup-cancel" onclick="document.getElementById('record-modal').style.display='none'">關閉 / Close</button>
+  </div>
+</div>
 
 <!-- 補簽 Modal -->
 <div id="makeup-modal" class="makeup-modal" style="display:none" onclick="closeMakeupModal(event)">

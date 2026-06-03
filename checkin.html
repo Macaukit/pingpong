@@ -400,11 +400,13 @@ function renderStudentCard(s){
 
 async function studentCheckin(sid){
   const s=students.find(x=>x.id===sid);
-  if(!s||getRemaining(s)<=0)return;
+  if(!s||getRemaining(s)<=0){showToast('❌ 找不到學生或堂數用完');return;}
   const today=todayStr();
-  if(s.records.includes(today))return;
+  if(s.records.includes(today)){showToast('⚠️ 今天已經簽到過了');return;}
+  showToast('⏳ 簽到中，請稍等...');
   try{
     const rec=await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id});
+    showToast('✅ API 成功，record id: '+(rec?.[0]?.id||rec?.id||'無'));
     lastCheckinRecordId=Array.isArray(rec)?rec[0]?.id:rec?.id;
     lastCheckinStudentId=sid;
     s.records.push(today);
@@ -421,7 +423,8 @@ async function studentCheckin(sid){
       (rem===0?'<br>⚠️ 本期已用完 / Period complete':'');
     document.getElementById('undo-btn').style.display='block';
     renderSuccessRecords(s);
-    showScreen('screen-student-success');
+    showToast('✅ 簽到成功！即將跳轉...');
+    setTimeout(()=>showScreen('screen-student-success'),1000);
   }catch(e){showToast('簽到失敗：'+e.message);console.error('簽到錯誤',e);}
 }
 

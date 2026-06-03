@@ -605,6 +605,16 @@ function showToast(msg){
 }
 if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
 loadAll();
+
+// 每30秒自動同步資料
+setInterval(async()=>{
+  try{
+    const stuData=await api('students?select=*&order=name');
+    const recData=await api('records?select=*&order=date');
+    students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
+    renderStudentList();
+  }catch(e){console.log('sync failed',e);}
+}, 30000);
 </script>
 
 <!-- 記錄查看 Modal -->

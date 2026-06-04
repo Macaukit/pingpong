@@ -320,7 +320,7 @@ async function loadAll(){
   try{
     coaches=await api('coaches?select=*&order=id');
     const stuData=await api('students?select=*&order=name');
-    const recData=await api('records?select=*&order=date');
+    const recData=await api('records?select=*&order=date&limit=100000');
     students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
     renderCoachGrid();
   }catch(e){console.error(e);}
@@ -402,12 +402,8 @@ async function studentCheckin(sid){
   const today=todayStr();
   if(s.records.includes(today))return;
   try{
-    showToast('正在儲存...');
     const rec=await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id});
-    const savedId=Array.isArray(rec)?rec[0]?.id:rec?.id;
-    showToast('回傳結果：'+(savedId?'ID='+savedId:'null/undefined')+' rec='+JSON.stringify(rec).slice(0,50));
-    await new Promise(r=>setTimeout(r,3000));
-    lastCheckinRecordId=savedId;
+    lastCheckinRecordId=Array.isArray(rec)?rec[0]?.id:rec?.id;
     lastCheckinStudentId=sid;
     s.records.push(today);
     const rem=getRemaining(s);
@@ -622,7 +618,7 @@ loadAll();
 setInterval(async()=>{
   try{
     const stuData=await api('students?select=*&order=name');
-    const recData=await api('records?select=*&order=date');
+    const recData=await api('records?select=*&order=date&limit=100000');
     students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
     renderStudentList();
   }catch(e){console.log('sync failed',e);}

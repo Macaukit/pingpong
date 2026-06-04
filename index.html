@@ -313,7 +313,7 @@ async function loadAll(){
   try{
     coaches=await api('coaches?select=*&order=id');
     const stuData=await api('students?select=*&order=name');
-    const recData=await api('records?select=*&order=date');
+    const recData=await api('records?select=*&order=date&limit=100000');
     coachRecords=await api('coach_records?select=*&order=date');
     incomeRecords=await api('income_records?select=*&order=date.desc').catch(()=>[]);
     students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
@@ -795,7 +795,7 @@ if('serviceWorker' in navigator){
 setInterval(async()=>{
   try{
     const stuData=await api('students?select=*&order=name');
-    const recData=await api('records?select=*&order=date');
+    const recData=await api('records?select=*&order=date&limit=100000');
     students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
     renderDaySection();
   }catch(e){console.log('sync failed',e);}

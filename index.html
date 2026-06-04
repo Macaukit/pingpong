@@ -781,7 +781,15 @@ function showError(msg){
   el.style.cssText='background:#fee2e2;border-radius:10px;padding:12px 16px;margin-bottom:10px;font-size:14px;color:#dc2626';
   el.textContent=msg;area.prepend(el);setTimeout(()=>el.remove(),5000);
 }
-if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
+// 停用並清除 service worker 快取
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(regs=>{
+    regs.forEach(r=>r.unregister());
+  });
+  caches.keys().then(keys=>{
+    keys.forEach(k=>caches.delete(k));
+  });
+}
 
 // 每30秒自動同步資料
 setInterval(async()=>{

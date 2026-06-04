@@ -603,7 +603,15 @@ function showToast(msg){
   t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3000);
 }
-if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');
+// 停用並清除 service worker 快取
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(regs=>{
+    regs.forEach(r=>r.unregister());
+  });
+  caches.keys().then(keys=>{
+    keys.forEach(k=>caches.delete(k));
+  });
+}
 loadAll();
 
 // 每30秒自動同步資料

@@ -323,7 +323,8 @@ async function loadAll(){
     const recData=await api('records?select=*&order=date&limit=100000');
     students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
     renderCoachGrid();
-  }catch(e){console.error(e);}
+    showToast('載入完成：'+stuData.length+'位學生，'+recData.length+'筆記錄');
+  }catch(e){showToast('載入失敗：'+e.message);}
 }
 
 function checkPwd(){

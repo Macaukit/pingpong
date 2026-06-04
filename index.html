@@ -277,7 +277,7 @@ function startLockTimer(){
 }
 
 const SUPABASE_URL = 'https://jygtjpemdhrsdwzubfjn.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_DBsYrgaB7_lI-zuC399iRA_PMGqejaZ';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5Z3RqcGVtZGhyc2R3enViZmpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMjkwMzYsImV4cCI6MjA5NDcwNTAzNn0.iRupztOfOCVlTJA965hIz2xQ8jVmjgZTXJp-ObWVeSs';
 const DAYS=['週一','週二','週三','週四','週五','週六','週日'];
 
 // 課程類型對照
@@ -300,7 +300,7 @@ let viewYear=new Date().getFullYear(),viewMonth=new Date().getMonth()+1;
 let incomeYear=new Date().getFullYear(),incomeMonth=new Date().getMonth()+1;
 
 async function api(path,method='GET',body=null){
-  const opts={method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Prefer':'return=representation'}};
+  const opts={method,headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=representation'}};
   if(body)opts.body=JSON.stringify(body);
   const res=await fetch(SUPABASE_URL+'/rest/v1/'+path,opts);
   if(!res.ok){const e=await res.text();throw new Error(e);}

@@ -305,7 +305,11 @@ async function api(path,method='GET',body=null){
 
 function todayStr(){const t=new Date();return`${t.getFullYear()}/${t.getMonth()+1}/${t.getDate()}`}
 function getInitials(n){return n.slice(0,2)}
-function getRemaining(s){return s.period*10-s.records.length}
+function getRemaining(s){
+  const periodStart=(s.period-1)*10;
+  const usedThisPeriod=Math.max(0,s.records.length-periodStart);
+  return 10-usedThisPeriod;
+}
 function getCoachName(id){return coaches.find(c=>c.id===id)?.name||''}
 function todayDayIndex(){const d=new Date().getDay();return d===0?6:d-1;}
 

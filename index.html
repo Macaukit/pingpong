@@ -338,7 +338,11 @@ async function fetchAllRecords(){
 
 function todayDayIndex(){const d=new Date().getDay();return d===0?6:d-1;}
 function getCoachName(id){return coaches.find(c=>c.id===id)?.name||''}
-function getRemaining(s){return s.period*10-s.records.length}
+function getRemaining(s){
+  const periodStart=(s.period-1)*10;
+  const usedThisPeriod=Math.max(0,s.records.length-periodStart);
+  return 10-usedThisPeriod;
+}
 function getInitials(n){return n.slice(0,2)}
 function todayStr(){const t=new Date();return`${t.getFullYear()}/${t.getMonth()+1}/${t.getDate()}`}
 function getStudentDays(s){return(s.days_of_week&&s.days_of_week.length>0)?s.days_of_week:[s.day_index];}
@@ -410,9 +414,11 @@ async function quickSign(sid){
 
 function openDetail(sid){
   const s=students.find(x=>x.id===sid);
-  const rem=getRemaining(s);
-  const used=s.records.length;
-  const total=s.period*10;
+  const allUsed=s.records.length;
+  const periodStart=(s.period-1)*10; // 本期從第幾堂開始
+  const used=Math.max(0,allUsed-periodStart); // 本期已上幾堂
+  const rem=10-used; // 本期剩幾堂
+  const total=10;
   const pct=Math.min(100,Math.round(used/total*100));
   const ci=getCourseInfo(s.course_type);
   const days=getStudentDays(s);
@@ -488,9 +494,12 @@ async function togglePay(sid){
 async function newPeriod(sid){
   const s=students.find(x=>x.id===sid);
   try{
-    await api(`students?id=eq.${sid}`,'PATCH',{period:s.period+1,paid:false});
-    await api(`records?student_id=eq.${sid}`,'DELETE');
-    s.period++;s.records=[];s.paid=false;openDetail(sid);
+    const newPeriod=s.period+1;
+    await api(`students?id=eq.${sid}`,'PATCH',{period:newPeriod,paid:false});
+    // 不刪除舊記錄，保留歷史記錄
+    s.period=newPeriod;s.paid=false;
+    openDetail(sid);
+    showToast(`已開始第${newPeriod}期，舊記錄已保留`);
   }catch(e){showError('更新失敗');}
 }
 

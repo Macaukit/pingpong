@@ -320,11 +320,25 @@ async function loadAll(){
   try{
     coaches=await api('coaches?select=*&order=id');
     const stuData=await api('students?select=*&order=name');
-    const recData=await api('records?select=*&order=date&limit=100000');
+    const recData=await fetchAllRecords();
     students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
     renderCoachGrid();
-    showToast('載入完成：'+stuData.length+'位學生，'+recData.length+'筆記錄');
-  }catch(e){showToast('載入失敗：'+e.message);}
+  }catch(e){console.error(e);}
+}
+
+// 分頁載入所有 records（繞過 Supabase 1000 筆限制）
+async function fetchAllRecords(){
+  let all=[];
+  let from=0;
+  const pageSize=1000;
+  while(true){
+    const page=await api(`records?select=*&order=id&limit=${pageSize}&offset=${from}`);
+    if(!page||page.length===0)break;
+    all=all.concat(page);
+    if(page.length<pageSize)break;
+    from+=pageSize;
+  }
+  return all;
 }
 
 function checkPwd(){
@@ -619,7 +633,7 @@ loadAll();
 setInterval(async()=>{
   try{
     const stuData=await api('students?select=*&order=name');
-    const recData=await api('records?select=*&order=date&limit=100000');
+    const recData=await fetchAllRecords();
     students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
     renderStudentList();
   }catch(e){console.log('sync failed',e);}

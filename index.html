@@ -313,13 +313,27 @@ async function loadAll(){
   try{
     coaches=await api('coaches?select=*&order=id');
     const stuData=await api('students?select=*&order=name');
-    const recData=await api('records?select=*&order=date&limit=100000');
+    const recData=await fetchAllRecords();
     coachRecords=await api('coach_records?select=*&order=date');
     incomeRecords=await api('income_records?select=*&order=date.desc').catch(()=>[]);
     students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
     document.getElementById('db-status').textContent='✓ 已連線';
     renderDayGrid();selectDay(todayDayIndex());
   }catch(e){document.getElementById('db-status').textContent='⚠ 連線失敗';console.error(e);}
+}
+
+async function fetchAllRecords(){
+  let all=[];
+  let from=0;
+  const pageSize=1000;
+  while(true){
+    const page=await api(`records?select=*&order=id&limit=${pageSize}&offset=${from}`);
+    if(!page||page.length===0)break;
+    all=all.concat(page);
+    if(page.length<pageSize)break;
+    from+=pageSize;
+  }
+  return all;
 }
 
 function todayDayIndex(){const d=new Date().getDay();return d===0?6:d-1;}
@@ -795,7 +809,7 @@ if('serviceWorker' in navigator){
 setInterval(async()=>{
   try{
     const stuData=await api('students?select=*&order=name');
-    const recData=await api('records?select=*&order=date&limit=100000');
+    const recData=await fetchAllRecords();
     students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
     renderDaySection();
   }catch(e){console.log('sync failed',e);}

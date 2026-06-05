@@ -306,9 +306,9 @@ async function api(path,method='GET',body=null){
 function todayStr(){const t=new Date();return`${t.getFullYear()}/${t.getMonth()+1}/${t.getDate()}`}
 function getInitials(n){return n.slice(0,2)}
 function getRemaining(s){
-  const periodStart=(s.period-1)*10;
-  const usedThisPeriod=Math.max(0,s.records.length-periodStart);
-  return 10-usedThisPeriod;
+  // 只計算本期的記錄
+  const thisPeriodRecords=s.records.filter(r=>r.period===s.period);
+  return 10-thisPeriodRecords.length;
 }
 function getCoachName(id){return coaches.find(c=>c.id===id)?.name||''}
 function todayDayIndex(){const d=new Date().getDay();return d===0?6:d-1;}
@@ -325,7 +325,7 @@ async function loadAll(){
     coaches=await api('coaches?select=*&order=id');
     const stuData=await api('students?select=*&order=name');
     const recData=await fetchAllRecords();
-    students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
+    students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>({date:r.date,period:r.period||1}))}));
     renderCoachGrid();
   }catch(e){console.error(e);}
 }
@@ -385,7 +385,7 @@ function renderStudentList(){
 
 function renderStudentCard(s){
   const rem=getRemaining(s);
-  const alreadyToday=s.records.includes(todayStr());
+  const alreadyToday=s.records.some(r=>r.date===todayStr());
   const isGroup=s.course_type==='group';
   const typeBadge=isGroup
     ?`<span class="badge badge-group">團體課 Group</span>`
@@ -419,12 +419,12 @@ async function studentCheckin(sid){
   const s=students.find(x=>x.id===sid);
   if(!s||getRemaining(s)<=0)return;
   const today=todayStr();
-  if(s.records.includes(today))return;
+  if(s.records.some(r=>r.date===today))return;
   try{
-    const rec=await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id});
+    const rec=await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id,period:s.period});
     lastCheckinRecordId=Array.isArray(rec)?rec[0]?.id:rec?.id;
     lastCheckinStudentId=sid;
-    s.records.push(today);
+    s.records.push({date:today,period:s.period});
     const rem=getRemaining(s);
     const isGroup=s.course_type==='group';
     const wrap=document.getElementById('success-icon-wrap');
@@ -446,10 +446,10 @@ function renderSuccessRecords(s){
   const el=document.getElementById('success-record-list');
   if(!s.records||!s.records.length){el.innerHTML='';return;}
   const sorted=[...s.records].reverse();
-  const rows=sorted.map((d,i)=>`
+  const rows=sorted.map((rec,i)=>`
     <div class="record-item">
-      <span>第 ${s.records.length-i} 堂</span>
-      <span>${d}</span>
+      <span>第${rec.period}期第${((s.records.length-i-1)%10)+1}堂</span>
+      <span>${rec.date}</span>
     </div>`).join('');
   el.innerHTML=`<div class="record-list-title">上課記錄 / Attendance History</div>${rows}`;
 }
@@ -464,10 +464,10 @@ function openRecordView(sid){
   } else {
     const sorted=[...s.records].reverse();
     body.innerHTML=`<div style="font-size:12px;color:#94a3b8;margin-bottom:8px">共 ${s.records.length} 堂 / ${s.records.length} sessions</div>`+
-    sorted.map((d,i)=>`
+    sorted.map((rec,i)=>`
       <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:0.5px solid #f1f5f9;font-size:14px;color:#374151">
-        <span style="color:#94a3b8;font-size:13px">第 ${s.records.length-i} 堂</span>
-        <span>${d}</span>
+        <span style="color:#94a3b8;font-size:13px">第${rec.period}期第${((s.records.length-i-1)%10)+1}堂</span>
+        <span>${rec.date}</span>
       </div>`).join('');
   }
   document.getElementById('record-modal').style.display='flex';
@@ -493,13 +493,13 @@ async function confirmMakeup(){
   if(!dateInput){showToast('請選擇日期 / Please select a date');return;}
   const d=new Date(dateInput);
   const dateStr=`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
-  if(s.records.includes(dateStr)){
+  if(s.records.some(r=>r.date===dateStr)){
     showToast('該日期已有簽到記錄 / Already checked in on this date');
     return;
   }
   try{
-    await api('records','POST',{student_id:s.id,date:dateStr,coach_id:s.coach_id});
-    s.records.push(dateStr);
+    await api('records','POST',{student_id:s.id,date:dateStr,coach_id:s.coach_id,period:s.period});
+    s.records.push({date:dateStr,period:s.period});
     s.records.sort();
     document.getElementById('makeup-modal').style.display='none';
     showToast(`${s.name} 補簽成功！${dateStr}`);
@@ -638,7 +638,7 @@ setInterval(async()=>{
   try{
     const stuData=await api('students?select=*&order=name');
     const recData=await fetchAllRecords();
-    students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
+    students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>({date:r.date,period:r.period||1}))}));
     renderStudentList();
   }catch(e){console.log('sync failed',e);}
 }, 30000);

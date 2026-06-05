@@ -316,7 +316,7 @@ async function loadAll(){
     const recData=await fetchAllRecords();
     coachRecords=await api('coach_records?select=*&order=date');
     incomeRecords=await api('income_records?select=*&order=date.desc').catch(()=>[]);
-    students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
+    students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>({date:r.date,period:r.period||1}))}));
     document.getElementById('db-status').textContent='✓ 已連線';
     renderDayGrid();selectDay(todayDayIndex());
   }catch(e){document.getElementById('db-status').textContent='⚠ 連線失敗';console.error(e);}
@@ -339,9 +339,9 @@ async function fetchAllRecords(){
 function todayDayIndex(){const d=new Date().getDay();return d===0?6:d-1;}
 function getCoachName(id){return coaches.find(c=>c.id===id)?.name||''}
 function getRemaining(s){
-  const periodStart=(s.period-1)*10;
-  const usedThisPeriod=Math.max(0,s.records.length-periodStart);
-  return 10-usedThisPeriod;
+  // 只計算本期的記錄
+  const thisPeriodRecords=s.records.filter(r=>r.period===s.period);
+  return 10-thisPeriodRecords.length;
 }
 function getInitials(n){return n.slice(0,2)}
 function todayStr(){const t=new Date();return`${t.getFullYear()}/${t.getMonth()+1}/${t.getDate()}`}
@@ -380,7 +380,7 @@ function renderDaySection(){
   if(!list.length){sec.innerHTML=`<div class="empty-state">📅 ${DAYS[selectedDay]}沒有排課學生</div>`;return;}
   sec.innerHTML=`<h3>${DAYS[selectedDay]}的學生（${list.length}人）</h3>`+list.map(s=>{
     const rem=getRemaining(s);
-    const alreadyToday=s.records.includes(todayStr());
+    const alreadyToday=s.records.some(r=>r.date===todayStr());
     const ci=getCourseInfo(s.course_type);
     let rb=rem<=0?`<span class="badge badge-danger">已用完</span>`:rem<=2?`<span class="badge badge-warn">剩${rem}堂</span>`:`<span class="badge badge-ok">剩${rem}堂</span>`;
     let pb=s.paid?'':`<span class="badge badge-danger">未繳費</span>`;
@@ -402,10 +402,10 @@ async function quickSign(sid){
   const s=students.find(x=>x.id===sid);
   if(!s||getRemaining(s)<=0)return;
   const today=todayStr();
-  if(s.records.includes(today))return;
+  if(s.records.some(r=>r.date===today))return;
   try{
-    await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id});
-    s.records.push(today);
+    await api('records','POST',{student_id:sid,date:today,coach_id:s.coach_id,period:s.period});
+    s.records.push({date:today,period:s.period});
     const rem=getRemaining(s);
     showToast(`${s.name} 簽到成功！剩 ${rem} 堂${rem<=2&&rem>0?' ⚠️':''}${rem===0?' 本期已用完':''}`);
     renderDaySection();
@@ -414,25 +414,22 @@ async function quickSign(sid){
 
 function openDetail(sid){
   const s=students.find(x=>x.id===sid);
-  const allUsed=s.records.length;
-  const periodStart=(s.period-1)*10; // 本期從第幾堂開始
-  const used=Math.max(0,allUsed-periodStart); // 本期已上幾堂
+  const thisPeriodRecords=s.records.filter(r=>r.period===s.period);
+  const used=thisPeriodRecords.length; // 本期已上幾堂
   const rem=10-used; // 本期剩幾堂
   const total=10;
   const pct=Math.min(100,Math.round(used/total*100));
-  const thisPeriodRecords=s.records.slice(periodStart); // 本期的記錄
   const ci=getCourseInfo(s.course_type);
   const days=getStudentDays(s);
   const nextStr=getNextClassDate(days);
-  const lastRecord=thisPeriodRecords.length>0?thisPeriodRecords[thisPeriodRecords.length-1]:'尚未上課';
+  const lastRecord=thisPeriodRecords.length>0?thisPeriodRecords[thisPeriodRecords.length-1].date:'尚未上課';
   const daysStr=days.map(d=>DAYS[d]).join('、');
   const parentInfo=`學生姓名：${s.name}\n課程類型：${ci.label}\n上課日：${daysStr}\n目前期數：第 ${s.period} 期（共10堂）\n已上堂數：${used} 堂\n剩餘堂數：${rem} 堂\n最後上課：${lastRecord}\n下次上課：${nextStr.replace('（','').replace('）','')}\n繳費狀態：${s.paid?'已繳費':'未繳費'}`;
   const historyRows=used>0
-    ?s.records.slice().reverse().map((date,idx)=>{
+    ?s.records.slice().reverse().map((rec,idx)=>{
         const lessonNum=s.records.length-idx;
-        const periodNum=Math.ceil(lessonNum/10);
         const lessonInPeriod=((lessonNum-1)%10)+1;
-        return `<tr><td>第${periodNum}期第${lessonInPeriod}堂</td><td>${date}</td><td class="muted">${getCoachName(s.coach_id)}</td></tr>`;
+        return `<tr><td>第${rec.period}期第${lessonInPeriod}堂</td><td>${rec.date}</td><td class="muted">${getCoachName(s.coach_id)}</td></tr>`;
       }).join('')
     :`<tr><td colspan="3" style="text-align:center;color:#94a3b8;padding:12px 0">尚無上課記錄</td></tr>`;
 
@@ -787,10 +784,10 @@ async function confirmMakeup(){
   if(!dateInput){showToast('請選擇日期');return;}
   const d=new Date(dateInput);
   const dateStr=`${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
-  if(s.records.includes(dateStr)){showToast('該日期已有簽到記錄');return;}
+  if(s.records.some(r=>r.date===dateStr)){showToast('該日期已有簽到記錄');return;}
   try{
     await api('records','POST',{student_id:s.id,date:dateStr,coach_id:s.coach_id});
-    s.records.push(dateStr);
+    s.records.push({date:dateStr,period:s.period});
     s.records.sort();
     document.getElementById('makeup-modal').style.display='none';
     showToast(`${s.name} 補簽成功！${dateStr}`);
@@ -828,7 +825,7 @@ setInterval(async()=>{
   try{
     const stuData=await api('students?select=*&order=name');
     const recData=await fetchAllRecords();
-    students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>r.date)}));
+    students=stuData.map(s=>({...s,records:recData.filter(r=>r.student_id===s.id).map(r=>({date:r.date,period:r.period||1}))}));
     renderDaySection();
   }catch(e){console.log('sync failed',e);}
 }, 30000);

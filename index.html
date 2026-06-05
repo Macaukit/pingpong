@@ -501,12 +501,15 @@ async function newPeriod(sid){
   const s=students.find(x=>x.id===sid);
   try{
     const newPeriod=s.period+1;
-    await api(`students?id=eq.${sid}`,'PATCH',{period:newPeriod,paid:false});
-    // 不刪除舊記錄，保留歷史記錄
+    // Supabase PATCH 需要加 Prefer: return=representation 才能確認成功
+    const result=await api(`students?id=eq.${sid}`,'PATCH',{period:newPeriod,paid:false});
+    console.log('newPeriod result:', result);
     s.period=newPeriod;s.paid=false;
+    // 重新從資料庫載入確認
+    const verify=await api(`students?id=eq.${sid}&select=period`);
+    showToast(`已開始第${newPeriod}期（資料庫確認：第${verify?.[0]?.period}期）`);
     openDetail(sid);
-    showToast(`已開始第${newPeriod}期，舊記錄已保留`);
-  }catch(e){showError('更新失敗');}
+  }catch(e){showError('更新失敗：'+e.message);}
 }
 
 // 月收入

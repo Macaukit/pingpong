@@ -420,14 +420,20 @@ function openDetail(sid){
   const rem=10-used; // 本期剩幾堂
   const total=10;
   const pct=Math.min(100,Math.round(used/total*100));
+  const thisPeriodRecords=s.records.slice(periodStart); // 本期的記錄
   const ci=getCourseInfo(s.course_type);
   const days=getStudentDays(s);
   const nextStr=getNextClassDate(days);
-  const lastRecord=used>0?s.records[used-1]:'尚未上課';
+  const lastRecord=thisPeriodRecords.length>0?thisPeriodRecords[thisPeriodRecords.length-1]:'尚未上課';
   const daysStr=days.map(d=>DAYS[d]).join('、');
   const parentInfo=`學生姓名：${s.name}\n課程類型：${ci.label}\n上課日：${daysStr}\n目前期數：第 ${s.period} 期（共10堂）\n已上堂數：${used} 堂\n剩餘堂數：${rem} 堂\n最後上課：${lastRecord}\n下次上課：${nextStr.replace('（','').replace('）','')}\n繳費狀態：${s.paid?'已繳費':'未繳費'}`;
   const historyRows=used>0
-    ?s.records.slice().reverse().map((date,i)=>`<tr><td>${used-i}</td><td>${date}</td><td class="muted">${getCoachName(s.coach_id)}</td></tr>`).join('')
+    ?s.records.slice().reverse().map((date,idx)=>{
+        const lessonNum=s.records.length-idx;
+        const periodNum=Math.ceil(lessonNum/10);
+        const lessonInPeriod=((lessonNum-1)%10)+1;
+        return `<tr><td>第${periodNum}期第${lessonInPeriod}堂</td><td>${date}</td><td class="muted">${getCoachName(s.coach_id)}</td></tr>`;
+      }).join('')
     :`<tr><td colspan="3" style="text-align:center;color:#94a3b8;padding:12px 0">尚無上課記錄</td></tr>`;
 
   document.getElementById('detail-name').textContent=s.name;
